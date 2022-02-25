@@ -11,6 +11,7 @@
     <color name="blue">#0000ff</color>
     <color name="black_main">#0F0F10</color>
     <color name="green">#00ff00</color>
-    <color name="main_background">#131212</color>
+    <color name="main_menu_background">#131212</color>
+    <color name="upper_background">#FAFAFA</color>
     <color name="text_secondary">#838388</color>
 </resources>

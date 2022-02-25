@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Library</string>
+    <string name="menu_home">Главная</string>
+    <string name="menu_search">Поиск</string>
+    <string name="menu_library">Библиотека</string>
+    <string name="menu_events">События</string>
 </resources>

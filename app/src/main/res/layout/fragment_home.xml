@@ -4,14 +4,31 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red"
-    android:gravity="center"
+    android:background="@color/upper_background"
+    android:gravity="top"
     >
     <TextView
+        android:id="@+id/date_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home fragment"
-        android:layout_gravity="center"
+        android:text="day"
+        android:layout_gravity="center_horizontal"
+        android:textSize="35sp"
+        />
+    <TextView
+        android:id="@+id/day_of_the_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="day of the week"
+        android:layout_gravity="center_horizontal"
+        android:textSize="35sp"
+        />
+    <TextView
+        android:id="@+id/month_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="month and year"
+        android:layout_gravity="center_horizontal"
         android:textSize="35sp"
         />
 
