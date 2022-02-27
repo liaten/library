@@ -14,4 +14,6 @@
     <color name="main_menu_background">#131212</color>
     <color name="upper_background">#FAFAFA</color>
     <color name="text_secondary">#838388</color>
+    <color name="date_day">#101011</color>
+    <color name="date_secondary">#9B9CA6</color>
 </resources>

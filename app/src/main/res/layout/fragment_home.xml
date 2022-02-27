@@ -1,44 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/upper_background"
-    android:gravity="center_vertical"
+    android:gravity="top"
     >
-    <TextView
-        android:id="@+id/date_day"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="day"
-        android:layout_gravity="center_horizontal|top"
-        android:textSize="35sp"
-        />
-    <TextView
-        android:id="@+id/day_of_the_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="day of the week"
-        android:layout_gravity="center_horizontal"
-        android:textSize="35sp"
-        />
-    <TextView
-        android:id="@+id/month_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="month and year"
-        android:layout_gravity="center_horizontal"
-        android:textSize="35sp"
-        />
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        >
 
-    <TextView
-        android:id="@+id/code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="code belongs here"
-        android:layout_gravity="center_horizontal"
-        android:textSize="10sp"
-        />
+        <TextView
+            android:id="@+id/date_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/pt_serif_bold"
+            android:layout_gravity="center"
+            android:text="17"
+            android:textSize="38sp"
+            android:textColor="@color/date_day"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="5dp"
+            >
+
+            <TextView
+                android:id="@+id/day_of_the_week"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/pt_serif_bold"
+                android:text="Четверг"
+                android:textColor="@color/date_secondary"
+                android:textSize="14sp"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/month_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/pt_serif_bold"
+                android:text="Февраль 2022"
+                android:textColor="@color/date_secondary"
+                android:textSize="14sp"
+                tools:ignore="TextContrastCheck" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>
