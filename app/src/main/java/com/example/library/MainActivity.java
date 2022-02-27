@@ -9,7 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Fragment selectedFragment = new HomeFragment();
+    private static Fragment selectedFragment = new HomeFragment();
     private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.nav_home:
@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
         setSelectedFragment();
         return true;
     };
+
+    public static Fragment getSelectedFragment(){
+        return selectedFragment;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
