@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/upper_background"
-    android:gravity="top"
+    android:gravity="center_vertical"
     >
     <TextView
         android:id="@+id/date_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="day"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_horizontal|top"
         android:textSize="35sp"
         />
     <TextView
@@ -30,6 +30,15 @@
         android:text="month and year"
         android:layout_gravity="center_horizontal"
         android:textSize="35sp"
+        />
+
+    <TextView
+        android:id="@+id/code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="code belongs here"
+        android:layout_gravity="center_horizontal"
+        android:textSize="10sp"
         />
 
 </LinearLayout>
