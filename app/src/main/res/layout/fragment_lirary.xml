@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -9,10 +10,10 @@
     android:gravity="top"
     >
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="20dp"
         >
 
         <TextView
@@ -55,11 +56,27 @@
                 tools:ignore="TextContrastCheck" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            >
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="46dp"
+                android:layout_height="wrap_content"
+                tools:srcCompat="@tools:sample/avatars"
+                tools:ignore="NestedWeights"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
         >
         <TextView
             android:layout_width="0dp"
@@ -67,11 +84,50 @@
             android:layout_height="wrap_content"
             android:text="Библиотека"
             android:textColor="@color/headers_primary"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:fontFamily="@font/pt_serif_bold"
             android:gravity="bottom"
             />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <android.widget.Button
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/roboto"
+            android:text="Помощь по приложению"
+            android:textSize="20sp"
+            android:background="@drawable/ic_search_button"
+            android:paddingHorizontal="10dp"
+            />
+        <android.widget.Button
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/roboto"
+            android:text="Регистрация"
+            android:textSize="20sp"
+            android:background="@drawable/ic_search_button"
+            android:paddingHorizontal="10dp"
+            android:layout_marginVertical="15dp"
+            />
+        <android.widget.Button
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/roboto"
+            android:text="Авторизация"
+            android:textSize="20sp"
+            android:background="@drawable/ic_search_button"
+            android:paddingHorizontal="10dp"
+            />
+    </LinearLayout>
+
 
 
 

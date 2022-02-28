@@ -14,7 +14,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         >
-
         <TextView
             android:id="@+id/date_day"
             android:layout_width="wrap_content"
@@ -31,7 +30,6 @@
             android:orientation="vertical"
             android:layout_marginStart="5dp"
             >
-
             <TextView
                 android:id="@+id/day_of_the_week"
                 android:layout_width="match_parent"
@@ -42,7 +40,6 @@
                 android:textColor="@color/date_secondary"
                 android:textSize="14sp"
                 tools:ignore="TextContrastCheck" />
-
             <TextView
                 android:id="@+id/month_year"
                 android:layout_width="match_parent"
@@ -54,12 +51,12 @@
                 android:textSize="14sp"
                 tools:ignore="TextContrastCheck" />
         </LinearLayout>
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
         >
         <TextView
             android:layout_width="0dp"
@@ -67,7 +64,7 @@
             android:layout_height="wrap_content"
             android:text="Поиск"
             android:textColor="@color/headers_primary"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:fontFamily="@font/pt_serif_bold"
             android:gravity="bottom"
             />
@@ -79,7 +76,6 @@
         android:gravity="center"
         android:layout_marginHorizontal="20dp"
         >
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,21 +85,20 @@
             android:hint="Название книги"
             android:textColorHint="@color/search_color_header"
             android:textSize="20sp"
-
-            tools:ignore="TouchTargetSizeCheck" />
-
+            tools:ignore="TouchTargetSizeCheck"
+            />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginVertical="20dp"
             android:background="@drawable/ic_search_edit_text"
             android:fontFamily="@font/roboto"
             android:gravity="center"
             android:hint="Имя автора"
             android:textColorHint="@color/search_color_header"
             android:textSize="20sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
+            tools:ignore="TouchTargetSizeCheck"
+            />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,21 +108,18 @@
             android:hint="Тема"
             android:textColorHint="@color/search_color_header"
             android:textSize="20sp"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <android.widget.Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/ic_search_button"
+            android:layout_height="38dp"
+            android:layout_marginTop="20dp"
+            android:textAllCaps="false"
             android:fontFamily="@font/roboto"
             android:text="Найти книгу!"
             android:textSize="20sp"
-            
+            android:background="@drawable/ic_search_button"
+            android:paddingHorizontal="10dp"
             />
     </LinearLayout>
-
-
-
-
 </LinearLayout>
