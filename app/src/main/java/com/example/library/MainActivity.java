@@ -1,5 +1,6 @@
 package com.example.library;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private static Fragment selectedFragment = new HomeFragment();
+    @SuppressLint("NonConstantResourceId")
     private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.nav_home:
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(navigationItemSelectedListener);
         setSelectedFragment();

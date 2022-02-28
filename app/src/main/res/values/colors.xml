@@ -18,4 +18,5 @@
     <color name="date_day">#101011</color>
     <color name="date_secondary">#9B9CA6</color>
     <color name="headers_primary">#0F0F10</color>
+    <color name="search_color_header">#3C3C43</color>
 </resources>
