@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         return selectedFragment;
     }
 
-    public void setSelectedFragment(Fragment fragment) {
+    public static void setSelectedFragment(Fragment fragment) {
         selectedFragment = fragment;
     }
 
@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         setSelectedFragmentToContainer();
     }
 
-    private void setSelectedFragmentToContainer() {
+    public void setSelectedFragmentToContainer() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
     }
+
 }

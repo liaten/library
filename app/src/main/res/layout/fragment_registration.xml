@@ -95,47 +95,6 @@
             android:gravity="bottom"
             />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginHorizontal="20dp"
-        >
-        <android.widget.Button
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:textAllCaps="false"
-            android:fontFamily="@font/roboto"
-            android:text="Помощь по приложению"
-            android:textSize="20sp"
-            android:background="@drawable/ic_search_button"
-            android:paddingHorizontal="10dp"
-            />
-        <android.widget.Button
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:textAllCaps="false"
-            android:fontFamily="@font/roboto"
-            android:text="Регистрация"
-            android:textSize="20sp"
-            android:background="@drawable/ic_search_button"
-            android:paddingHorizontal="10dp"
-            android:layout_marginVertical="15dp"
-            />
-        <android.widget.Button
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:textAllCaps="false"
-            android:fontFamily="@font/roboto"
-            android:text="Авторизация"
-            android:textSize="20sp"
-            android:background="@drawable/ic_search_button"
-            android:paddingHorizontal="10dp"
-            />
-    </LinearLayout>
-
-
 
 
 </LinearLayout>

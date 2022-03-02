@@ -18,6 +18,12 @@ import java.net.URL;
 
 public class DateHelper extends AsyncTask<URL, Fragment, String> {
 
+    protected String result = "";
+    @SuppressLint("StaticFieldLeak")
+    TextView DayOfDate, DayOfWeek, MonthAndYear;
+    Fragment session_fragment = null;
+    boolean isDataUpdated = false;
+
     public String getRussianDaysOfWeek(String dayOfWeek) {
         switch (dayOfWeek) {
             case "Sunday":
@@ -67,12 +73,6 @@ public class DateHelper extends AsyncTask<URL, Fragment, String> {
         }
         return null;
     }
-
-    protected String result = "";
-    @SuppressLint("StaticFieldLeak")
-    TextView DayOfDate, DayOfWeek, MonthAndYear;
-    Fragment session_fragment = null;
-    boolean isDataUpdated = false;
 
     @Override
     protected void onPreExecute() {
