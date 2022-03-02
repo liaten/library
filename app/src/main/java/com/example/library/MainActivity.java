@@ -15,24 +15,28 @@ public class MainActivity extends AppCompatActivity {
     private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                selectedFragment = new HomeFragment();
+                setSelectedFragment(new HomeFragment());
                 break;
             case R.id.nav_search:
-                selectedFragment = new SearchFragment();
+                setSelectedFragment(new SearchFragment());
                 break;
             case R.id.nav_library:
-                selectedFragment = new LibraryFragment();
+                setSelectedFragment(new LibraryFragment());
                 break;
             case R.id.nav_events:
-                selectedFragment = new EventsFragment();
+                setSelectedFragment(new EventsFragment());
                 break;
         }
-        setSelectedFragment();
+        setSelectedFragmentToContainer();
         return true;
     };
 
-    public static Fragment getSelectedFragment(){
+    public static Fragment getSelectedFragment() {
         return selectedFragment;
+    }
+
+    public void setSelectedFragment(Fragment fragment) {
+        selectedFragment = fragment;
     }
 
     @Override
@@ -41,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(navigationItemSelectedListener);
-        setSelectedFragment();
+        setSelectedFragmentToContainer();
     }
 
-    private void setSelectedFragment() {
+    private void setSelectedFragmentToContainer() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
     }
 }

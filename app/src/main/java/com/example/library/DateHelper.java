@@ -1,7 +1,6 @@
 package com.example.library;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
@@ -72,16 +71,21 @@ public class DateHelper extends AsyncTask<URL, Fragment, String> {
     protected String result = "";
     @SuppressLint("StaticFieldLeak")
     TextView DayOfDate, DayOfWeek, MonthAndYear;
+    Fragment session_fragment = null;
+    boolean isDataUpdated = false;
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Fragment fragment = MainActivity.getSelectedFragment();
-        DayOfDate = fragment.getView().findViewById(R.id.date_day);
-        DayOfWeek = fragment.getView().findViewById(R.id.day_of_the_week);
-        MonthAndYear = fragment.getView().findViewById(R.id.month_year);
-        DayOfWeek.setVisibility(View.INVISIBLE);
-        DayOfDate.setVisibility(View.INVISIBLE);
-        MonthAndYear.setVisibility(View.INVISIBLE);
+        session_fragment = MainActivity.getSelectedFragment();
+        DayOfDate = session_fragment.getView().findViewById(R.id.date_day);
+        DayOfWeek = session_fragment.getView().findViewById(R.id.day_of_the_week);
+        MonthAndYear = session_fragment.getView().findViewById(R.id.month_year);
+        if (!isDataUpdated) {
+            DayOfWeek.setVisibility(View.INVISIBLE);
+            DayOfDate.setVisibility(View.INVISIBLE);
+            MonthAndYear.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -110,7 +114,6 @@ public class DateHelper extends AsyncTask<URL, Fragment, String> {
     @Override
     protected void onPostExecute(String _result) {
         super.onPostExecute(_result);
-        //Code.setText(result);
         try {
             JSONObject jsonObject = new JSONObject(result);
             int day = jsonObject.getInt("day");
@@ -122,9 +125,12 @@ public class DateHelper extends AsyncTask<URL, Fragment, String> {
             DayOfWeek.setText(russianDayOfWeek);
             DayOfDate.setText(String.valueOf(day));
             MonthAndYear.setText(monthAndYear);
-            DayOfWeek.setVisibility(View.VISIBLE);
-            DayOfDate.setVisibility(View.VISIBLE);
-            MonthAndYear.setVisibility(View.VISIBLE);
+            if (!isDataUpdated) {
+                DayOfWeek.setVisibility(View.VISIBLE);
+                DayOfDate.setVisibility(View.VISIBLE);
+                MonthAndYear.setVisibility(View.VISIBLE);
+            }
+            isDataUpdated = true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
