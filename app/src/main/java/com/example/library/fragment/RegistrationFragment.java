@@ -1,6 +1,4 @@
-package com.example.library;
-
-import static com.example.library.HomeFragment.updateDate;
+package com.example.library.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,15 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
-public class RegistrationFragment extends Fragment {
+import com.example.library.R;
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        updateDate();
-    }
+public class RegistrationFragment extends FragmentWithHeader {
 
     @Nullable
     @Override

@@ -1,18 +1,28 @@
-package com.example.library;
+package com.example.library.fragment;
+
+import static com.example.library.MainActivity.setSelectedFragment;
+import static com.example.library.fragment.LibraryFragment.setFragmentOnParent;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.library.R;
+import com.example.library.helper.DateHelper;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class HomeFragment extends Fragment {
+public class FragmentWithHeader extends Fragment {
+
+    public View.OnClickListener profileClickListener = view -> {
+        setSelectedFragment(new ProfileFragment());
+        setFragmentOnParent(this);
+    };
 
     public static void updateDate() {
         try {
@@ -29,14 +39,11 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         updateDate();
+        setViews();
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    private void setViews() {
+        ImageView profileImageView = getView().findViewById(R.id.profileImageView);
+        profileImageView.setOnClickListener(profileClickListener);
     }
-
-
 }
-

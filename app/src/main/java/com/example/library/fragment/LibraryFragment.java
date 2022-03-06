@@ -1,6 +1,5 @@
-package com.example.library;
+package com.example.library.fragment;
 
-import static com.example.library.HomeFragment.updateDate;
 import static com.example.library.MainActivity.getSelectedFragment;
 import static com.example.library.MainActivity.setSelectedFragment;
 
@@ -14,12 +13,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class LibraryFragment extends Fragment {
+import com.example.library.R;
+
+public class LibraryFragment extends FragmentWithHeader {
+
+    View.OnClickListener regClickListener = view -> {
+        setSelectedFragment(new RegistrationFragment());
+        setFragmentOnParent(this);
+    };
+    View.OnClickListener authClickListener = view -> {
+        setSelectedFragment(new AuthorizationFragment());
+        setFragmentOnParent(this);
+    };
+    View.OnClickListener helpClickListener = view -> {
+        setSelectedFragment(new HelpFragment());
+        setFragmentOnParent(this);
+    };
+
+    public static void setFragmentOnParent(Fragment fr) {
+        fr.getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, getSelectedFragment()).commit();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        updateDate();
         setViews();
     }
 
@@ -28,16 +45,13 @@ public class LibraryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_library, container, false);
     }
-    private void setViews(){
+
+    private void setViews() {
         Button helpButton = getView().findViewById(R.id.help_button);
         Button registrationButton = getView().findViewById(R.id.registration_button);
         Button authorizationButton = getView().findViewById(R.id.authorization_button);
-        registrationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setSelectedFragment(new RegistrationFragment());
-                getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, getSelectedFragment()).commit();
-            }
-        });
+        registrationButton.setOnClickListener(regClickListener);
+        authorizationButton.setOnClickListener(authClickListener);
+        helpButton.setOnClickListener(helpClickListener);
     }
 }

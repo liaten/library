@@ -1,4 +1,4 @@
-package com.example.library;
+package com.example.library.helper;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.library.MainActivity;
+import com.example.library.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,13 +19,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DateHelper extends AsyncTask<URL, Fragment, String> {
+public class DateHelper extends AsyncTask<URL, Void, String> {
 
     protected String result = "";
     @SuppressLint("StaticFieldLeak")
-    TextView DayOfDate, DayOfWeek, MonthAndYear;
-    Fragment session_fragment = null;
-    boolean isDataUpdated = false;
+    private TextView DayOfDate, DayOfWeek, MonthAndYear;
+    private Fragment session_fragment = null;
+    private boolean isDataUpdated = false;
+    private int day, month, year;
 
     public String getRussianDaysOfWeek(String dayOfWeek) {
         switch (dayOfWeek) {
@@ -74,6 +78,18 @@ public class DateHelper extends AsyncTask<URL, Fragment, String> {
         return null;
     }
 
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -116,9 +132,9 @@ public class DateHelper extends AsyncTask<URL, Fragment, String> {
         super.onPostExecute(_result);
         try {
             JSONObject jsonObject = new JSONObject(result);
-            int day = jsonObject.getInt("day");
-            int year = jsonObject.getInt("year");
-            int month = jsonObject.getInt("month");
+            day = jsonObject.getInt("day");
+            year = jsonObject.getInt("year");
+            month = jsonObject.getInt("month");
             String dayOfWeek = jsonObject.getString("dayOfWeek");
             String russianDayOfWeek = getRussianDaysOfWeek(dayOfWeek);
             String monthAndYear = getRussianMonths(month) + " " + year;
@@ -129,12 +145,11 @@ public class DateHelper extends AsyncTask<URL, Fragment, String> {
                 DayOfWeek.setVisibility(View.VISIBLE);
                 DayOfDate.setVisibility(View.VISIBLE);
                 MonthAndYear.setVisibility(View.VISIBLE);
+                isDataUpdated = true;
             }
-            isDataUpdated = true;
         } catch (JSONException e) {
             e.printStackTrace();
         }
         //Log.d(TAG,"Date: " + json_date_result); // Print result to logcat
-        //dateHelper.cancel(true);
     }
 }
