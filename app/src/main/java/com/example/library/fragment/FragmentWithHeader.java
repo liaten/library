@@ -1,5 +1,6 @@
 package com.example.library.fragment;
 
+import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
 import static com.example.library.MainActivity.setSelectedFragment;
 import static com.example.library.fragment.LibraryFragment.setFragmentOnParent;
 
@@ -22,6 +23,7 @@ public class FragmentWithHeader extends Fragment {
     public View.OnClickListener profileClickListener = view -> {
         setSelectedFragment(new ProfileFragment());
         setFragmentOnParent(this);
+        setBottomNavigationViewUncheckable();
     };
 
     public static void updateDate() {

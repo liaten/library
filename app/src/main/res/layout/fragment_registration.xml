@@ -96,5 +96,104 @@
             />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginHorizontal="20dp"
+        android:showDividers="middle"
+        android:divider="@drawable/empty_divider"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_edit_text"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="Фамилия, имя, отчество"
+            android:textColorHint="@color/search_color_header"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_edit_text"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="Пол"
+            android:textColorHint="@color/search_color_header"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_edit_text"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="Номер телефона"
+            android:textColorHint="@color/search_color_header"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_edit_text"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="Дата рождения"
+            android:textColorHint="@color/search_color_header"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_edit_text"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="Адрес регистрации"
+            android:textColorHint="@color/search_color_header"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_edit_text"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="Электронная почта"
+            android:textColorHint="@color/search_color_header"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_search_edit_text"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="Пароль"
+            android:textColorHint="@color/search_color_header"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            />
+        <android.widget.Button
+            android:id="@+id/reg_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/roboto"
+            android:text="Подтвердить"
+            android:textSize="20sp"
+            android:background="@drawable/ic_search_button"
+            android:paddingHorizontal="10dp"
+            />
+    </LinearLayout>
+
 
 </LinearLayout>

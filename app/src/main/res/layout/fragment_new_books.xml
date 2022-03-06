@@ -88,54 +88,11 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Авторизация"
+            android:text="Новые книги"
             android:textColor="@color/headers_primary"
             android:textSize="30sp"
             android:fontFamily="@font/pt_serif_bold"
             android:gravity="bottom"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginHorizontal="20dp"
-        android:showDividers="middle"
-        android:divider="@drawable/empty_divider"
-        >
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_search_edit_text"
-            android:fontFamily="@font/roboto"
-            android:gravity="center"
-            android:hint="Логин/электронная почта"
-            android:textColorHint="@color/search_color_header"
-            android:textSize="20sp"
-            tools:ignore="TouchTargetSizeCheck"
-            />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_search_edit_text"
-            android:fontFamily="@font/roboto"
-            android:gravity="center"
-            android:hint="Пароль"
-            android:textColorHint="@color/search_color_header"
-            android:textSize="20sp"
-            tools:ignore="TouchTargetSizeCheck"
-            />
-        <android.widget.Button
-            android:id="@+id/auth_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:textAllCaps="false"
-            android:fontFamily="@font/roboto"
-            android:text="Подтвердить"
-            android:textSize="20sp"
-            android:background="@drawable/ic_search_button"
-            android:paddingHorizontal="10dp"
             />
     </LinearLayout>
 

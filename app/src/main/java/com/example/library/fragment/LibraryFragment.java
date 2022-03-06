@@ -1,6 +1,7 @@
 package com.example.library.fragment;
 
 import static com.example.library.MainActivity.getSelectedFragment;
+import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
 import static com.example.library.MainActivity.setSelectedFragment;
 
 import android.os.Bundle;
@@ -19,14 +20,17 @@ public class LibraryFragment extends FragmentWithHeader {
 
     View.OnClickListener regClickListener = view -> {
         setSelectedFragment(new RegistrationFragment());
+        setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
     View.OnClickListener authClickListener = view -> {
         setSelectedFragment(new AuthorizationFragment());
+        setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
     View.OnClickListener helpClickListener = view -> {
         setSelectedFragment(new HelpFragment());
+        setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
 
