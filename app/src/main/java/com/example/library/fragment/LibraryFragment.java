@@ -18,17 +18,17 @@ import com.example.library.R;
 
 public class LibraryFragment extends FragmentWithHeader {
 
-    View.OnClickListener regClickListener = view -> {
+    private final View.OnClickListener regClickListener = view -> {
         setSelectedFragment(new RegistrationFragment());
         setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
-    View.OnClickListener authClickListener = view -> {
+    private final View.OnClickListener authClickListener = view -> {
         setSelectedFragment(new AuthorizationFragment());
         setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
-    View.OnClickListener helpClickListener = view -> {
+    private final View.OnClickListener helpClickListener = view -> {
         setSelectedFragment(new HelpFragment());
         setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);

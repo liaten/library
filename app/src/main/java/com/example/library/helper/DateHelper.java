@@ -26,7 +26,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
     private Fragment session_fragment = null;
     private boolean isDataUpdated = false;
-    private int day, month, year;
+    private static int day, month, year;
 
     public String getRussianDaysOfWeek(String dayOfWeek) {
         switch (dayOfWeek) {
@@ -48,7 +48,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         return null;
     }
 
-    public String getRussianMonths(int month) {
+    public static String getRussianMonths(int month) {
         switch (month) {
             case 1:
                 return "Январь";
@@ -78,15 +78,15 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         return null;
     }
 
-    public int getDay() {
+    public static int getDay() {
         return day;
     }
 
-    public int getMonth() {
+    public static int getMonth() {
         return month;
     }
 
-    public int getYear() {
+    public static int getYear() {
         return year;
     }
 

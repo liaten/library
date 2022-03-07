@@ -106,6 +106,7 @@
         android:divider="@drawable/empty_divider"
         >
         <EditText
+            android:id="@+id/full_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -116,18 +117,32 @@
             android:textSize="20sp"
             tools:ignore="TouchTargetSizeCheck"
             />
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_search_edit_text"
-            android:fontFamily="@font/roboto"
-            android:gravity="center"
-            android:hint="Пол"
-            android:textColorHint="@color/search_color_header"
-            android:textSize="20sp"
-            tools:ignore="TouchTargetSizeCheck"
-            />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:text="Пол"
+                android:textColor="@color/headers_primary"
+                android:textSize="20sp"
+
+                />
+            <Spinner
+                android:id="@+id/gender_spinner"
+                android:layout_marginStart="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto"
+                android:spinnerMode="dropdown"
+                />
+        </LinearLayout>
         <EditText
+            android:id="@+id/phone_number_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -137,8 +152,11 @@
             android:textColorHint="@color/search_color_header"
             android:textSize="20sp"
             tools:ignore="TouchTargetSizeCheck"
+            android:inputType="phone"
             />
+
         <EditText
+            android:id="@+id/date_birth_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -148,8 +166,11 @@
             android:textColorHint="@color/search_color_header"
             android:textSize="20sp"
             tools:ignore="TouchTargetSizeCheck"
+            android:inputType="date"
             />
+
         <EditText
+            android:id="@+id/registration_address_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -161,6 +182,7 @@
             tools:ignore="TouchTargetSizeCheck"
             />
         <EditText
+            android:id="@+id/email_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -172,6 +194,7 @@
             tools:ignore="TouchTargetSizeCheck"
             />
         <EditText
+            android:id="@+id/password_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -182,17 +205,19 @@
             android:textSize="20sp"
             tools:ignore="TouchTargetSizeCheck"
             />
+
         <android.widget.Button
             android:id="@+id/reg_ok"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
-            android:textAllCaps="false"
-            android:fontFamily="@font/roboto"
-            android:text="Подтвердить"
-            android:textSize="20sp"
             android:background="@drawable/ic_search_button"
+            android:fontFamily="@font/roboto"
             android:paddingHorizontal="10dp"
-            />
+            android:text="Подтвердить"
+            android:textColor="@color/search_color_header"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
 
