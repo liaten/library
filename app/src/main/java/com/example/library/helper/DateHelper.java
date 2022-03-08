@@ -89,6 +89,9 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     public static int getYear() {
         return year;
     }
+    public static String getDateString(){
+        return (day + " " + getRussianMonths(month) + " " + year);
+    }
 
     @Override
     protected void onPreExecute() {
