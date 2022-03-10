@@ -24,9 +24,37 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     protected String result = "";
     @SuppressLint("StaticFieldLeak")
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
-    private Fragment session_fragment = null;
     private boolean isDataUpdated = false;
-    private static int day, month, year;
+    private static short day, month, year;
+
+    public static String getSQLDate(short day, short month, short year){
+        String dayStr, monthStr, yearStr;
+        if(day<10){
+            dayStr = "0" + String.valueOf(day);
+        }
+        else {
+            dayStr = String.valueOf(day);
+        }
+        if (month<10){
+            monthStr = "0" + String.valueOf(month);
+        }
+        else {
+            monthStr = String.valueOf(month);
+        }
+        if(year<10){
+            yearStr = "000" + String.valueOf(year);
+        }
+        else if(year<100){
+            yearStr = "00" + String.valueOf(year);
+        }
+        else if(year<1000){
+            yearStr = "0" + String.valueOf(year);
+        }
+        else{
+            yearStr = String.valueOf(year);
+        }
+        return yearStr + "-" + monthStr + "-" + dayStr;
+    }
 
     public String getRussianDaysOfWeek(String dayOfWeek) {
         switch (dayOfWeek) {
@@ -48,7 +76,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         return null;
     }
 
-    public static String getRussianMonths(int month) {
+    public static String getRussianMonths(short month) {
         switch (month) {
             case 1:
                 return "Январь";
@@ -77,26 +105,52 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         }
         return null;
     }
+    public static String getRussianMonthsGenitive(short month) {
+        switch (month) {
+            case 1:
+                return "января";
+            case 2:
+                return "февраля";
+            case 3:
+                return "марта";
+            case 4:
+                return "апреля";
+            case 5:
+                return "мая";
+            case 6:
+                return "июня";
+            case 7:
+                return "июля";
+            case 8:
+                return "августа";
+            case 9:
+                return "сентября";
+            case 10:
+                return "октября";
+            case 11:
+                return "ноября";
+            case 12:
+                return "декабря";
+        }
+        return null;
+    }
 
-    public static int getDay() {
+    public static short getDay() {
         return day;
     }
 
-    public static int getMonth() {
+    public static short getMonth() {
         return month;
     }
 
-    public static int getYear() {
+    public static short getYear() {
         return year;
-    }
-    public static String getDateString(){
-        return (day + " " + getRussianMonths(month) + " " + year);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        session_fragment = MainActivity.getSelectedFragment();
+        Fragment session_fragment = MainActivity.getSelectedFragment();
         DayOfDate = session_fragment.getView().findViewById(R.id.date_day);
         DayOfWeek = session_fragment.getView().findViewById(R.id.day_of_the_week);
         MonthAndYear = session_fragment.getView().findViewById(R.id.month_year);
@@ -135,9 +189,9 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         super.onPostExecute(_result);
         try {
             JSONObject jsonObject = new JSONObject(result);
-            day = jsonObject.getInt("day");
-            year = jsonObject.getInt("year");
-            month = jsonObject.getInt("month");
+            day = (short) jsonObject.getInt("day");
+            year = (short)jsonObject.getInt("year");
+            month = (short)jsonObject.getInt("month");
             String dayOfWeek = jsonObject.getString("dayOfWeek");
             String russianDayOfWeek = getRussianDaysOfWeek(dayOfWeek);
             String monthAndYear = getRussianMonths(month) + " " + year;

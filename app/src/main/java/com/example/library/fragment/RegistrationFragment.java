@@ -5,6 +5,7 @@ import static com.example.library.helper.DateHelper.*;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,13 +30,15 @@ public class RegistrationFragment extends FragmentWithHeader {
     private Button dateBirthButton, approveButton;
     private EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             RegAddressEditText, EmailEditText, PasswordEditText;
-    private String surname, name, patronymic, phone, birthDate, regAddress, email, password;
+    private String surname, name, patronymic, phone, regAddress, email, password, SQLDateBirth;
 
     private final OnDateSetListener dateSetListener = new OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            String date = day + " " + DateHelper.getRussianMonths(month+1) + " " + year;
-            dateBirthButton.setText(date);
+            SQLDateBirth = getSQLDate((short)day, (short)month, (short)year);
+            String dateShowToUser = day + " " + DateHelper.getRussianMonthsGenitive((short)(month+1)) + " " + year;
+            dateBirthButton.setText(dateShowToUser);
+            dateBirthButton.setTextColor(Color.BLACK);
         }
     };
     private final View.OnClickListener dateBirthClickListener = new View.OnClickListener() {
@@ -50,7 +53,6 @@ public class RegistrationFragment extends FragmentWithHeader {
         name = NameEditText.getText().toString();
         patronymic = PatronymicEditText.getText().toString();
         phone = PhoneNumberEditText.getText().toString();
-        birthDate = dateBirthButton.getText().toString();
         regAddress = RegAddressEditText.getText().toString();
         email = EmailEditText.getText().toString();
         password = PasswordEditText.getText().toString();
@@ -58,7 +60,7 @@ public class RegistrationFragment extends FragmentWithHeader {
             Toast.makeText(getActivity(),"Не все поля заполнены",Toast.LENGTH_SHORT).show();
         }
         else {
-            db.addUser("test",password,surname,name,patronymic,phone,birthDate,email,regAddress);
+            db.addUser("test",password,surname,name,patronymic,phone,SQLDateBirth,email,regAddress);
         }
     };
 
