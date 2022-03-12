@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import com.example.library.R;
 import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.DateHelper;
+import com.example.library.mail.JavaMailAPI;
 
 public class RegistrationFragment extends FragmentWithHeader {
 
@@ -31,6 +32,7 @@ public class RegistrationFragment extends FragmentWithHeader {
     private EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             RegAddressEditText, EmailEditText, PasswordEditText;
     private String surname, name, patronymic, phone, regAddress, email, password, SQLDateBirth;
+    private String username = "test";
 
     private final OnDateSetListener dateSetListener = new OnDateSetListener() {
         @Override
@@ -60,7 +62,9 @@ public class RegistrationFragment extends FragmentWithHeader {
             Toast.makeText(getActivity(),"Не все поля заполнены",Toast.LENGTH_SHORT).show();
         }
         else {
-            db.addUser("test",password,surname,name,patronymic,phone,SQLDateBirth,email,regAddress);
+            db.addUser(username,password,surname,name,patronymic,phone,SQLDateBirth,email,regAddress);
+            sendEmail();
+            Toast.makeText(getActivity(), "Проверьте ваш email", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -95,7 +99,6 @@ public class RegistrationFragment extends FragmentWithHeader {
         datePickerDialog = new DatePickerDialog(getActivity(), style, dateSetListener,
                 getYear(), getMonth()-1, getDay());
         datePickerDialog.setTitle("Дата рождения");
-
     }
 
     private void setSpinner() {
@@ -104,5 +107,19 @@ public class RegistrationFragment extends FragmentWithHeader {
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    private void sendEmail() {
+        String mSubject = "Успешная регистрация";
+        String mMessage = "Вами был успешно создан аккаунт в детской библиотеке им. Маршака " +
+                "через мобильное приложение" +
+                "\nВаш логин для входа в приложение: "
+                + username
+                + "\nВаш email: " + email
+                + "\nВаш пароль для входа в приложение: " + password
+                + "\nИспользуйте только один вариант: логин в окне авторизации."
+                + "\nВ целях безопасности никому не сообщайте данные из этого сообщения.";
+        JavaMailAPI javaMailAPI = new JavaMailAPI(getActivity(), email, mSubject, mMessage);
+        javaMailAPI.execute();
     }
 }
