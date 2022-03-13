@@ -2,7 +2,7 @@ package com.example.library.fragment;
 
 import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
 import static com.example.library.MainActivity.setSelectedFragment;
-import static com.example.library.fragment.LibraryFragment.setFragmentOnParent;
+import static com.example.library.fragment.library.LibraryFragment.setFragmentOnParent;
 
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
+import com.example.library.fragment.profile.ProfileFragment;
 import com.example.library.helper.DateHelper;
 
 import java.net.MalformedURLException;

@@ -1,33 +1,33 @@
-package com.example.library.fragment;
+package com.example.library.fragment.search;
 
 import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
 import static com.example.library.MainActivity.setSelectedFragment;
-import static com.example.library.fragment.LibraryFragment.setFragmentOnParent;
+import static com.example.library.fragment.library.LibraryFragment.setFragmentOnParent;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.library.R;
+import com.example.library.fragment.FragmentWithHeader;
 
-public class HomeFragment extends FragmentWithHeader {
+public class SearchFragment extends FragmentWithHeader {
+    View.OnClickListener findBookListener = view -> {
+        setSelectedFragment(new SearchResultsFragment());
+        setBottomNavigationViewUncheckable();
+        setFragmentOnParent(this);
+    };
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
-
-    View.OnClickListener allNewsListener = view -> {
-        setSelectedFragment(new NewBooksFragment());
-        setBottomNavigationViewUncheckable();
-        setFragmentOnParent(this);
-    };
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class HomeFragment extends FragmentWithHeader {
     }
 
     private void setViews() {
-        TextView allNewsTextView = getView().findViewById(R.id.all_news);
-        allNewsTextView.setOnClickListener(allNewsListener);
+        Button findBookButton = getView().findViewById(R.id.find_book);
+        findBookButton.setOnClickListener(findBookListener);
     }
 }

@@ -21,59 +21,34 @@ import java.net.URL;
 
 public class DateHelper extends AsyncTask<URL, Void, String> {
 
+    private static short day, month, year;
     protected String result = "";
     @SuppressLint("StaticFieldLeak")
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
     private boolean isDataUpdated = false;
-    private static short day, month, year;
 
-    public static String getSQLDate(short day, short month, short year){
+    public static String getSQLDate(short day, short month, short year) {
         String dayStr, monthStr, yearStr;
-        if(day<10){
+        if (day < 10) {
             dayStr = "0" + String.valueOf(day);
-        }
-        else {
+        } else {
             dayStr = String.valueOf(day);
         }
-        if (month<10){
+        if (month < 10) {
             monthStr = "0" + String.valueOf(month);
-        }
-        else {
+        } else {
             monthStr = String.valueOf(month);
         }
-        if(year<10){
+        if (year < 10) {
             yearStr = "000" + String.valueOf(year);
-        }
-        else if(year<100){
+        } else if (year < 100) {
             yearStr = "00" + String.valueOf(year);
-        }
-        else if(year<1000){
+        } else if (year < 1000) {
             yearStr = "0" + String.valueOf(year);
-        }
-        else{
+        } else {
             yearStr = String.valueOf(year);
         }
         return yearStr + "-" + monthStr + "-" + dayStr;
-    }
-
-    public String getRussianDaysOfWeek(String dayOfWeek) {
-        switch (dayOfWeek) {
-            case "Sunday":
-                return "Воскресенье";
-            case "Monday":
-                return "Понедельник";
-            case "Tuesday":
-                return "Вторник";
-            case "Wednesday":
-                return "Среда";
-            case "Thursday":
-                return "Четверг";
-            case "Friday":
-                return "Пятница";
-            case "Saturday":
-                return "Суббота";
-        }
-        return null;
     }
 
     public static String getRussianMonths(short month) {
@@ -105,6 +80,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         }
         return null;
     }
+
     public static String getRussianMonthsGenitive(short month) {
         switch (month) {
             case 1:
@@ -145,6 +121,26 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
 
     public static short getYear() {
         return year;
+    }
+
+    public String getRussianDaysOfWeek(String dayOfWeek) {
+        switch (dayOfWeek) {
+            case "Sunday":
+                return "Воскресенье";
+            case "Monday":
+                return "Понедельник";
+            case "Tuesday":
+                return "Вторник";
+            case "Wednesday":
+                return "Среда";
+            case "Thursday":
+                return "Четверг";
+            case "Friday":
+                return "Пятница";
+            case "Saturday":
+                return "Суббота";
+        }
+        return null;
     }
 
     @Override
@@ -190,8 +186,8 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         try {
             JSONObject jsonObject = new JSONObject(result);
             day = (short) jsonObject.getInt("day");
-            year = (short)jsonObject.getInt("year");
-            month = (short)jsonObject.getInt("month");
+            year = (short) jsonObject.getInt("year");
+            month = (short) jsonObject.getInt("month");
             String dayOfWeek = jsonObject.getString("dayOfWeek");
             String russianDayOfWeek = getRussianDaysOfWeek(dayOfWeek);
             String monthAndYear = getRussianMonths(month) + " " + year;

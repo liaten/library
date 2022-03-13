@@ -31,10 +31,11 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
         properties.put("mail.smtp.host", "smtp.mail.ru");
         properties.put("mail.smtp.socketFactory.port", "465");
         properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.socketFactory.fallback", "false");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.port", "465");
-        properties.put("mail.smtps.ssl.checkserveridentity", true);
-        properties.put("mail.smtps.ssl.trust", "*");
+        //properties.put("mail.smtps.ssl.checkserveridentity", true);
+        //properties.put("mail.smtps.ssl.trust", "*");
         properties.put("mail.smtp.ssl.enable", "true");
 
         Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {

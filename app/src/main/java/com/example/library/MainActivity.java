@@ -6,10 +6,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.library.fragment.EventsFragment;
-import com.example.library.fragment.HomeFragment;
-import com.example.library.fragment.LibraryFragment;
-import com.example.library.fragment.SearchFragment;
+import com.example.library.fragment.events.EventsFragment;
+import com.example.library.fragment.home.HomeFragment;
+import com.example.library.fragment.library.LibraryFragment;
+import com.example.library.fragment.search.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
         selectedFragment = fragment;
     }
 
+    public static void setBottomNavigationViewUncheckable() {
+        bottomNavigationView.getMenu().setGroupCheckable(0, false, true);
+    }
+
+    public static void setBottomNavigationViewCheckable() {
+        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +64,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSelectedFragmentToContainer() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-    }
-
-    public static void setBottomNavigationViewUncheckable() {
-        bottomNavigationView.getMenu().setGroupCheckable(0,false,true);
-    }
-    public static void setBottomNavigationViewCheckable() {
-        bottomNavigationView.getMenu().setGroupCheckable(0,true,true);
     }
 }

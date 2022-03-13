@@ -1,4 +1,4 @@
-package com.example.library.fragment;
+package com.example.library.fragment.events;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.library.R;
+import com.example.library.fragment.FragmentWithHeader;
 
 public class EventsFragment extends FragmentWithHeader {
 

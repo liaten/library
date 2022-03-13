@@ -1,4 +1,4 @@
-package com.example.library.fragment;
+package com.example.library.fragment.library;
 
 import static com.example.library.MainActivity.getSelectedFragment;
 import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
@@ -15,6 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
+import com.example.library.fragment.FragmentWithHeader;
+import com.example.library.fragment.library.AuthorizationFragment;
+import com.example.library.fragment.library.HelpFragment;
+import com.example.library.fragment.library.RegistrationFragment;
 
 public class LibraryFragment extends FragmentWithHeader {
 

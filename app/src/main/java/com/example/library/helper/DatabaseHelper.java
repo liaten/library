@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -49,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 USER_COLUMN_ADDRESS + " TEXT" +
                 ");";
         db.execSQL(query);
-        Log.d(TAG,"Database created"); // Print result to logcat
+        Log.d(TAG, "Database created"); // Print result to logcat
     }
 
     @Override
@@ -57,24 +56,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
         onCreate(db);
     }
+
     public void addUser(String username, String password, String surname, String name, String patronymic,
-                 String phone_number, String birth_date, String email, String address){
+                        String phone_number, String birth_date, String email, String address) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(USER_COLUMN_USERNAME,username);
-        cv.put(USER_COLUMN_PASSWORD,password);
-        cv.put(USER_COLUMN_SURNAME,surname);
-        cv.put(USER_COLUMN_NAME,name);
-        cv.put(USER_COLUMN_PATRONYMIC,patronymic);
-        cv.put(USER_COLUMN_PHONE_NUMBER,phone_number);
-        cv.put(USER_COLUMN_BIRTH_DATE,birth_date);
-        cv.put(USER_COLUMN_EMAIL,email);
-        cv.put(USER_COLUMN_ADDRESS,address);
+        cv.put(USER_COLUMN_USERNAME, username);
+        cv.put(USER_COLUMN_PASSWORD, password);
+        cv.put(USER_COLUMN_SURNAME, surname);
+        cv.put(USER_COLUMN_NAME, name);
+        cv.put(USER_COLUMN_PATRONYMIC, patronymic);
+        cv.put(USER_COLUMN_PHONE_NUMBER, phone_number);
+        cv.put(USER_COLUMN_BIRTH_DATE, birth_date);
+        cv.put(USER_COLUMN_EMAIL, email);
+        cv.put(USER_COLUMN_ADDRESS, address);
         long result = db.insert(USER_TABLE_NAME, null, cv);
-        if(result == -1){
-            Log.d(TAG,"Failed to add user"); // Print result to logcat
-        }else {
-            Log.d(TAG,"User added"); // Print result to logcat
+        if (result == -1) {
+            Log.d(TAG, "Failed to add user"); // Print result to logcat
+        } else {
+            Log.d(TAG, "User added"); // Print result to logcat
         }
     }
 }

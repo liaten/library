@@ -4,4 +4,6 @@
     <string name="menu_search">Поиск</string>
     <string name="menu_library">Библиотека</string>
     <string name="menu_events">События</string>
+    <string name="passport_details">Такие данные, как: пол, ФИО, дата рождения, адрес регистрации должны быть взяты из паспорта</string>
+    <string name="clarification">Уточнение:</string>
 </resources>
