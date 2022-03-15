@@ -15,12 +15,15 @@ import androidx.fragment.app.Fragment;
 import com.example.library.R;
 import com.example.library.fragment.profile.ProfileFragment;
 import com.example.library.helper.DateHelper;
+import com.example.library.helper.ImageDownloader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 public class FragmentWithHeader extends Fragment {
-
+    private ImageView profileImageView;
+    @NonNull
     public View.OnClickListener profileClickListener = view -> {
         setSelectedFragment(new ProfileFragment());
         setFragmentOnParent(this);
@@ -43,10 +46,15 @@ public class FragmentWithHeader extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         updateDate();
         setViews();
+        setImageOnProfile();
     }
 
     private void setViews() {
-        ImageView profileImageView = getView().findViewById(R.id.profileImageView);
+        profileImageView = requireView().findViewById(R.id.profileImageView);
         profileImageView.setOnClickListener(profileClickListener);
+    }
+
+    private void setImageOnProfile() {
+        new ImageDownloader(profileImageView).execute("https://liaten.ru/pictures/m.jpg");
     }
 }

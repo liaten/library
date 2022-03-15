@@ -21,7 +21,7 @@ import com.example.library.fragment.library.HelpFragment;
 import com.example.library.fragment.library.RegistrationFragment;
 
 public class LibraryFragment extends FragmentWithHeader {
-
+    private Button helpButton, registrationButton, authorizationButton, settingsButton;
     private final View.OnClickListener regClickListener = view -> {
         setSelectedFragment(new RegistrationFragment());
         setBottomNavigationViewUncheckable();
@@ -37,8 +37,13 @@ public class LibraryFragment extends FragmentWithHeader {
         setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
+    private final View.OnClickListener settingsClickListener = view -> {
+        setSelectedFragment(new SettingsFragment());
+        setBottomNavigationViewUncheckable();
+        setFragmentOnParent(this);
+    };
 
-    public static void setFragmentOnParent(Fragment fr) {
+    public static void setFragmentOnParent(@NonNull Fragment fr) {
         fr.getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, getSelectedFragment()).commit();
     }
 
@@ -46,6 +51,7 @@ public class LibraryFragment extends FragmentWithHeader {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViews();
+        setOnClickListeners();
     }
 
     @Nullable
@@ -55,11 +61,15 @@ public class LibraryFragment extends FragmentWithHeader {
     }
 
     private void setViews() {
-        Button helpButton = getView().findViewById(R.id.help_button);
-        Button registrationButton = getView().findViewById(R.id.registration_button);
-        Button authorizationButton = getView().findViewById(R.id.authorization_button);
+        helpButton = requireView().findViewById(R.id.help_button);
+        registrationButton = requireView().findViewById(R.id.registration_button);
+        authorizationButton = requireView().findViewById(R.id.authorization_button);
+        settingsButton = requireView().findViewById(R.id.settings_button);
+    }
+    private void setOnClickListeners(){
         registrationButton.setOnClickListener(regClickListener);
         authorizationButton.setOnClickListener(authClickListener);
         helpButton.setOnClickListener(helpClickListener);
+        settingsButton.setOnClickListener(settingsClickListener);
     }
 }
