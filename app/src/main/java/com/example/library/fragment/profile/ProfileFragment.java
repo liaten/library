@@ -15,21 +15,25 @@ import androidx.annotation.Nullable;
 
 import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
-import com.example.library.fragment.home.NewBooksFragment;
+import com.example.library.helper.BookHelper;
 
 public class ProfileFragment extends FragmentWithHeader {
 
-    private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView;
+    private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, authorTextView,
+            titleTextView;
+
     View.OnClickListener booksOnHandsListener = view -> {
         setSelectedFragment(new BooksOnHandsFragment());
         setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
+
     View.OnClickListener reservedBooksListener = view -> {
         setSelectedFragment(new ReservedBooksFragment());
         setBottomNavigationViewUncheckable();
         setFragmentOnParent(this);
     };
+
     View.OnClickListener wishlistListener = view -> {
         setSelectedFragment(new WishlistFragment());
         setBottomNavigationViewUncheckable();
@@ -47,15 +51,28 @@ public class ProfileFragment extends FragmentWithHeader {
         super.onViewCreated(view, savedInstanceState);
         setViews();
         setOnClickListeners();
+        testTextViews();
     }
+
     private void setViews() {
-        booksOnHandsTextView = getView().findViewById(R.id.books_on_hands_view_all);
-        reservedBooksTextView = getView().findViewById(R.id.reserved_books_view_all);
-        wishlistTextView = getView().findViewById(R.id.wishlist_view_all);
+        booksOnHandsTextView = requireView().findViewById(R.id.books_on_hands_view_all);
+        reservedBooksTextView = requireView().findViewById(R.id.reserved_books_view_all);
+        wishlistTextView = requireView().findViewById(R.id.wishlist_view_all);
+        authorTextView = requireView().findViewById(R.id.author_test);
+        titleTextView = requireView().findViewById(R.id.title_test);
     }
-    private void setOnClickListeners(){
+
+    private void setOnClickListeners() {
         booksOnHandsTextView.setOnClickListener(booksOnHandsListener);
         reservedBooksTextView.setOnClickListener(reservedBooksListener);
         wishlistTextView.setOnClickListener(wishlistListener);
+    }
+
+    private void testTextViews() {
+        String name = "Антуан";
+        String surname = "де Сент-Экзюпери";
+        String title = "Маленький принц";
+        new BookHelper(authorTextView, "author").execute(surname, name);
+        new BookHelper(titleTextView, "title").execute(title);
     }
 }

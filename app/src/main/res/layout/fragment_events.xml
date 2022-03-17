@@ -71,6 +71,7 @@
                     android:layout_height="47dp"
                     android:layout_gravity="center"
                     android:background="@drawable/border_profile"
+                    android:tooltipText="@string/Enter_profile"
                     android:contentDescription="@string/profile_image" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>

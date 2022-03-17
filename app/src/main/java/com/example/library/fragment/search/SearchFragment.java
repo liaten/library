@@ -17,6 +17,7 @@ import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
 
 public class SearchFragment extends FragmentWithHeader {
+    private Button findBookButton;
     View.OnClickListener findBookListener = view -> {
         setSelectedFragment(new SearchResultsFragment());
         setBottomNavigationViewUncheckable();
@@ -33,10 +34,14 @@ public class SearchFragment extends FragmentWithHeader {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViews();
+        setOnClickListeners();
     }
 
     private void setViews() {
-        Button findBookButton = getView().findViewById(R.id.find_book);
+        findBookButton = requireView().findViewById(R.id.find_book);
+    }
+
+    private void setOnClickListeners() {
         findBookButton.setOnClickListener(findBookListener);
     }
 }

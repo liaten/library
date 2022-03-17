@@ -1,7 +1,11 @@
 package com.example.library.mail;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Properties;
 
@@ -19,14 +23,18 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
     private final String subject;
     private final String message;
 
-    public JavaMailAPI(Context context, String email, String subject, String message) {
+    @SuppressWarnings("deprecation")
+    public JavaMailAPI(@NonNull String email,
+                       @NonNull String subject,
+                       @Nullable String message) {
         this.email = email;
         this.subject = subject;
         this.message = message;
     }
 
+    @NonNull
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected Void doInBackground(@NonNull Void... voids) {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.mail.ru");
         properties.put("mail.smtp.socketFactory.port", "465");
@@ -34,8 +42,6 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
         properties.put("mail.smtp.socketFactory.fallback", "false");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.port", "465");
-        //properties.put("mail.smtps.ssl.checkserveridentity", true);
-        //properties.put("mail.smtps.ssl.trust", "*");
         properties.put("mail.smtp.ssl.enable", "true");
 
         Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {

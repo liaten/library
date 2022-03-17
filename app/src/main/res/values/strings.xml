@@ -4,7 +4,7 @@
     <string name="menu_search">Поиск</string>
     <string name="menu_library">Библиотека</string>
     <string name="menu_events">События</string>
-    <string name="passport_details">Такие данные, как: пол, ФИО, дата рождения, адрес регистрации должны быть взяты из паспорта</string>
+    <string name="reg_details">Для получения читательского билета НДБ им. С.Я. Маршака, вам необходимо пройти процедуру регистрации.</string>
     <string name="clarification">Уточнение:</string>
     <string name="date_day">17</string>
     <string name="day_of_the_week">Четверг</string>
@@ -29,7 +29,9 @@
     <string name="name">Имя</string>
     <string name="patronymic">Отчество</string>
     <string name="phone_number">Номер телефона</string>
+    <string name="phone">Телефон</string>
     <string name="date_of_birth">Дата рождения</string>
+    <string name="year_of_birth">Год рождения</string>
     <string name="reg_address">Адрес регистрации</string>
     <string name="email">Электронная почта</string>
     <string name="reserved_books">Забронированные книги</string>
@@ -53,4 +55,12 @@
     <string name="author_name">Имя автора</string>
     <string name="theme">Тема</string>
     <string name="find_book">Найти книгу!</string>
+    <string name="personal_data_processing">Я согласен(на) на обработку персональных данных\nСогласие</string>
+    <string name="profile">Профиль</string>
+    <string name="this_is_profile">Здесь находится профиль</string>
+    <string name="Enter_profile">Войти в профиль</string>
+    <string name="already_in_profile">Вы уже в профиле</string>
+    <string name="title_example">Ходячий замок</string>
+    <string name="author_example">Джордж Сэмюэль Клейсон</string>
+    <string name="book_title">Название книги</string>
 </resources>

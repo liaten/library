@@ -73,6 +73,7 @@
                     android:layout_height="47dp"
                     android:layout_gravity="center"
                     android:background="@drawable/border_profile"
+                    android:tooltipText="@string/Enter_profile"
                     android:contentDescription="@string/profile_image" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -109,28 +110,17 @@
             android:showDividers="middle"
             android:divider="@drawable/empty_divider"
             >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/clarification"
-                android:textColor="@color/red"
-                android:textSize="20sp"
-                android:layout_gravity="top"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/passport_details"
+                android:layout_gravity="start"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_gravity="center"
-                />
-            </LinearLayout>
+                android:fontFamily="@font/roboto"
+                android:text="@string/reg_details"
+                android:textSize="16sp" />
             <LinearLayout
+                android:id="@+id/gender_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -233,21 +223,6 @@
                 />
 
             <EditText
-                android:id="@+id/registration_address_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:hint="@string/reg_address"
-                android:textColorHint="@color/search_color_header"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:inputType="textPostalAddress"
-                android:textColor="@color/black"
-                android:autofillHints="postalAddress" />
-
-            <EditText
                 android:id="@+id/email_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,20 +236,15 @@
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 android:autofillHints="emailAddress" />
-            <EditText
-                android:id="@+id/password_edit_text"
-                android:layout_width="match_parent"
+
+            <CheckBox
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:hint="@string/password"
-                android:textColorHint="@color/search_color_header"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:inputType="textPassword"
+                android:layout_gravity="start"
                 android:textColor="@color/black"
-                android:autofillHints="password" />
+                android:fontFamily="@font/roboto"
+                android:text="@string/personal_data_processing"
+                android:textSize="16sp" />
 
             <android.widget.Button
                 android:id="@+id/approve"

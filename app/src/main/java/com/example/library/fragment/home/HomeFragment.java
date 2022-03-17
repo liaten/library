@@ -39,7 +39,7 @@ public class HomeFragment extends FragmentWithHeader {
     }
 
     private void setViews() {
-        allNewsTextView = getView().findViewById(R.id.all_news);
+        allNewsTextView = requireView().findViewById(R.id.all_news);
     }
     private void setOnClickListeners(){
         allNewsTextView.setOnClickListener(allNewsListener);

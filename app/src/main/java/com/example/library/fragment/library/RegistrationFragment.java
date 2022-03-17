@@ -38,14 +38,16 @@ import java.util.regex.Pattern;
 
 public class RegistrationFragment extends FragmentWithHeader {
 
-    private DatePickerDialog datePickerDialog;
-    private Button dateBirthButton, approveButton;
-    private EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
-            regAddressEditText, EmailEditText, PasswordEditText;
-    private String surname, name, patronymic, phone, regAddress, email, password, SQLDateBirth;
-    private final String username = null;
-    private List <EditText> cyrillicEditTexts = new ArrayList<>();
-
+    @Nullable
+    protected DatePickerDialog datePickerDialog;
+    @Nullable
+    protected Button dateBirthButton, approveButton;
+    List<EditText> cyrillicEditTexts = new ArrayList<>();
+    @Nullable
+    protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
+            EmailEditText;
+    @Nullable
+    protected String surname, name, patronymic, phone, email, SQLDateBirth;
     private final View.OnClickListener approveButtonListener = view -> {
         DatabaseHelper db = new DatabaseHelper(this.getContext());
         surname = SurnameEditText.getText().toString();
@@ -53,12 +55,10 @@ public class RegistrationFragment extends FragmentWithHeader {
         patronymic = PatronymicEditText.getText().toString();
         phone = PhoneNumberEditText.getText().toString();
         email = EmailEditText.getText().toString();
-        password = PasswordEditText.getText().toString();
-        regAddress = regAddressEditText.getText().toString();
-        if (surname.equals("") || name.equals("") || patronymic.equals("") || phone.equals("") || regAddress.equals("") || email.equals("") || password.equals("")) {
+        if (surname.equals("") || name.equals("") || patronymic.equals("") || phone.equals("") || email.equals("")) {
             Toast.makeText(getActivity(), "Не все поля заполнены", Toast.LENGTH_SHORT).show();
         } else {
-            db.addUser(username, password, surname, name, patronymic, phone, SQLDateBirth, email, regAddress);
+            db.addUser(surname, name, patronymic, phone, SQLDateBirth, email);
             sendEmail();
             Toast.makeText(getActivity(), "Проверьте ваш email:\n" + email, Toast.LENGTH_SHORT).show();
         }
@@ -68,24 +68,6 @@ public class RegistrationFragment extends FragmentWithHeader {
         @Override
         public void onClick(View view) {
             datePickerDialog.show();
-        }
-    };
-
-    private final TextWatcher passwordTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (Pattern.compile("[\\p{Space}]").matcher(PasswordEditText.getText().toString()).find()) {
-                PasswordEditText.setText(PasswordEditText.getText().toString().substring(0, PasswordEditText.getText().toString().length() - 1));
-                PasswordEditText.setSelection(PasswordEditText.getText().toString().length());
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
         }
     };
 
@@ -103,7 +85,6 @@ public class RegistrationFragment extends FragmentWithHeader {
                 }
             }
         }
-
         @Override
         public void afterTextChanged(Editable editable) {
         }
@@ -133,25 +114,27 @@ public class RegistrationFragment extends FragmentWithHeader {
         setViews();
         setOnClickListeners();
         setDatePickerDialog();
-        //setCyrillicEditTexts();
-        //addTextChangeListeners();
+        setCyrillicEditTexts();
+        addTextChangeListeners();
     }
 
     private void setViews() {
-        dateBirthButton = getView().findViewById(R.id.date_birth_button);
-        approveButton = getView().findViewById(R.id.approve);
-        SurnameEditText = getView().findViewById(R.id.surname_edit_text);
-        NameEditText = getView().findViewById(R.id.name_edit_text);
-        PatronymicEditText = getView().findViewById(R.id.patronymic_edit_text);
-        PhoneNumberEditText = getView().findViewById(R.id.phone_number_edit_text);
-        EmailEditText = getView().findViewById(R.id.email_edit_text);
-        PasswordEditText = getView().findViewById(R.id.password_edit_text);
-        regAddressEditText = getView().findViewById(R.id.registration_address_edit_text);
+        dateBirthButton = requireView().findViewById(R.id.date_birth_button);
+        approveButton = requireView().findViewById(R.id.approve);
+        SurnameEditText = requireView().findViewById(R.id.surname_edit_text);
+        NameEditText = requireView().findViewById(R.id.name_edit_text);
+        PatronymicEditText = requireView().findViewById(R.id.patronymic_edit_text);
+        PhoneNumberEditText = requireView().findViewById(R.id.phone_number_edit_text);
+        EmailEditText = requireView().findViewById(R.id.email_edit_text);
     }
 
     private void setOnClickListeners(){
-        approveButton.setOnClickListener(approveButtonListener);
-        dateBirthButton.setOnClickListener(dateBirthClickListener);
+            if (approveButton != null) {
+                approveButton.setOnClickListener(approveButtonListener);
+            }
+            if (dateBirthButton != null) {
+                dateBirthButton.setOnClickListener(dateBirthClickListener);
+            }
     }
 
     private void setCyrillicEditTexts(){
@@ -159,17 +142,16 @@ public class RegistrationFragment extends FragmentWithHeader {
         cyrillicEditTexts.add(SurnameEditText);
         cyrillicEditTexts.add(NameEditText);
         cyrillicEditTexts.add(PatronymicEditText);
-        cyrillicEditTexts.add(regAddressEditText);
     }
+
     private void addTextChangeListeners(){
-        PasswordEditText.addTextChangedListener(passwordTextWatcher);
         for (EditText et : cyrillicEditTexts){
             et.addTextChangedListener(cyrillicTextWatcher);
         }
     }
 
     private void setDatePickerDialog(){
-        int style = AlertDialog.THEME_HOLO_LIGHT;
+        int style = android.R.style.Theme_Material_Light_Dialog_Alert;
         datePickerDialog = new DatePickerDialog(getActivity(), style, dateSetListener,
                 getYear(), getMonth() - 1, getDay());
         datePickerDialog.setTitle("Дата рождения");
@@ -180,7 +162,7 @@ public class RegistrationFragment extends FragmentWithHeader {
     }
 
     private void setSpinner() {
-        Spinner spinner = getView().findViewById(R.id.gender_spinner);
+        Spinner spinner = requireView().findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -190,14 +172,15 @@ public class RegistrationFragment extends FragmentWithHeader {
     private void sendEmail() {
         String mSubject = "Успешная регистрация";
         String mMessage = "Вами был успешно создан аккаунт в детской библиотеке им. Маршака " +
-                "через мобильное приложение" +
-                "\nВаш логин для входа в приложение: "
-                + username
+                "через мобильное приложение"
                 + "\nВаш email: " + email
-                + "\nВаш пароль для входа в приложение: " + password
+                + "\nВаш пароль для входа в приложение: "
                 + "\nИспользуйте только один вариант: логин в окне авторизации."
                 + "\nВ целях безопасности никому не сообщайте данные из этого сообщения.";
-        JavaMailAPI javaMailAPI = new JavaMailAPI(getActivity(), email, mSubject, mMessage);
-        javaMailAPI.execute();
+        JavaMailAPI javaMailAPI;
+        if (email != null) {
+            javaMailAPI = new JavaMailAPI(email, mSubject, mMessage);
+            javaMailAPI.execute();
+        }
     }
 }
