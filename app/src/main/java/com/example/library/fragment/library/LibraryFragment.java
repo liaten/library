@@ -21,36 +21,32 @@ import com.example.library.helper.FragmentHelper;
 public class LibraryFragment extends FragmentWithHeader {
 
     private final View.OnClickListener regClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
+        new FragmentHelper((AppCompatActivity) requireActivity(),
                 getBottomNavigationView(),
                 "uncheck").execute(new RegistrationFragment());
     };
     private final View.OnClickListener authClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
+        new FragmentHelper((AppCompatActivity) requireActivity(),
                 getBottomNavigationView(),
                 "uncheck").execute(new AuthorizationFragment());
     };
     private final View.OnClickListener helpClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
+        new FragmentHelper((AppCompatActivity) requireActivity(),
                 getBottomNavigationView(),
                 "uncheck").execute(new HelpFragment());
 
     };
     private final View.OnClickListener settingsClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
+        new FragmentHelper((AppCompatActivity) requireActivity(),
                 getBottomNavigationView(),
                 "uncheck").execute(new SettingsFragment());
     };
     private final View.OnClickListener statisticsClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
+        new FragmentHelper((AppCompatActivity) requireActivity(),
                 getBottomNavigationView(),
                 "uncheck").execute(new StatisticsFragment());
     };
     private Button helpButton, registrationButton, authorizationButton, settingsButton, statisticsButton;
-
-    public static void setFragmentOnParent(@NonNull Fragment fr) {
-        fr.getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, getSelectedFragment()).commit();
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

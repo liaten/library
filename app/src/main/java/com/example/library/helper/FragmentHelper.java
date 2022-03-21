@@ -59,17 +59,19 @@ public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {
         mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
     }
 
+    @NonNull
     @Override
-    protected Void doInBackground(Fragment... fragments) {
-        Fragment fragment = fragments[0];
-        if(fragment!=null){
+    protected Void doInBackground(@Nullable Fragment... fragments) {
+        Fragment fragment = null;
+        if (fragments != null) {
+            fragment = fragments[0];
             setSelectedFragment(fragment);
         }
         return null;
     }
 
     @Override
-    protected void onPostExecute(Void unused) {
+    protected void onPostExecute(@NonNull Void unused) {
         super.onPostExecute(unused);
         setSelectedFragmentToContainer();
     }

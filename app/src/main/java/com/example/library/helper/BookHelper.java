@@ -1,6 +1,5 @@
 package com.example.library.helper;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
@@ -12,10 +11,8 @@ public class BookHelper extends AsyncTask<String, Void, String> {
     private static final short MAX_LENGTH_AUTHOR = 24;
     private static final short MAX_LENGTH_TITLE = 20;
     private short length = 0;
-    @SuppressLint("StaticFieldLeak")
     private final TextView textView;
 
-    @SuppressWarnings("deprecation")
     public BookHelper(@Nullable TextView textView, @NonNull String authorOrTitle) {
         this.textView = textView;
         setLength(authorOrTitle);
@@ -35,13 +32,13 @@ public class BookHelper extends AsyncTask<String, Void, String> {
 
         StringBuilder result = new StringBuilder();
         if (isAuthor(strings)) {
-            setAuthor(result, strings);
+            result = setAuthor(result, strings);
         } else {
-            setTitle(result, strings);
+            result = setTitle(result, strings);
         }
 
         if (stringBuilderIsLongerThanMaxLength(result)) {
-            cropString(result);
+            result = cropString(result);
         }
 
         return result.toString();

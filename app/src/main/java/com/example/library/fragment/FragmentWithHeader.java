@@ -23,17 +23,15 @@ import java.net.URL;
 public class FragmentWithHeader extends Fragment {
     private ImageView profileImageView;
     @NonNull
-    public View.OnClickListener profileClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
-                getBottomNavigationView(),
-                "check").execute(new ProfileFragment());
-    };
+    public View.OnClickListener profileClickListener = view -> new FragmentHelper((AppCompatActivity) requireActivity(),
+            getBottomNavigationView(),
+            "check").execute(new ProfileFragment());
 
     public static void updateDate() {
+        String date_url = "https://www.timeapi.io/api/Time/current/zone?timeZone=Europe/Moscow";
+        DateHelper dateHelper = new DateHelper();
         try {
-            String date_url = "https://www.timeapi.io/api/Time/current/zone?timeZone=Europe/Moscow";
             URL url = new URL(date_url);
-            DateHelper dateHelper = new DateHelper();
             dateHelper.execute(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();

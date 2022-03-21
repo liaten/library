@@ -1,15 +1,14 @@
 package com.example.library.helper;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -21,8 +20,8 @@ import java.net.URL;
 public class DateHelper extends AsyncTask<URL, Void, String> {
 
     private static short day, month, year;
+    @NonNull
     protected String result = "";
-    @SuppressLint("StaticFieldLeak")
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
     private boolean isDataUpdated = false;
 
@@ -50,6 +49,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         return yearStr + "-" + monthStr + "-" + dayStr;
     }
 
+    @NonNull
     public static String getRussianMonths(short month) {
         switch (month) {
             case 1:
@@ -76,8 +76,9 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
                 return "Ноябрь";
             case 12:
                 return "Декабрь";
+            default:
+                return "ОШИБКА";
         }
-        return null;
     }
 
     public static String getRussianMonthsGenitive(short month) {
@@ -146,9 +147,9 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Fragment session_fragment = FragmentHelper.getSelectedFragment();
-        DayOfDate = session_fragment.getView().findViewById(R.id.date_day);
-        DayOfWeek = session_fragment.getView().findViewById(R.id.day_of_the_week);
-        MonthAndYear = session_fragment.getView().findViewById(R.id.month_year);
+        DayOfDate = session_fragment.requireView().findViewById(R.id.date_day);
+        DayOfWeek = session_fragment.requireView().findViewById(R.id.day_of_the_week);
+        MonthAndYear = session_fragment.requireView().findViewById(R.id.month_year);
         if (!isDataUpdated) {
             DayOfWeek.setVisibility(View.INVISIBLE);
             DayOfDate.setVisibility(View.INVISIBLE);
@@ -171,7 +172,6 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
                 response.append(inputLine);
             }
             bufferedReader.close();
-            //Log.d(TAG,"Date: " + response.toString()); // Print result to logcat
             result = response.toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -199,9 +199,8 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
                 MonthAndYear.setVisibility(View.VISIBLE);
                 isDataUpdated = true;
             }
-        } catch (JSONException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
-        //Log.d(TAG,"Date: " + json_date_result); // Print result to logcat
     }
 }

@@ -74,6 +74,5 @@ public class ProfileFragment extends FragmentWithHeader {
     }
 
     private void testBookCover() {
-
     }
 }
