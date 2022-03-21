@@ -1,8 +1,6 @@
 package com.example.library.fragment.search;
 
-import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
-import static com.example.library.MainActivity.setSelectedFragment;
-import static com.example.library.fragment.library.LibraryFragment.setFragmentOnParent;
+import static com.example.library.MainActivity.getBottomNavigationView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,16 +10,18 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
+import com.example.library.helper.FragmentHelper;
 
 public class SearchFragment extends FragmentWithHeader {
     private Button findBookButton;
     View.OnClickListener findBookListener = view -> {
-        setSelectedFragment(new SearchResultsFragment());
-        setBottomNavigationViewUncheckable();
-        setFragmentOnParent(this);
+        new FragmentHelper((AppCompatActivity) getActivity(),
+                getBottomNavigationView(),
+                "uncheck").execute(new SearchResultsFragment());
     };
 
     @Nullable

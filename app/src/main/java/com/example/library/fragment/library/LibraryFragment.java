@@ -1,8 +1,7 @@
 package com.example.library.fragment.library;
 
-import static com.example.library.MainActivity.getSelectedFragment;
-import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
-import static com.example.library.MainActivity.setSelectedFragment;
+import static com.example.library.MainActivity.getBottomNavigationView;
+import static com.example.library.helper.FragmentHelper.getSelectedFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,36 +11,42 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
-import com.example.library.fragment.library.AuthorizationFragment;
-import com.example.library.fragment.library.HelpFragment;
-import com.example.library.fragment.library.RegistrationFragment;
+import com.example.library.helper.FragmentHelper;
 
 public class LibraryFragment extends FragmentWithHeader {
-    private Button helpButton, registrationButton, authorizationButton, settingsButton;
+
     private final View.OnClickListener regClickListener = view -> {
-        setSelectedFragment(new RegistrationFragment());
-        setBottomNavigationViewUncheckable();
-        setFragmentOnParent(this);
+        new FragmentHelper((AppCompatActivity) getActivity(),
+                getBottomNavigationView(),
+                "uncheck").execute(new RegistrationFragment());
     };
     private final View.OnClickListener authClickListener = view -> {
-        setSelectedFragment(new AuthorizationFragment());
-        setBottomNavigationViewUncheckable();
-        setFragmentOnParent(this);
+        new FragmentHelper((AppCompatActivity) getActivity(),
+                getBottomNavigationView(),
+                "uncheck").execute(new AuthorizationFragment());
     };
     private final View.OnClickListener helpClickListener = view -> {
-        setSelectedFragment(new HelpFragment());
-        setBottomNavigationViewUncheckable();
-        setFragmentOnParent(this);
+        new FragmentHelper((AppCompatActivity) getActivity(),
+                getBottomNavigationView(),
+                "uncheck").execute(new HelpFragment());
+
     };
     private final View.OnClickListener settingsClickListener = view -> {
-        setSelectedFragment(new SettingsFragment());
-        setBottomNavigationViewUncheckable();
-        setFragmentOnParent(this);
+        new FragmentHelper((AppCompatActivity) getActivity(),
+                getBottomNavigationView(),
+                "uncheck").execute(new SettingsFragment());
     };
+    private final View.OnClickListener statisticsClickListener = view -> {
+        new FragmentHelper((AppCompatActivity) getActivity(),
+                getBottomNavigationView(),
+                "uncheck").execute(new StatisticsFragment());
+    };
+    private Button helpButton, registrationButton, authorizationButton, settingsButton, statisticsButton;
 
     public static void setFragmentOnParent(@NonNull Fragment fr) {
         fr.getParentFragmentManager().beginTransaction().replace(R.id.fragment_container, getSelectedFragment()).commit();
@@ -65,11 +70,14 @@ public class LibraryFragment extends FragmentWithHeader {
         registrationButton = requireView().findViewById(R.id.registration_button);
         authorizationButton = requireView().findViewById(R.id.authorization_button);
         settingsButton = requireView().findViewById(R.id.settings_button);
+        statisticsButton = requireView().findViewById(R.id.statistics_button);
     }
+
     private void setOnClickListeners(){
         registrationButton.setOnClickListener(regClickListener);
         authorizationButton.setOnClickListener(authClickListener);
         helpButton.setOnClickListener(helpClickListener);
         settingsButton.setOnClickListener(settingsClickListener);
+        statisticsButton.setOnClickListener(statisticsClickListener);
     }
 }

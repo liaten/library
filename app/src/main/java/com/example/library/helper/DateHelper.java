@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.library.MainActivity;
 import com.example.library.R;
 
 import org.json.JSONException;
@@ -146,7 +145,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Fragment session_fragment = MainActivity.getSelectedFragment();
+        Fragment session_fragment = FragmentHelper.getSelectedFragment();
         DayOfDate = session_fragment.getView().findViewById(R.id.date_day);
         DayOfWeek = session_fragment.getView().findViewById(R.id.day_of_the_week);
         MonthAndYear = session_fragment.getView().findViewById(R.id.month_year);

@@ -63,4 +63,5 @@
     <string name="title_example">Ходячий замок</string>
     <string name="author_example">Джордж Сэмюэль Клейсон</string>
     <string name="book_title">Название книги</string>
+    <string name="dark_theme">Тёмная тема</string>
 </resources>

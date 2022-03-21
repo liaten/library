@@ -1,8 +1,6 @@
 package com.example.library.fragment;
 
-import static com.example.library.MainActivity.setBottomNavigationViewUncheckable;
-import static com.example.library.MainActivity.setSelectedFragment;
-import static com.example.library.fragment.library.LibraryFragment.setFragmentOnParent;
+import static com.example.library.MainActivity.getBottomNavigationView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,24 +8,25 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
 import com.example.library.fragment.profile.ProfileFragment;
 import com.example.library.helper.DateHelper;
+import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 
 public class FragmentWithHeader extends Fragment {
     private ImageView profileImageView;
     @NonNull
     public View.OnClickListener profileClickListener = view -> {
-        setSelectedFragment(new ProfileFragment());
-        setFragmentOnParent(this);
-        setBottomNavigationViewUncheckable();
+        new FragmentHelper((AppCompatActivity) getActivity(),
+                getBottomNavigationView(),
+                "check").execute(new ProfileFragment());
     };
 
     public static void updateDate() {

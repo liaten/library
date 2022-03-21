@@ -102,10 +102,15 @@
         android:gravity="center"
         android:layout_marginHorizontal="20dp"
         android:showDividers="middle"
-        android:divider="@drawable/empty_divider"
-        >
+        android:divider="@drawable/empty_divider">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dark_theme" />
+
         <android.widget.Button
-            android:id="@+id/registration_button"
+            android:id="@+id/clear_settings_button"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:textAllCaps="false"
@@ -115,6 +120,7 @@
             android:background="@drawable/ic_search_button"
             android:paddingHorizontal="10dp"
             />
+
     </LinearLayout>
 
 
