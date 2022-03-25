@@ -1,7 +1,5 @@
 package com.example.library.fragment.profile;
 
-import static com.example.library.MainActivity.getBottomNavigationView;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +8,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.fragment.FragmentWithHeader;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 
-public class ProfileFragment extends FragmentWithHeader {
+public class ProfileFragment extends Fragment {
 
     View.OnClickListener booksOnHandsListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),

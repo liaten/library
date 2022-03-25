@@ -1,8 +1,5 @@
 package com.example.library.fragment.library;
 
-import static com.example.library.MainActivity.getBottomNavigationView;
-import static com.example.library.helper.FragmentHelper.getSelectedFragment;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +8,13 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.fragment.FragmentWithHeader;
 import com.example.library.helper.FragmentHelper;
 
-public class LibraryFragment extends FragmentWithHeader {
+public class LibraryFragment extends Fragment {
 
     private final View.OnClickListener regClickListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),

@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
-import com.example.library.fragment.FragmentWithHeader;
 
-public class ReservedBooksFragment extends FragmentWithHeader {
+public class ReservedBooksFragment extends Fragment {
 
     @Nullable
     @Override

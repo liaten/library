@@ -26,9 +26,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
-import com.example.library.fragment.FragmentWithHeader;
 import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.DateHelper;
 import com.example.library.mail.JavaMailAPI;
@@ -38,7 +38,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class RegistrationFragment extends FragmentWithHeader {
+public class RegistrationFragment extends Fragment {
 
     @Nullable
     protected DatePickerDialog datePickerDialog;
