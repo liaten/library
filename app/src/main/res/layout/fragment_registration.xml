@@ -238,13 +238,15 @@
                 android:autofillHints="emailAddress" />
 
             <CheckBox
+                android:id="@+id/checkbox_apply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:textColor="@color/black"
                 android:fontFamily="@font/roboto"
                 android:text="@string/personal_data_processing"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                />
 
             <android.widget.Button
                 android:id="@+id/approve"

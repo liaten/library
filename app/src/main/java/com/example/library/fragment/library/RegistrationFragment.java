@@ -5,18 +5,21 @@ import static com.example.library.helper.DateHelper.getMonth;
 import static com.example.library.helper.DateHelper.getSQLDate;
 import static com.example.library.helper.DateHelper.getYear;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.method.MovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -46,6 +49,8 @@ public class RegistrationFragment extends FragmentWithHeader {
     @Nullable
     protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             EmailEditText;
+    @Nullable
+    protected CheckBox applyCheckBox;
     @Nullable
     protected String surname, name, patronymic, phone, email, SQLDateBirth;
     private final View.OnClickListener approveButtonListener = view -> {
@@ -126,15 +131,22 @@ public class RegistrationFragment extends FragmentWithHeader {
         PatronymicEditText = requireView().findViewById(R.id.patronymic_edit_text);
         PhoneNumberEditText = requireView().findViewById(R.id.phone_number_edit_text);
         EmailEditText = requireView().findViewById(R.id.email_edit_text);
+        applyCheckBox = requireView().findViewById(R.id.checkbox_apply);
     }
 
-    private void setOnClickListeners(){
-            if (approveButton != null) {
-                approveButton.setOnClickListener(approveButtonListener);
-            }
-            if (dateBirthButton != null) {
-                dateBirthButton.setOnClickListener(dateBirthClickListener);
-            }
+
+    private void setOnClickListeners() {
+        if (approveButton != null) {
+            approveButton.setOnClickListener(approveButtonListener);
+        }
+        if (dateBirthButton != null) {
+            dateBirthButton.setOnClickListener(dateBirthClickListener);
+        }
+        applyCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
+        String checkBoxText = "Я согласен(на) на обработку персональных данных<br> <a href='https://www.nbrkomi.ru/gfx/soglasieru.doc' download>Согласие</a>";
+        if (applyCheckBox != null) {
+            applyCheckBox.setText(Html.fromHtml(checkBoxText, Html.FROM_HTML_MODE_LEGACY));
+        }
     }
 
     private void setCyrillicEditTexts(){
