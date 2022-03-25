@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
 import com.example.library.helper.FragmentHelper;
@@ -20,9 +20,8 @@ public class HomeFragment extends FragmentWithHeader {
 
     private TextView allNewsTextView = null;
     View.OnClickListener allNewsListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new NewBooksFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,false).execute(new NewBooksFragment());
     };
 
     @Nullable

@@ -1,40 +1,49 @@
 package com.example.library.helper;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.view.Menu;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.library.MainActivity;
 import com.example.library.R;
+import com.example.library.fragment.TopFragment;
 import com.example.library.fragment.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-@SuppressLint("StaticFieldLeak")
 public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {
 
     private static Fragment selectedFragment = new HomeFragment();
+    private static Fragment selectedTopFragment = new TopFragment();
     private static BottomNavigationView mainBottomNavigationView;
-    private static AppCompatActivity mainActivity;
+    private static MainActivity mainActivity;
 
-    public FragmentHelper(@NonNull AppCompatActivity appCompatActivity,
-                          @Nullable BottomNavigationView bottomNavigationView,
-                          @NonNull String checkBottomNavigation) {
-        mainActivity = appCompatActivity;
-        mainBottomNavigationView = bottomNavigationView;
+    public FragmentHelper(@NonNull MainActivity activity,
+                          boolean checkBottomNavigation,
+                          boolean topFragment) {
+        mainActivity = activity;
+        mainBottomNavigationView = MainActivity.getBottomNavigationView();
         setCheckNavigation(checkBottomNavigation);
+        setTopFragment(topFragment);
     }
 
-    public static void setCheckNavigation(@NonNull String checkBottomNavigation){
-        switch (checkBottomNavigation){
-            case "check":
-                checkBottomNavigationView();
-                break;
-            case "uncheck":
-                uncheckBottomNavigationView();
-                break;
+    public static void setCheckNavigation(boolean checkBottomNavigation) {
+        if (checkBottomNavigation) {
+            checkBottomNavigationView();
+        } else {
+            uncheckBottomNavigationView();
+        }
+    }
+
+    public static void setTopFragment(boolean topFragment) {
+        if (topFragment) {
+            setSelectedTopFragmentToContainer();
+        }
+        else {
+            mainActivity.findViewById(R.id.top_header_container).setVisibility(View.GONE);
         }
     }
 
@@ -43,16 +52,28 @@ public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {
         return selectedFragment;
     }
 
+    @NonNull
+    public static Fragment getSelectedTopFragment() {
+        return selectedTopFragment;
+    }
+
     public static void setSelectedFragment(@NonNull Fragment fragment) {
         selectedFragment = fragment;
     }
 
     public static void uncheckBottomNavigationView() {
-        mainBottomNavigationView.getMenu().setGroupCheckable(0, false, true);
+        Menu bottomMenu = mainBottomNavigationView.getMenu();
+        bottomMenu.setGroupCheckable(0, false, true);
     }
 
     public static void checkBottomNavigationView() {
-        mainBottomNavigationView.getMenu().setGroupCheckable(0, true, true);
+        Menu bottomMenu = mainBottomNavigationView.getMenu();
+        bottomMenu.setGroupCheckable(0, true, true);
+    }
+
+    private static void setSelectedTopFragmentToContainer() {
+        mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.top_header_container, selectedTopFragment).commit();
+        mainActivity.findViewById(R.id.top_header_container).setVisibility(View.VISIBLE);
     }
 
     public void setSelectedFragmentToContainer() {
@@ -62,9 +83,8 @@ public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {
     @NonNull
     @Override
     protected Void doInBackground(@Nullable Fragment... fragments) {
-        Fragment fragment = null;
         if (fragments != null) {
-            fragment = fragments[0];
+            Fragment fragment = fragments[0];
             setSelectedFragment(fragment);
         }
         return null;

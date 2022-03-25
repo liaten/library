@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
 import com.example.library.helper.BookHelper;
@@ -20,19 +21,16 @@ import com.example.library.helper.FragmentHelper;
 public class ProfileFragment extends FragmentWithHeader {
 
     View.OnClickListener booksOnHandsListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new BooksOnHandsFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new BooksOnHandsFragment());
     };
     View.OnClickListener reservedBooksListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new ReservedBooksFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new ReservedBooksFragment());
     };
     View.OnClickListener wishlistListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new WishlistFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new WishlistFragment());
     };
     private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, authorTextView,
             titleTextView;

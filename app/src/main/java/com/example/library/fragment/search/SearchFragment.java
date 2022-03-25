@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
 import com.example.library.helper.FragmentHelper;
@@ -19,9 +20,8 @@ import com.example.library.helper.FragmentHelper;
 public class SearchFragment extends FragmentWithHeader {
     private Button findBookButton;
     View.OnClickListener findBookListener = view -> {
-        new FragmentHelper((AppCompatActivity) getActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new SearchResultsFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new SearchResultsFragment());
     };
 
     @Nullable

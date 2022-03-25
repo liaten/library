@@ -13,7 +13,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,7 +141,9 @@ public class RegistrationFragment extends FragmentWithHeader {
         if (dateBirthButton != null) {
             dateBirthButton.setOnClickListener(dateBirthClickListener);
         }
-        applyCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
+        if (applyCheckBox != null) {
+            applyCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
+        }
         String checkBoxText = "Я согласен(на) на обработку персональных данных<br> <a href='https://www.nbrkomi.ru/gfx/soglasieru.doc' download>Согласие</a>";
         if (applyCheckBox != null) {
             applyCheckBox.setText(Html.fromHtml(checkBoxText, Html.FROM_HTML_MODE_LEGACY));

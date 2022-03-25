@@ -3,6 +3,7 @@ package com.example.library;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,28 +23,25 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.nav_home:
                 new FragmentHelper(this,
-                        bottomNavigationView,
-                        "check").execute(new HomeFragment());
+                        true,true).execute(new HomeFragment());
                 break;
             case R.id.nav_search:
                 new FragmentHelper(this,
-                        bottomNavigationView,
-                        "check").execute(new SearchFragment());
+                        true,true).execute(new SearchFragment());
                 break;
             case R.id.nav_library:
                 new FragmentHelper(this,
-                        bottomNavigationView,
-                        "check").execute(new LibraryFragment());
+                        true,true).execute(new LibraryFragment());
                 break;
             case R.id.nav_events:
                 new FragmentHelper(this,
-                        bottomNavigationView,
-                        "check").execute(new EventsFragment());
+                        true,true).execute(new EventsFragment());
                 break;
         }
         return true;
     };
 
+    @NonNull
     public static BottomNavigationView getBottomNavigationView() {
         return bottomNavigationView;
     }
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setViews();
         setOnClickListeners();
-        new FragmentHelper(this, bottomNavigationView, "check").execute(new HomeFragment());
+        new FragmentHelper(this, true,true).execute(new HomeFragment());
     }
 
     private void setViews() {

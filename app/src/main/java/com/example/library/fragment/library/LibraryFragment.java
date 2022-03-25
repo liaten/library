@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.fragment.FragmentWithHeader;
 import com.example.library.helper.FragmentHelper;
@@ -21,30 +22,25 @@ import com.example.library.helper.FragmentHelper;
 public class LibraryFragment extends FragmentWithHeader {
 
     private final View.OnClickListener regClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) requireActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new RegistrationFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new RegistrationFragment());
     };
     private final View.OnClickListener authClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) requireActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new AuthorizationFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new AuthorizationFragment());
     };
     private final View.OnClickListener helpClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) requireActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new HelpFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new HelpFragment());
 
     };
     private final View.OnClickListener settingsClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) requireActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new SettingsFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new SettingsFragment());
     };
     private final View.OnClickListener statisticsClickListener = view -> {
-        new FragmentHelper((AppCompatActivity) requireActivity(),
-                getBottomNavigationView(),
-                "uncheck").execute(new StatisticsFragment());
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(new StatisticsFragment());
     };
     private Button helpButton, registrationButton, authorizationButton, settingsButton, statisticsButton;
 

@@ -146,7 +146,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Fragment session_fragment = FragmentHelper.getSelectedFragment();
+        Fragment session_fragment = FragmentHelper.getSelectedTopFragment();
         DayOfDate = session_fragment.requireView().findViewById(R.id.date_day);
         DayOfWeek = session_fragment.requireView().findViewById(R.id.day_of_the_week);
         MonthAndYear = session_fragment.requireView().findViewById(R.id.month_year);
