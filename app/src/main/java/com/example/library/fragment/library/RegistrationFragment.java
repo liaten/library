@@ -33,7 +33,7 @@ import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.DateHelper;
 import com.example.library.mail.JavaMailAPI;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -44,14 +44,34 @@ public class RegistrationFragment extends Fragment {
     protected DatePickerDialog datePickerDialog;
     @Nullable
     protected Button dateBirthButton, approveButton;
-    List<EditText> cyrillicEditTexts = new ArrayList<>();
     @Nullable
     protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             EmailEditText;
+    List<EditText> cyrillicEditTexts;
     @Nullable
     protected CheckBox applyCheckBox;
     @Nullable
     protected String surname, name, patronymic, phone, email, SQLDateBirth;
+
+    @NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_registration, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSpinner();
+        setViews();
+        setOnClickListeners();
+        setApplyCheckBox();
+        setDatePickerDialog();
+        setCyrillicEditTexts();
+        addTextChangeListeners();
+    }
+
     private final View.OnClickListener approveButtonListener = view -> {
         DatabaseHelper db = new DatabaseHelper(this.getContext());
         surname = SurnameEditText.getText().toString();
@@ -61,7 +81,8 @@ public class RegistrationFragment extends Fragment {
         email = EmailEditText.getText().toString();
         if (surname.equals("") || name.equals("") || patronymic.equals("") || phone.equals("") || email.equals("")) {
             Toast.makeText(getActivity(), "Не все поля заполнены", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
             db.addUser(surname, name, patronymic, phone, SQLDateBirth, email);
             sendEmail();
             Toast.makeText(getActivity(), "Проверьте ваш email:\n" + email, Toast.LENGTH_SHORT).show();
@@ -72,6 +93,13 @@ public class RegistrationFragment extends Fragment {
         @Override
         public void onClick(View view) {
             datePickerDialog.show();
+        }
+    };
+
+    private final View.OnClickListener applyCheckboxClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            approveButton.setEnabled(applyCheckBox.isChecked());
         }
     };
 
@@ -104,24 +132,6 @@ public class RegistrationFragment extends Fragment {
         }
     };
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_registration, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setSpinner();
-        setViews();
-        setOnClickListeners();
-        setDatePickerDialog();
-        setCyrillicEditTexts();
-        addTextChangeListeners();
-    }
-
     private void setViews() {
         dateBirthButton = requireView().findViewById(R.id.date_birth_button);
         approveButton = requireView().findViewById(R.id.approve);
@@ -135,26 +145,22 @@ public class RegistrationFragment extends Fragment {
 
 
     private void setOnClickListeners() {
-        if (approveButton != null) {
+        if(approveButton!=null && dateBirthButton!=null && applyCheckBox!=null){
             approveButton.setOnClickListener(approveButtonListener);
-        }
-        if (dateBirthButton != null) {
             dateBirthButton.setOnClickListener(dateBirthClickListener);
+            applyCheckBox.setOnClickListener(applyCheckboxClickListener);
         }
-        if (applyCheckBox != null) {
+    }
+    private void setApplyCheckBox(){
+        if(applyCheckBox!=null){
             applyCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
         }
         String checkBoxText = "Я согласен(на) на обработку персональных данных<br> <a href='https://www.nbrkomi.ru/gfx/soglasieru.doc' download>Согласие</a>";
-        if (applyCheckBox != null) {
-            applyCheckBox.setText(Html.fromHtml(checkBoxText, Html.FROM_HTML_MODE_LEGACY));
-        }
+        applyCheckBox.setText(Html.fromHtml(checkBoxText, Html.FROM_HTML_MODE_LEGACY));
     }
 
     private void setCyrillicEditTexts(){
-        // SurnameEditText, NameEditText, PatronymicEditText
-        cyrillicEditTexts.add(SurnameEditText);
-        cyrillicEditTexts.add(NameEditText);
-        cyrillicEditTexts.add(PatronymicEditText);
+        cyrillicEditTexts = Arrays.asList(SurnameEditText,NameEditText,PatronymicEditText);
     }
 
     private void addTextChangeListeners(){

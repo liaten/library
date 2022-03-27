@@ -32,7 +32,7 @@ public class TopFragment extends Fragment {
             false,true).execute(new ProfileFragment());
 
     public static void updateDate() {
-        String date_url = "https://www.timeapi.io/api/Time/current/zone?timeZone=Europe/Moscow";
+        String date_url = "https://yandex.ru/time/sync.json?geo=213";
         DateHelper dateHelper = new DateHelper();
         try {
             URL url = new URL(date_url);

@@ -192,6 +192,7 @@
                 android:textSize="20sp"
                 tools:ignore="TouchTargetSizeCheck"
                 android:layout_marginBottom="15dp"
+                android:enabled="false"
                 />
         </LinearLayout>
     </ScrollView>

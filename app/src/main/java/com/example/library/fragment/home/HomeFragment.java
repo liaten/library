@@ -19,7 +19,7 @@ public class HomeFragment extends Fragment {
     private TextView allNewsTextView = null;
     View.OnClickListener allNewsListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),
-                false,false).execute(new NewBooksFragment());
+                false,true).execute(new NewBooksFragment());
     };
 
     @Nullable

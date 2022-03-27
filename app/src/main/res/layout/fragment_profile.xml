@@ -69,60 +69,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/test_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@drawable/empty_divider"
-                android:orientation="vertical"
-                android:showDividers="middle"
-                android:visibility="visible">
-
-                <LinearLayout
-                    android:id="@+id/test_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/pt_serif_bold"
-                        android:gravity="bottom"
-                        android:text="Test"
-                        android:textColor="@color/headers_primary"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/test_view_all"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="end"
-                        android:text="@string/watch_all"
-                        android:textColor="@color/text_secondary" />
-
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:id="@+id/test_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    android:visibility="visible">
-
-                    <FrameLayout
-                        android:id="@+id/test_frame_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </HorizontalScrollView>
-
-            </LinearLayout> <!--test layout-->
-
-            <LinearLayout
                 android:id="@+id/books_on_hands_layout_main"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:showDividers="middle"
@@ -158,135 +106,19 @@
 
                 <HorizontalScrollView
                     android:id="@+id/books_on_hands_details"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="none"
                     android:visibility="visible">
 
                     <LinearLayout
+                        android:id="@+id/books_on_hands_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:divider="@drawable/empty_divider_horizontal"
                         android:orientation="horizontal"
-                        android:showDividers="middle">
-
-                        <LinearLayout
-                            android:layout_width="105dp"
-                            android:layout_height="wrap_content"
-                            android:divider="@drawable/small_divider"
-                            android:orientation="vertical"
-                            android:showDividers="middle"
-                            android:layout_marginStart="20dp"
-                            >
-
-                            <androidx.cardview.widget.CardView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardCornerRadius="6dp"
-                                app:cardElevation="0dp">
-
-                                <ImageView
-                                    android:id="@+id/book_image_view"
-                                    android:layout_width="105dp"
-                                    android:layout_height="148dp"
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/border_book"
-                                    android:contentDescription="@string/image_of_book_on_hands"
-                                    android:scaleType="fitCenter"
-                                    android:src="@drawable/little_prince" />
-
-                            </androidx.cardview.widget.CardView>
-
-                            <TextView
-                                android:id="@+id/author_test"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:maxLines="2"
-                                android:text="@string/author_name"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="10sp"
-                                tools:ignore="SmallSp" />
-
-                            <TextView
-                                android:id="@+id/title_test"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/pt_serif_bold"
-                                android:maxLines="2"
-                                android:text="@string/book_title"
-                                android:textColor="@color/headers_primary"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="0dp">
-
-                            <ImageView
-                                android:id="@+id/book_image_view2"
-                                android:layout_width="105dp"
-                                android:layout_height="148dp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/border_book"
-                                android:src="@drawable/book_test"
-                                android:contentDescription="@string/image_of_book_on_hands" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="0dp">
-
-                            <ImageView
-                                android:id="@+id/book_image_view3"
-                                android:layout_width="105dp"
-                                android:layout_height="148dp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/border_book"
-                                android:src="@drawable/book_test"
-                                android:contentDescription="@string/image_of_book_on_hands" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="0dp">
-
-                            <ImageView
-                                android:id="@+id/book_image_view4"
-                                android:layout_width="105dp"
-                                android:layout_height="148dp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/border_book"
-                                android:src="@drawable/book_test"
-                                android:contentDescription="@string/image_of_book_on_hands" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardCornerRadius="6dp"
-                            app:cardElevation="0dp">
-
-                            <ImageView
-                                android:id="@+id/book_image_view5"
-                                android:layout_width="105dp"
-                                android:layout_height="148dp"
-                                android:layout_gravity="center"
-                                android:layout_marginEnd="20dp"
-                                android:background="@drawable/border_book"
-                                android:src="@drawable/book_test"
-                                android:contentDescription="@string/image_of_book_on_hands" />
-                        </androidx.cardview.widget.CardView>
+                        android:showDividers="middle"
+                        >
 
                     </LinearLayout>
 

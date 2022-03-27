@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
@@ -16,33 +17,36 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
 
 public class DateHelper extends AsyncTask<URL, Void, String> {
 
-    private static short day, month, year;
+    private static int day;
+    private static int month;
+    private static int year;
     @NonNull
     protected String result = "";
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
     private boolean isDataUpdated = false;
 
-    public static String getSQLDate(short day, short month, short year) {
+    public static String getSQLDate(int day, int month, int year) {
         String dayStr, monthStr, yearStr;
         if (day < 10) {
-            dayStr = "0" + String.valueOf(day);
+            dayStr = "0" + day;
         } else {
             dayStr = String.valueOf(day);
         }
         if (month < 10) {
-            monthStr = "0" + String.valueOf(month);
+            monthStr = "0" + month;
         } else {
             monthStr = String.valueOf(month);
         }
         if (year < 10) {
-            yearStr = "000" + String.valueOf(year);
+            yearStr = "000" + year;
         } else if (year < 100) {
-            yearStr = "00" + String.valueOf(year);
+            yearStr = "00" + year;
         } else if (year < 1000) {
-            yearStr = "0" + String.valueOf(year);
+            yearStr = "0" + year;
         } else {
             yearStr = String.valueOf(year);
         }
@@ -50,7 +54,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     }
 
     @NonNull
-    public static String getRussianMonths(short month) {
+    public static String getMonths(int month) {
         switch (month) {
             case 1:
                 return "Январь";
@@ -111,33 +115,33 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         return null;
     }
 
-    public static short getDay() {
+    public static int getDay() {
         return day;
     }
 
-    public static short getMonth() {
+    public static int getMonth() {
         return month;
     }
 
-    public static short getYear() {
+    public static int getYear() {
         return year;
     }
 
-    public String getRussianDaysOfWeek(String dayOfWeek) {
+    public String getDaysOfWeek(int dayOfWeek) {
         switch (dayOfWeek) {
-            case "Sunday":
+            case 1:
                 return "Воскресенье";
-            case "Monday":
+            case 2:
                 return "Понедельник";
-            case "Tuesday":
+            case 3:
                 return "Вторник";
-            case "Wednesday":
+            case 4:
                 return "Среда";
-            case "Thursday":
+            case 5:
                 return "Четверг";
-            case "Friday":
+            case 6:
                 return "Пятница";
-            case "Saturday":
+            case 7:
                 return "Суббота";
         }
         return null;
@@ -176,20 +180,24 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //Log.d(TAG,result);
         return result;
     }
 
     @Override
-    protected void onPostExecute(String _result) {
+    protected void onPostExecute(@Nullable String _result) {
         super.onPostExecute(_result);
         try {
             JSONObject jsonObject = new JSONObject(result);
-            day = (short) jsonObject.getInt("day");
-            year = (short) jsonObject.getInt("year");
-            month = (short) jsonObject.getInt("month");
-            String dayOfWeek = jsonObject.getString("dayOfWeek");
-            String russianDayOfWeek = getRussianDaysOfWeek(dayOfWeek);
-            String monthAndYear = getRussianMonths(month) + " " + year;
+            long timeStampGot = jsonObject.getLong("time");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timeStampGot);
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            month = calendar.get(Calendar.MONTH);
+            year = calendar.get(Calendar.YEAR);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            String russianDayOfWeek = getDaysOfWeek(dayOfWeek);
+            String monthAndYear = getMonths(month) + " " + year;
             DayOfWeek.setText(russianDayOfWeek);
             DayOfDate.setText(String.valueOf(day));
             MonthAndYear.setText(monthAndYear);
