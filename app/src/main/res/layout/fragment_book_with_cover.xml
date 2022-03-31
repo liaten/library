@@ -17,7 +17,7 @@
         app:cardElevation="0dp">
 
         <ImageView
-            android:id="@+id/book_image_view"
+            android:id="@+id/cover"
             android:layout_width="105dp"
             android:layout_height="148dp"
             android:layout_gravity="center"
@@ -29,7 +29,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/author_test"
+        android:id="@+id/author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
@@ -40,7 +40,7 @@
         tools:ignore="SmallSp" />
 
     <TextView
-        android:id="@+id/title_test"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pt_serif_bold"
