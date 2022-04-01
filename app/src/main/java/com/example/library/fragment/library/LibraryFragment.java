@@ -16,6 +16,8 @@ import com.example.library.helper.FragmentHelper;
 
 public class LibraryFragment extends Fragment {
 
+    private Button helpButton, registrationButton, authorizationButton, settingsButton, statisticsButton;
+
     private final View.OnClickListener regClickListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),
                 false,true).execute(new RegistrationFragment());
@@ -37,7 +39,6 @@ public class LibraryFragment extends Fragment {
         new FragmentHelper((MainActivity) requireActivity(),
                 false,true).execute(new StatisticsFragment());
     };
-    private Button helpButton, registrationButton, authorizationButton, settingsButton, statisticsButton;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
