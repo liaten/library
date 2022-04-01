@@ -1,6 +1,7 @@
 package com.example.library.helper;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,12 +19,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateHelper extends AsyncTask<URL, Void, String> {
 
+    private static final String TAG = "DateHelper";
     private static int day;
     private static int month;
     private static int year;
+    private static int dayOfWeek;
     @NonNull
     protected String result = "";
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
@@ -56,29 +60,29 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     @NonNull
     public static String getMonths(int month) {
         switch (month) {
-            case 1:
+            case 0:
                 return "Январь";
-            case 2:
+            case 1:
                 return "Февраль";
-            case 3:
+            case 2:
                 return "Март";
-            case 4:
+            case 3:
                 return "Апрель";
-            case 5:
+            case 4:
                 return "Май";
-            case 6:
+            case 5:
                 return "Июнь";
-            case 7:
+            case 6:
                 return "Июль";
-            case 8:
+            case 7:
                 return "Август";
-            case 9:
+            case 8:
                 return "Сентябрь";
-            case 10:
+            case 9:
                 return "Октябрь";
-            case 11:
+            case 10:
                 return "Ноябрь";
-            case 12:
+            case 11:
                 return "Декабрь";
             default:
                 return "ОШИБКА";
@@ -189,18 +193,20 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         super.onPostExecute(_result);
         try {
             JSONObject jsonObject = new JSONObject(result);
-            long timeStampGot = jsonObject.getLong("time");
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(timeStampGot);
+            calendar.setTimeInMillis(jsonObject.getLong("time"));
+
             day = calendar.get(Calendar.DAY_OF_MONTH);
             month = calendar.get(Calendar.MONTH);
             year = calendar.get(Calendar.YEAR);
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
             String russianDayOfWeek = getDaysOfWeek(dayOfWeek);
             String monthAndYear = getMonths(month) + " " + year;
+
             DayOfWeek.setText(russianDayOfWeek);
             DayOfDate.setText(String.valueOf(day));
             MonthAndYear.setText(monthAndYear);
+
             if (!isDataUpdated) {
                 DayOfWeek.setVisibility(View.VISIBLE);
                 DayOfDate.setVisibility(View.VISIBLE);

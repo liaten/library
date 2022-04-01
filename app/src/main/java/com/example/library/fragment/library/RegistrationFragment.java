@@ -172,7 +172,7 @@ public class RegistrationFragment extends Fragment {
     private void setDatePickerDialog(){
         int style = android.R.style.Theme_Material_Light_Dialog_Alert;
         datePickerDialog = new DatePickerDialog(getActivity(), style, dateSetListener,
-                getYear(), getMonth() - 1, getDay());
+                getYear(), getMonth(), getDay());
         datePickerDialog.setTitle("Дата рождения");
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
         Calendar calendar = Calendar.getInstance();
