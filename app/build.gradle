@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.example.library"
-        minSdk 26
+        minSdk 24
         versionCode 1
         versionName "1.0"
 

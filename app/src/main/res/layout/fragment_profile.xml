@@ -83,13 +83,13 @@
 
                     <TextView
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/pt_serif_bold"
+                        android:gravity="bottom"
                         android:text="@string/books_on_hands"
                         android:textColor="@color/headers_primary"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/pt_serif_bold"
-                        android:gravity="bottom" />
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/books_on_hands_view_all"

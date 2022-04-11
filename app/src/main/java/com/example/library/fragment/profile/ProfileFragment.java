@@ -1,13 +1,11 @@
 package com.example.library.fragment.profile;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,9 +27,9 @@ public class ProfileFragment extends Fragment {
 
     private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView;
     private RecyclerView booksOnHandsList, reservedBooksTextList, wishlistList;
-    private ArrayList<String> titles = new ArrayList<>();
-    private ArrayList<String> authors = new ArrayList<>();
-    private ArrayList<Drawable> covers = new ArrayList<>();
+    private final ArrayList<String> titles = new ArrayList<>();
+    private final ArrayList<String> authors = new ArrayList<>();
+    private final ArrayList<Drawable> covers = new ArrayList<>();
     private static final String TAG = "ProfileFragment";
 
     @Nullable
@@ -43,7 +41,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setViews();
         setOnClickListeners();
         getBooks();
@@ -53,9 +50,9 @@ public class ProfileFragment extends Fragment {
         booksOnHandsTextView = requireView().findViewById(R.id.books_on_hands_view_all);
         reservedBooksTextView = requireView().findViewById(R.id.reserved_books_view_all);
         wishlistTextView = requireView().findViewById(R.id.wishlist_view_all);
-        booksOnHandsList = requireActivity().findViewById(R.id.books_on_hands_list);
-        reservedBooksTextList = requireActivity().findViewById(R.id.reserved_books_list);
-        wishlistList = requireActivity().findViewById(R.id.wishlist_books_list);
+        booksOnHandsList = requireView().findViewById(R.id.books_on_hands_list);
+        reservedBooksTextList = requireView().findViewById(R.id.reserved_books_list);
+        wishlistList = requireView().findViewById(R.id.wishlist_books_list);
     }
 
     private void getBooks(){
