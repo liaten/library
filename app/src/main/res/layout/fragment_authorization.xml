@@ -15,16 +15,16 @@
         android:layout_marginVertical="10dp"
         android:layout_marginHorizontal="20dp"
         >
+
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/authorization"
-            android:textColor="@color/headers_primary"
-            android:textSize="30sp"
+            android:layout_weight="1"
             android:fontFamily="@font/pt_serif_bold"
             android:gravity="bottom"
-            />
+            android:text="@string/authorization"
+            android:textColor="@color/headers_primary"
+            android:textSize="30sp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

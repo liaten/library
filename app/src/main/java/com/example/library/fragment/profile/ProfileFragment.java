@@ -2,6 +2,8 @@ package com.example.library.fragment.profile;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,9 +30,8 @@ public class ProfileFragment extends Fragment {
 
     private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView;
     private RecyclerView booksOnHandsList, reservedBooksTextList, wishlistList;
-    private final ArrayList<String> titles = new ArrayList<>();
-    private final ArrayList<String> authors = new ArrayList<>();
-    private final ArrayList<Drawable> covers = new ArrayList<>();
+    private static final ArrayList<Spanned> titles = new ArrayList<>();
+    private static final ArrayList<Drawable> covers = new ArrayList<>();
     private static final String TAG = "ProfileFragment";
 
     @Nullable
@@ -56,24 +58,29 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getBooks(){
-        for (int i=0;i<7;i++){
-            covers.add(getResources().getDrawable(R.drawable.little_prince));
-            authors.add("Антуан де сент экзюпери");
-            titles.add("Маленький принц");
-        }
-        initRecyclerViewOnHands(booksOnHandsList);
-        initRecyclerViewOnHands(reservedBooksTextList);
-        initRecyclerViewOnHands(wishlistList);
+        covers.clear();
+        titles.clear();
+        covers.add(getResources().getDrawable(R.drawable.b02));
+        String title = "Ветер в ивах";
+        String author = "Мишель Плесси";
+        String title_author = author + "<br><b>" +title + "</b>";
+        Spanned sp = Html.fromHtml(title_author);
+        titles.add(sp);
+
+        initRecyclerViewOnHands(booksOnHandsList, requireActivity(), titles, covers);
+        initRecyclerViewOnHands(reservedBooksTextList, requireActivity(), titles, covers);
+        initRecyclerViewOnHands(wishlistList, requireActivity(), titles, covers);
     }
 
-    private void initRecyclerViewOnHands(RecyclerView recyclerView) {
-        Log.d(TAG, "initRecyclerView: init recyclerView");
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL,false);
+    public static void initRecyclerViewOnHands(RecyclerView recyclerView, FragmentActivity activity,
+                                               ArrayList<Spanned> titles, ArrayList<Drawable> covers) {
+        //Log.d(TAG, "initRecyclerView: init recyclerView");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(requireActivity(),titles,authors,covers);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(activity,titles,covers);
         recyclerView.setAdapter(adapter);
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(requireActivity(), DividerItemDecoration.HORIZONTAL);
-        itemDecoration.setDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.empty_divider_horizontal));
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL);
+        itemDecoration.setDrawable(ContextCompat.getDrawable(activity,R.drawable.empty_divider_horizontal));
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setVisibility(View.VISIBLE);
     }
