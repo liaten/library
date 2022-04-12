@@ -17,7 +17,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
+public class JavaMailAPI extends AsyncTask<Void, Void, String> {
 
     private final String email;
     private final String subject;
@@ -34,7 +34,7 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
 
     @NonNull
     @Override
-    protected Void doInBackground(@NonNull Void... voids) {
+    protected String doInBackground(@NonNull Void... voids) {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.mail.ru");
         properties.put("mail.smtp.socketFactory.port", "465");
@@ -60,6 +60,6 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        return null;
+        return "OK";
     }
 }

@@ -50,14 +50,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int coverWidth = covers.get(position).getIntrinsicWidth();
         int coverHeight = covers.get(position).getIntrinsicHeight();
-        int pixelsWidth = (int) (coverWidth * scale + 0.5f);
-        Log.d(TAG, "coverWidth: " + coverWidth);
-        int pixelsHeight = (int) (coverHeight * scale + 0.5f);
-        Log.d(TAG, "coverHeight: " + coverHeight);
-        int coefficient = pixelsHeight/400;
+        double pixelsWidth = (double) (coverWidth * scale + 0.5f);
+        //Log.d(TAG, "coverWidth: " + coverWidth);
+        double pixelsHeight = (double) (coverHeight * scale + 0.5f);
+        //Log.d(TAG, "coverHeight: " + coverHeight);
+        double coefficient = pixelsHeight/400;
         pixelsWidth/=coefficient;
         pixelsHeight/=coefficient;
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(pixelsWidth,pixelsHeight);
+        //Log.d(TAG, "pixelsWidth: " + pixelsWidth);
+        //Log.d(TAG, "pixelsHeight: " + pixelsHeight);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int)pixelsWidth,(int)pixelsHeight);
         holder.cover.setLayoutParams(lp);
         //Log.d(TAG, "onCreateViewHolder: called");
         holder.title.setText(titles.get(position));

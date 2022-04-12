@@ -11,8 +11,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +37,12 @@ import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.DateHelper;
 import com.example.library.mail.JavaMailAPI;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistrationFragment extends Fragment {
@@ -51,7 +58,8 @@ public class RegistrationFragment extends Fragment {
     @Nullable
     protected CheckBox applyCheckBox;
     @Nullable
-    protected String surname, name, patronymic, phone, email, SQLDateBirth;
+    protected String surname, name, patronymic, phone_str, email, SQLDateBirth;
+    private static final String TAG = "RegistrationFragment";
 
     @NonNull
     @Override
@@ -77,17 +85,37 @@ public class RegistrationFragment extends Fragment {
         surname = SurnameEditText.getText().toString();
         name = NameEditText.getText().toString();
         patronymic = PatronymicEditText.getText().toString();
-        phone = PhoneNumberEditText.getText().toString();
+        phone_str = PhoneNumberEditText.getText().toString();
         email = EmailEditText.getText().toString();
-        if (surname.equals("") || name.equals("") || patronymic.equals("") || phone.equals("") || email.equals("")) {
+        if (surname.equals("") || name.equals("") || patronymic.equals("") || phone_str.equals("") || email.equals("")) {
             Toast.makeText(getActivity(), "Не все поля заполнены", Toast.LENGTH_SHORT).show();
         }
         else {
-            db.addUser(surname, name, patronymic, phone, SQLDateBirth, email);
-            sendEmail();
-            Toast.makeText(getActivity(), "Проверьте ваш email:\n" + email, Toast.LENGTH_SHORT).show();
+            // TODO: Генерируем user_id, password, переводим номер телефона из строки в int
+            Random random = new Random();
+            int user_id = random.nextInt(2147483647);
+            String password = String.valueOf(random.nextInt(2147483647));
+            Pattern pattern = Pattern.compile("[0-9]{10}$");
+            Matcher matcher = pattern.matcher(phone_str);
+            long phone;
+            while (matcher.find()) {
+                int start=matcher.start();
+                int end=matcher.end();
+                String result = phone_str.substring(start,end);
+                Log.d(TAG, ": " + result);
+                phone = Long.parseLong(result);
+                if(isMailValid())
+                db.addUser(surname, name, patronymic, phone, SQLDateBirth, email, user_id, password);
+                sendEmail();
+                Toast.makeText(getActivity(), "Проверьте ваш email:\n" + email, Toast.LENGTH_SHORT).show();
+            }
         }
     };
+
+    private boolean isMailValid() {
+        // TODO: написать метод проверки почты!
+        return false;
+    }
 
     private final View.OnClickListener dateBirthClickListener = new View.OnClickListener() {
         @Override
@@ -111,9 +139,25 @@ public class RegistrationFragment extends Fragment {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             for (EditText et : cyrillicEditTexts){
-                if (Pattern.compile("[[^а-яА-Я]]").matcher(et.getText().toString()).find()) {
-                    et.setText(et.getText().toString().substring(0, et.getText().toString().length() - 1));
-                    et.setSelection(et.getText().toString().length());
+                if (Pattern.compile("^[А-Я][а-я]*$").matcher(et.getText().toString()).find()) {
+                    //
+                }
+                else {
+                    if(et.getText().toString().length()>0){
+                        char ch = et.getText().toString().charAt(et.getText().toString().length()-1);
+                        if(ch >= 'а'&& ch <= 'я'){
+                            // a = это 1072, 1072 - 32 = 1040 => А
+                            // я = 1103
+                            // А = 1040
+                            // Я = 1071
+                            et.setText(""+(char)((int)ch-32));
+                            //Log.d(TAG, "onTextChanged: " + (int)et.getText().toString().charAt(et.getText().toString().length()-1));
+                        }
+                        else {
+                            et.setText(et.getText().toString().substring(0, et.getText().toString().length() - 1));
+                        }
+                        et.setSelection(et.getText().toString().length());
+                    }
                 }
             }
         }
@@ -121,6 +165,46 @@ public class RegistrationFragment extends Fragment {
         public void afterTextChanged(Editable editable) {
         }
     };
+
+    private final View.OnFocusChangeListener numberFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus){
+                String text = PhoneNumberEditText.getText().toString();
+                if(text.length()==0){
+                    PhoneNumberEditText.setText("+7");
+                    PhoneNumberEditText.setSelection(PhoneNumberEditText.getText().toString().length());
+                }
+            }
+        }
+    };
+
+    private final TextWatcher numberTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String text = PhoneNumberEditText.getText().toString();
+            if (Pattern.compile("^\\+7[0-9]{0,10}$").matcher(text).find()) {
+                //
+            }
+            else{
+                if(text.length()<3){
+                    PhoneNumberEditText.setText("+7");
+                }
+                else{
+                    PhoneNumberEditText.setText(PhoneNumberEditText.getText().toString().substring(0, PhoneNumberEditText.getText().toString().length() - 1));
+                }
+                PhoneNumberEditText.setSelection(PhoneNumberEditText.getText().toString().length());
+            }
+        }
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    };
+
 
     private final OnDateSetListener dateSetListener = new OnDateSetListener() {
         @Override
@@ -142,7 +226,6 @@ public class RegistrationFragment extends Fragment {
         EmailEditText = requireView().findViewById(R.id.email_edit_text);
         applyCheckBox = requireView().findViewById(R.id.checkbox_apply);
     }
-
 
     private void setOnClickListeners() {
         if(approveButton!=null && dateBirthButton!=null && applyCheckBox!=null){
@@ -167,6 +250,8 @@ public class RegistrationFragment extends Fragment {
         for (EditText et : cyrillicEditTexts){
             et.addTextChangedListener(cyrillicTextWatcher);
         }
+        PhoneNumberEditText.addTextChangedListener(numberTextWatcher);
+        PhoneNumberEditText.setOnFocusChangeListener(numberFocusListener);
     }
 
     private void setDatePickerDialog(){

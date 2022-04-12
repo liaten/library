@@ -116,7 +116,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
             case 12:
                 return "декабря";
         }
-        return null;
+        return "";
     }
 
     public static int getDay() {

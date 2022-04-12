@@ -138,7 +138,8 @@
                 tools:ignore="TouchTargetSizeCheck"
                 android:inputType="phone"
                 android:textColor="@color/black"
-                android:autofillHints="phone" />
+                android:autofillHints="phone"
+                />
             <android.widget.Button
                 android:id="@+id/date_birth_button"
                 android:layout_width="match_parent"

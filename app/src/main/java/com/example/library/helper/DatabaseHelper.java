@@ -24,6 +24,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String USER_COLUMN_PHONE_NUMBER = "phone_number";
     private static final String USER_COLUMN_BIRTH_DATE = "birth_date";
     private static final String USER_COLUMN_EMAIL = "email";
+    private static final String USER_COLUMN_USERID = "userid";
+    private static final String USER_COLUMN_PASSWORD = "password";
 
     private static final String BOOK_TABLE_NAME = "book";
     private static final String BOOK_COLUMN_ID = "id";
@@ -64,9 +66,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 USER_COLUMN_SURNAME + " TEXT, " +
                 USER_COLUMN_NAME + " TEXT, " +
                 USER_COLUMN_PATRONYMIC + " TEXT, " +
-                USER_COLUMN_PHONE_NUMBER + " TEXT, " +
+                USER_COLUMN_PHONE_NUMBER + " INTEGER, " +
                 USER_COLUMN_BIRTH_DATE + " DATE, " +
-                USER_COLUMN_EMAIL + " TEXT" +
+                USER_COLUMN_EMAIL + " TEXT, " +
+                USER_COLUMN_USERID + " INTEGER, " +
+                USER_COLUMN_PASSWORD + " TEXT" +
                 ");";
         String query_books_on_hands = "CREATE TABLE " + BOOKS_ON_HANDS_TABLE_NAME +
                 " (" + BOOKS_ON_HANDS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -103,7 +107,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void addUser(@NonNull String surname, @NonNull String name, @NonNull String patronymic,
-                        @NonNull String phone_number, @NonNull String birth_date, @NonNull String email) {
+                        @NonNull long phone_number, @NonNull String birth_date,
+                        @NonNull String email, @NonNull int user_id, @NonNull String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(USER_COLUMN_SURNAME, surname);
@@ -112,6 +117,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(USER_COLUMN_PHONE_NUMBER, phone_number);
         cv.put(USER_COLUMN_BIRTH_DATE, birth_date);
         cv.put(USER_COLUMN_EMAIL, email);
+        cv.put(USER_COLUMN_USERID, user_id);
+        cv.put(USER_COLUMN_PASSWORD, password);
         long result = db.insert(USER_TABLE_NAME, null, cv);
         if (result == -1) {
             Log.d(TAG, "Failed to add user"); // Print result to logcat

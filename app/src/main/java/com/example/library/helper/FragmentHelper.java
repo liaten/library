@@ -82,11 +82,9 @@ public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {
 
     @NonNull
     @Override
-    protected Void doInBackground(@Nullable Fragment... fragments) {
-        if (fragments != null) {
-            Fragment fragment = fragments[0];
-            setSelectedFragment(fragment);
-        }
+    protected Void doInBackground(@NonNull Fragment... fragments) {
+        Fragment fragment = fragments[0];
+        setSelectedFragment(fragment);
         return null;
     }
 

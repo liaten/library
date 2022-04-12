@@ -23,6 +23,7 @@ import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.helper.FragmentHelper;
+import com.example.library.helper.RecyclerInitializer;
 
 import java.util.ArrayList;
 
@@ -66,23 +67,7 @@ public class ProfileFragment extends Fragment {
         String title_author = author + "<br><b>" +title + "</b>";
         Spanned sp = Html.fromHtml(title_author);
         titles.add(sp);
-
-        initRecyclerViewOnHands(booksOnHandsList, requireActivity(), titles, covers);
-        initRecyclerViewOnHands(reservedBooksTextList, requireActivity(), titles, covers);
-        initRecyclerViewOnHands(wishlistList, requireActivity(), titles, covers);
-    }
-
-    public static void initRecyclerViewOnHands(RecyclerView recyclerView, FragmentActivity activity,
-                                               ArrayList<Spanned> titles, ArrayList<Drawable> covers) {
-        //Log.d(TAG, "initRecyclerView: init recyclerView");
-        LinearLayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL,false);
-        recyclerView.setLayoutManager(layoutManager);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(activity,titles,covers);
-        recyclerView.setAdapter(adapter);
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL);
-        itemDecoration.setDrawable(ContextCompat.getDrawable(activity,R.drawable.empty_divider_horizontal));
-        recyclerView.addItemDecoration(itemDecoration);
-        recyclerView.setVisibility(View.VISIBLE);
+        new RecyclerInitializer(requireActivity(), titles, covers).execute(booksOnHandsList);
     }
 
     private void setOnClickListeners() {

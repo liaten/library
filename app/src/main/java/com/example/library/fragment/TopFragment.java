@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
@@ -27,6 +28,7 @@ public class TopFragment extends Fragment {
     }
 
     private ImageView profileImageView;
+    private CardView profileCardView;
     @NonNull
     public View.OnClickListener profileClickListener = view -> new FragmentHelper((MainActivity) requireActivity(),
             false,true).execute(new ProfileFragment());
@@ -51,7 +53,9 @@ public class TopFragment extends Fragment {
     }
 
     private void setViews() {
+        profileCardView = requireView().findViewById(R.id.profile_card_view);
         profileImageView = requireView().findViewById(R.id.profileImageView);
+        profileCardView.setOnClickListener(profileClickListener);
         profileImageView.setOnClickListener(profileClickListener);
     }
 

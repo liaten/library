@@ -18,6 +18,7 @@ import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.fragment.profile.ProfileFragment;
 import com.example.library.helper.FragmentHelper;
+import com.example.library.helper.RecyclerInitializer;
 
 import java.util.ArrayList;
 
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment {
         titles.add(sp);
         covers.add(getResources().getDrawable(R.drawable.b01));
         titles.add(sp);
-        ProfileFragment.initRecyclerViewOnHands(newBooksList, requireActivity(), titles, covers);
+        new RecyclerInitializer(requireActivity(), titles, covers).execute(newBooksList);
     }
 
     private void setViews() {
