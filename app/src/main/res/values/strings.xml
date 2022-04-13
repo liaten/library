@@ -64,4 +64,8 @@
     <string name="author_example">Джордж Сэмюэль Клейсон</string>
     <string name="book_title">Название книги</string>
     <string name="dark_theme">Тёмная тема</string>
+    <string name="hint_cyrillic_names">С заглавной, русскими буквами</string>
+    <string name="date_hint">Нажмите на поле сверху для выбора даты</string>
+    <string name="phone_hint">Номер телефона, начинающийся с +7</string>
+    <string name="email_hint">example@mail.domain</string>
 </resources>

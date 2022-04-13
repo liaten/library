@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -83,91 +82,160 @@
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
                     />
             </LinearLayout>
-            <EditText
-                android:id="@+id/surname_edit_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:hint="@string/surname"
-                android:textColorHint="@color/search_color_header"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:textColor="@color/black"
-                android:autofillHints="name"
-                android:inputType="textPersonName" />
-            <EditText
-                android:id="@+id/name_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:hint="@string/name"
-                android:textColorHint="@color/search_color_header"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:textColor="@color/black"
-                android:autofillHints="name"
-                android:inputType="textPersonName" />
-            <EditText
-                android:id="@+id/patronymic_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:hint="@string/patronymic"
-                android:textColorHint="@color/search_color_header"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:autofillHints="name"
-                android:inputType="textPersonName" />
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/surname_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_search_edit_text"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:hint="@string/surname"
+                    android:textColorHint="@color/search_color_header"
+                    android:textSize="20sp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:textColor="@color/black"
+                    android:autofillHints="name"
+                    android:inputType="textPersonName" />
+                <TextView
+                    android:id="@+id/surname_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_cyrillic_names"
+                    />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/phone_number_edit_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:hint="@string/phone_number"
-                android:textColorHint="@color/search_color_header"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:inputType="phone"
-                android:textColor="@color/black"
-                android:autofillHints="phone"
-                />
-            <android.widget.Button
-                android:id="@+id/date_birth_button"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:text="@string/date_of_birth"
-                android:textColor="@color/search_color_header"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:gravity="center"
-                />
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_search_edit_text"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:hint="@string/name"
+                    android:textColorHint="@color/search_color_header"
+                    android:textSize="20sp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:textColor="@color/black"
+                    android:autofillHints="name"
+                    android:inputType="textPersonName" />
+                <TextView
+                    android:id="@+id/name_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_cyrillic_names"
+                    />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/email_edit_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_search_edit_text"
-                android:fontFamily="@font/roboto"
-                android:gravity="center"
-                android:hint="@string/email"
-                android:textColorHint="@color/search_color_header"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                android:autofillHints="emailAddress" />
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/patronymic_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_search_edit_text"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:hint="@string/patronymic"
+                    android:textColorHint="@color/search_color_header"
+                    android:textSize="20sp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:autofillHints="name"
+                    android:inputType="textPersonName" />
+                <TextView
+                    android:id="@+id/patronymic_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hint_cyrillic_names"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/phone_number_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_search_edit_text"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:hint="@string/phone_number"
+                    android:textColorHint="@color/search_color_header"
+                    android:textSize="20sp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:inputType="phone"
+                    android:textColor="@color/black"
+                    android:autofillHints="phone"
+                    />
+                <TextView
+                    android:id="@+id/phone_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_hint"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <android.widget.Button
+                    android:id="@+id/date_birth_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic_search_edit_text"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/date_of_birth"
+                    android:textColor="@color/search_color_header"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:gravity="center"
+                    />
+                <TextView
+                    android:id="@+id/date_birth_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_hint"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/email_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_search_edit_text"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:hint="@string/email"
+                    android:textColorHint="@color/search_color_header"
+                    android:textSize="20sp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    android:autofillHints="emailAddress" />
+                <TextView
+                    android:id="@+id/email_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email_hint"
+                    />
+            </LinearLayout>
 
             <CheckBox
                 android:id="@+id/checkbox_apply"
@@ -197,7 +265,4 @@
                 />
         </LinearLayout>
     </ScrollView>
-
-
-
 </LinearLayout>

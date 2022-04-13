@@ -5,7 +5,6 @@ import android.view.Menu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
@@ -17,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {
 
     private static Fragment selectedFragment = new HomeFragment();
-    private static Fragment selectedTopFragment = new TopFragment();
+    private static final Fragment selectedTopFragment = new TopFragment();
     private static BottomNavigationView mainBottomNavigationView;
     private static MainActivity mainActivity;
 

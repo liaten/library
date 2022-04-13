@@ -3,13 +3,11 @@ package com.example.library.adapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +22,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<Spanned> titles;
-    private ArrayList<Drawable> covers;
-    private Context context;
+    private final ArrayList<Spanned> titles;
+    private final ArrayList<Drawable> covers;
+    private final Context context;
     final float scale;
     private static final int COVER_HEIGHT = 148;
 

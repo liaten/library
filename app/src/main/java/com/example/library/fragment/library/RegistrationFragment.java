@@ -11,12 +11,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +23,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,7 +35,6 @@ import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.DateHelper;
 import com.example.library.mail.JavaMailAPI;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -54,11 +51,64 @@ public class RegistrationFragment extends Fragment {
     @Nullable
     protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             EmailEditText;
+
+    private final TextWatcher cyrillicTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            for (EditText et : cyrillicEditTexts){
+                if (!Pattern.compile("^[А-Я][а-я]*$").matcher(et.getText().toString()).find()) {
+                    if (et.getText().toString().length() > 0) {
+                        char ch = et.getText().toString().charAt(et.getText().toString().length() - 1);
+                        if (ch >= 'а' && ch <= 'я') {
+                            et.setText(String.format("%s", (char) ((int) ch - 32)));
+                            //Log.d(TAG, "onTextChanged: " + (int)et.getText().toString().charAt(et.getText().toString().length()-1));
+                        } else {
+                            et.setText(et.getText().toString().substring(0,
+                                    et.getText().toString().length() - 1));
+                        }
+                        et.setSelection(et.getText().toString().length());
+                    }
+                }
+            }
+        }
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
     List<EditText> cyrillicEditTexts;
     @Nullable
     protected CheckBox applyCheckBox;
-    @Nullable
-    protected String surname, name, patronymic, phone_str, email, SQLDateBirth;
+    private final TextWatcher numberTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String text = PhoneNumberEditText.getText().toString();
+            if (Pattern.compile("^\\+7[0-9]{0,10}$").matcher(text).find()) {
+                //
+            }
+            else{
+                if(text.length()<3){
+                    PhoneNumberEditText.setText("+7");
+                }
+                else {
+                    PhoneNumberEditText.setText(PhoneNumberEditText.getText().toString().substring(0,
+                            PhoneNumberEditText.getText().toString().length() - 1));
+                }
+                PhoneNumberEditText.setSelection(PhoneNumberEditText.getText().toString().length());
+            }
+        }
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    };
     private static final String TAG = "RegistrationFragment";
 
     @NonNull
@@ -79,43 +129,18 @@ public class RegistrationFragment extends Fragment {
         setCyrillicEditTexts();
         addTextChangeListeners();
     }
-
-    private final View.OnClickListener approveButtonListener = view -> {
-        DatabaseHelper db = new DatabaseHelper(this.getContext());
-        surname = SurnameEditText.getText().toString();
-        name = NameEditText.getText().toString();
-        patronymic = PatronymicEditText.getText().toString();
-        phone_str = PhoneNumberEditText.getText().toString();
-        email = EmailEditText.getText().toString();
-        if (surname.equals("") || name.equals("") || patronymic.equals("") || phone_str.equals("") || email.equals("")) {
-            Toast.makeText(getActivity(), "Не все поля заполнены", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            // TODO: Генерируем user_id, password, переводим номер телефона из строки в int
-            Random random = new Random();
-            int user_id = random.nextInt(2147483647);
-            String password = String.valueOf(random.nextInt(2147483647));
-            Pattern pattern = Pattern.compile("[0-9]{10}$");
-            Matcher matcher = pattern.matcher(phone_str);
-            long phone;
-            while (matcher.find()) {
-                int start=matcher.start();
-                int end=matcher.end();
-                String result = phone_str.substring(start,end);
-                Log.d(TAG, ": " + result);
-                phone = Long.parseLong(result);
-                if(isMailValid())
-                db.addUser(surname, name, patronymic, phone, SQLDateBirth, email, user_id, password);
-                sendEmail();
-                Toast.makeText(getActivity(), "Проверьте ваш email:\n" + email, Toast.LENGTH_SHORT).show();
-            }
+    private final OnDateSetListener dateSetListener = new OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+            SQLDateBirth = getSQLDate((short) day, (short) month, (short) year);
+            String dateShowToUser = day + " " +
+                    DateHelper.getRussianMonthsGenitive((short) (month + 1)) + " " + year;
+            dateBirthButton.setText(dateShowToUser);
+            dateBirthButton.setTextColor(Color.BLACK);
         }
     };
-
-    private boolean isMailValid() {
-        // TODO: написать метод проверки почты!
-        return false;
-    }
+    protected TextView SurnameHintTextView, NameHintTextView, PatronymicHintTextView,
+            PhoneHintTextView, EmailHintTextView, DateHintTextView;
 
     private final View.OnClickListener dateBirthClickListener = new View.OnClickListener() {
         @Override
@@ -130,41 +155,9 @@ public class RegistrationFragment extends Fragment {
             approveButton.setEnabled(applyCheckBox.isChecked());
         }
     };
-
-    private final TextWatcher cyrillicTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            for (EditText et : cyrillicEditTexts){
-                if (Pattern.compile("^[А-Я][а-я]*$").matcher(et.getText().toString()).find()) {
-                    //
-                }
-                else {
-                    if(et.getText().toString().length()>0){
-                        char ch = et.getText().toString().charAt(et.getText().toString().length()-1);
-                        if(ch >= 'а'&& ch <= 'я'){
-                            // a = это 1072, 1072 - 32 = 1040 => А
-                            // я = 1103
-                            // А = 1040
-                            // Я = 1071
-                            et.setText(""+(char)((int)ch-32));
-                            //Log.d(TAG, "onTextChanged: " + (int)et.getText().toString().charAt(et.getText().toString().length()-1));
-                        }
-                        else {
-                            et.setText(et.getText().toString().substring(0, et.getText().toString().length() - 1));
-                        }
-                        et.setSelection(et.getText().toString().length());
-                    }
-                }
-            }
-        }
-        @Override
-        public void afterTextChanged(Editable editable) {
-        }
-    };
+    @Nullable
+    protected String surname, name, patronymic, phone_str, email, SQLDateBirth, surname_hint,
+            name_hint, patronymic_hint, phone_hint, email_hint, date_birth_hint;
 
     private final View.OnFocusChangeListener numberFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -178,43 +171,57 @@ public class RegistrationFragment extends Fragment {
             }
         }
     };
+    private final View.OnClickListener approveButtonListener = view -> {
 
-    private final TextWatcher numberTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
+        DatabaseHelper db = new DatabaseHelper(this.getContext());
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String text = PhoneNumberEditText.getText().toString();
-            if (Pattern.compile("^\\+7[0-9]{0,10}$").matcher(text).find()) {
-                //
-            }
-            else{
-                if(text.length()<3){
-                    PhoneNumberEditText.setText("+7");
+        surname = SurnameEditText.getText().toString();
+        name = NameEditText.getText().toString();
+        patronymic = PatronymicEditText.getText().toString();
+        phone_str = PhoneNumberEditText.getText().toString();
+        email = EmailEditText.getText().toString();
+        surname_hint = SurnameHintTextView.getText().toString();
+        name_hint = NameHintTextView.getText().toString();
+        patronymic_hint = PatronymicHintTextView.getText().toString();
+        phone_hint = PhoneHintTextView.getText().toString();
+        date_birth_hint = DateHintTextView.getText().toString();
+        email_hint = EmailHintTextView.getText().toString();
+
+
+        if (surname.equals("") || name.equals("") || patronymic.equals("") || phone_str.equals("")
+                || email.equals("")) {
+            Toast.makeText(getActivity(), "Не все поля заполнены", Toast.LENGTH_SHORT).show();
+        } else {
+            // TODO: Сгенерировать user_id, password, перевести номер телефона из строки в long
+            Random random = new Random();
+            int user_id = random.nextInt(2147483647);
+            String password = String.valueOf(random.nextInt(2147483647));
+            Pattern pattern = Pattern.compile("[0-9]{10}$");
+            Matcher matcher = pattern.matcher(phone_str);
+            long phone;
+            while (matcher.find()) {
+                int start = matcher.start();
+                int end = matcher.end();
+                String result = phone_str.substring(start, end);
+                Log.d(TAG, ": " + result);
+                phone = Long.parseLong(result);
+                if (isMailValid(email)) {
+                    db.addUser(surname, name, patronymic, phone, SQLDateBirth, email, user_id, password);
+                    sendEmail();
+                    Toast.makeText(getActivity(),
+                            "Проверьте ваш email:\n" + email, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Почта введена неверно",
+                            Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    PhoneNumberEditText.setText(PhoneNumberEditText.getText().toString().substring(0, PhoneNumberEditText.getText().toString().length() - 1));
-                }
-                PhoneNumberEditText.setSelection(PhoneNumberEditText.getText().toString().length());
             }
-        }
-        @Override
-        public void afterTextChanged(Editable editable) {
         }
     };
 
-
-    private final OnDateSetListener dateSetListener = new OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            SQLDateBirth = getSQLDate((short) day, (short) month, (short) year);
-            String dateShowToUser = day + " " + DateHelper.getRussianMonthsGenitive((short) (month + 1)) + " " + year;
-            dateBirthButton.setText(dateShowToUser);
-            dateBirthButton.setTextColor(Color.BLACK);
-        }
-    };
+    private boolean isMailValid(String email) {
+        // TODO: написать метод проверки почты!
+        return false;
+    }
 
     private void setViews() {
         dateBirthButton = requireView().findViewById(R.id.date_birth_button);
@@ -225,6 +232,12 @@ public class RegistrationFragment extends Fragment {
         PhoneNumberEditText = requireView().findViewById(R.id.phone_number_edit_text);
         EmailEditText = requireView().findViewById(R.id.email_edit_text);
         applyCheckBox = requireView().findViewById(R.id.checkbox_apply);
+        SurnameHintTextView = requireView().findViewById(R.id.surname_hint);
+        NameHintTextView = requireView().findViewById(R.id.name_hint);
+        PatronymicHintTextView = requireView().findViewById(R.id.patronymic_hint);
+        PhoneHintTextView = requireView().findViewById(R.id.phone_hint);
+        EmailHintTextView = requireView().findViewById(R.id.email_hint);
+        DateHintTextView = requireView().findViewById(R.id.date_birth_hint);
     }
 
     private void setOnClickListeners() {
@@ -234,11 +247,13 @@ public class RegistrationFragment extends Fragment {
             applyCheckBox.setOnClickListener(applyCheckboxClickListener);
         }
     }
-    private void setApplyCheckBox(){
-        if(applyCheckBox!=null){
+    private void setApplyCheckBox() {
+        if (applyCheckBox != null) {
             applyCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
         }
-        String checkBoxText = "Я согласен(на) на обработку персональных данных<br> <a href='https://www.nbrkomi.ru/gfx/soglasieru.doc' download>Согласие</a>";
+        String URL = "https://www.nbrkomi.ru/gfx/soglasieru.doc";
+        String checkBoxText = "Я согласен(на) на обработку персональных данных<br> <a href='" +
+                URL + "' download>Согласие</a>";
         applyCheckBox.setText(Html.fromHtml(checkBoxText, Html.FROM_HTML_MODE_LEGACY));
     }
 
@@ -286,5 +301,8 @@ public class RegistrationFragment extends Fragment {
             javaMailAPI = new JavaMailAPI(email, mSubject, mMessage);
             javaMailAPI.execute();
         }
+    }
+    private void CheckEditTexts(){
+        //
     }
 }
