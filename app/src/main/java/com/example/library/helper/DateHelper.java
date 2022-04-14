@@ -54,6 +54,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         } else {
             yearStr = String.valueOf(year);
         }
+        Log.d(TAG, "SQLDATE: " + yearStr + "-" + monthStr + "-" + dayStr);
         return yearStr + "-" + monthStr + "-" + dayStr;
     }
 

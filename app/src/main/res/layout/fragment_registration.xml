@@ -62,7 +62,7 @@
                     android:fontFamily="@font/roboto"
                     android:text="@string/gender"
                     android:textColor="@color/headers_primary"
-                    android:textSize="20sp"
+                    android:textSize="23sp"
                     android:layout_gravity="center"
 
                     />
@@ -105,6 +105,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/hint_cyrillic_names"
+                    android:textSize="14sp"
+                    android:textColor="@color/date_secondary"
+                    android:fontFamily="@font/roboto"
                     />
             </LinearLayout>
 
@@ -156,6 +159,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/hint_cyrillic_names"
+                    android:textSize="14sp"
+                    android:textColor="@color/date_secondary"
+                    android:fontFamily="@font/roboto"
                     />
             </LinearLayout>
 
@@ -183,6 +189,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/phone_hint"
+                    android:textSize="14sp"
+                    android:textColor="@color/date_secondary"
+                    android:fontFamily="@font/roboto"
                     />
             </LinearLayout>
 
@@ -208,6 +217,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/date_hint"
+                    android:textSize="14sp"
+                    android:textColor="@color/date_secondary"
+                    android:fontFamily="@font/roboto"
                     />
             </LinearLayout>
 
@@ -234,6 +246,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/email_hint"
+                    android:textSize="14sp"
+                    android:textColor="@color/date_secondary"
+                    android:fontFamily="@font/roboto"
                     />
             </LinearLayout>
 

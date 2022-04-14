@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.library.R;
@@ -51,15 +52,16 @@ public class RegistrationFragment extends Fragment {
     @Nullable
     protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             EmailEditText;
+    private int name_len, surname_len, patronymic_len;
 
     private final TextWatcher cyrillicTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             for (EditText et : cyrillicEditTexts){
+
                 if (!Pattern.compile("^[А-Я][а-я]*$").matcher(et.getText().toString()).find()) {
                     if (et.getText().toString().length() > 0) {
                         char ch = et.getText().toString().charAt(et.getText().toString().length() - 1);
@@ -72,12 +74,37 @@ public class RegistrationFragment extends Fragment {
                         }
                         et.setSelection(et.getText().toString().length());
                     }
+                    if(et.equals(SurnameEditText)){
+                        SurnameHintTextView.setText(R.string.hint_cyrillic_names);
+                        SurnameHintTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.date_secondary));
+                    }
+                    else if(et.equals(NameEditText)){
+                        NameHintTextView.setText(R.string.hint_cyrillic_names);
+                        NameHintTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.date_secondary));
+                    }
+                    else{
+                        PatronymicHintTextView.setText(R.string.hint_cyrillic_names);
+                        PatronymicHintTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.date_secondary));
+                    }
+                }
+                else {
+                    if(et.equals(SurnameEditText)){
+                        SurnameHintTextView.setText("Фамилия введена верно");
+                        SurnameHintTextView.setTextColor(Color.parseColor("#008c00"));
+                    }
+                    else if(et.equals(NameEditText)){
+                        NameHintTextView.setText("Имя введено верно");
+                        NameHintTextView.setTextColor(Color.parseColor("#008c00"));
+                    }
+                    else{
+                        PatronymicHintTextView.setText("Отчество введено верно");
+                        PatronymicHintTextView.setTextColor(Color.parseColor("#008c00"));
+                    }
                 }
             }
         }
         @Override
         public void afterTextChanged(Editable editable) {
-
         }
     };
     List<EditText> cyrillicEditTexts;
@@ -91,20 +118,26 @@ public class RegistrationFragment extends Fragment {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             String text = PhoneNumberEditText.getText().toString();
-            if (Pattern.compile("^\\+7[0-9]{0,10}$").matcher(text).find()) {
-                //
-            }
-            else{
-                if(text.length()<3){
+            if (!Pattern.compile("^\\+7[0-9]{0,10}$").matcher(text).find()) {
+                if (text.length() < 3) {
                     PhoneNumberEditText.setText("+7");
-                }
-                else {
+                } else {
                     PhoneNumberEditText.setText(PhoneNumberEditText.getText().toString().substring(0,
                             PhoneNumberEditText.getText().toString().length() - 1));
                 }
                 PhoneNumberEditText.setSelection(PhoneNumberEditText.getText().toString().length());
             }
+            text = PhoneNumberEditText.getText().toString();
+            if (text.length() == 12) {
+                PhoneHintTextView.setText("Телефон введён верно");
+                PhoneHintTextView.setTextColor(Color.parseColor("#008c00"));
+            }
+            else {
+                PhoneHintTextView.setText(R.string.phone_hint);
+                PhoneHintTextView.setTextColor(ContextCompat.getColor(requireContext(),R.color.date_secondary));
+            }
         }
+
         @Override
         public void afterTextChanged(Editable editable) {
         }
@@ -157,7 +190,7 @@ public class RegistrationFragment extends Fragment {
     };
     @Nullable
     protected String surname, name, patronymic, phone_str, email, SQLDateBirth, surname_hint,
-            name_hint, patronymic_hint, phone_hint, email_hint, date_birth_hint;
+            name_hint, patronymic_hint, phone_hint, email_hint, date_birth_hint, password;
 
     private final View.OnFocusChangeListener numberFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -195,7 +228,7 @@ public class RegistrationFragment extends Fragment {
             // TODO: Сгенерировать user_id, password, перевести номер телефона из строки в long
             Random random = new Random();
             int user_id = random.nextInt(2147483647);
-            String password = String.valueOf(random.nextInt(2147483647));
+            password = String.valueOf(random.nextInt(2147483647));
             Pattern pattern = Pattern.compile("[0-9]{10}$");
             Matcher matcher = pattern.matcher(phone_str);
             long phone;
@@ -209,7 +242,7 @@ public class RegistrationFragment extends Fragment {
                     db.addUser(surname, name, patronymic, phone, SQLDateBirth, email, user_id, password);
                     sendEmail();
                     Toast.makeText(getActivity(),
-                            "Проверьте ваш email:\n" + email, Toast.LENGTH_SHORT).show();
+                            "Пароль отправлен на\n" + email, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "Почта введена неверно",
                             Toast.LENGTH_SHORT).show();
@@ -219,8 +252,9 @@ public class RegistrationFragment extends Fragment {
     };
 
     private boolean isMailValid(String email) {
-        // TODO: написать метод проверки почты!
-        return false;
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.find();
     }
 
     private void setViews() {
@@ -247,10 +281,9 @@ public class RegistrationFragment extends Fragment {
             applyCheckBox.setOnClickListener(applyCheckboxClickListener);
         }
     }
+
     private void setApplyCheckBox() {
-        if (applyCheckBox != null) {
-            applyCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
-        }
+        applyCheckBox.setMovementMethod(LinkMovementMethod.getInstance());
         String URL = "https://www.nbrkomi.ru/gfx/soglasieru.doc";
         String checkBoxText = "Я согласен(на) на обработку персональных данных<br> <a href='" +
                 URL + "' download>Согласие</a>";
@@ -293,7 +326,7 @@ public class RegistrationFragment extends Fragment {
         String mMessage = "Вами был успешно создан аккаунт в детской библиотеке им. Маршака " +
                 "через мобильное приложение"
                 + "\nВаш email: " + email
-                + "\nВаш пароль для входа в приложение: "
+                + "\nВаш временный пароль для входа в приложение: " + password
                 + "\nИспользуйте только один вариант: логин в окне авторизации."
                 + "\nВ целях безопасности никому не сообщайте данные из этого сообщения.";
         JavaMailAPI javaMailAPI;
