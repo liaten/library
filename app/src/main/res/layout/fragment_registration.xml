@@ -11,8 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"
+        android:background="@color/white"
         >
         <TextView
             android:layout_width="0dp"
@@ -36,7 +37,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_marginHorizontal="20dp"
             android:showDividers="middle"
             android:divider="@drawable/empty_divider"
             >
@@ -48,12 +48,19 @@
                 android:textColor="@color/black"
                 android:fontFamily="@font/roboto"
                 android:text="@string/reg_details"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+                />
             <LinearLayout
                 android:id="@+id/gender_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
                 >
 
                 <TextView
@@ -85,7 +92,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+                >
                 <EditText
                     android:id="@+id/surname_edit_text"
                     android:layout_width="match_parent"
@@ -114,7 +125,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+                >
                 <EditText
                     android:id="@+id/name_edit_text"
                     android:layout_width="match_parent"
@@ -140,7 +155,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+                >
                 <EditText
                     android:id="@+id/patronymic_edit_text"
                     android:layout_width="match_parent"
@@ -168,7 +187,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+                >
                 <EditText
                     android:id="@+id/phone_number_edit_text"
                     android:layout_width="match_parent"
@@ -198,7 +221,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+                >
                 <android.widget.Button
                     android:id="@+id/date_birth_button"
                     android:layout_width="match_parent"
@@ -226,7 +253,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+                >
                 <EditText
                     android:id="@+id/email_edit_text"
                     android:layout_width="match_parent"
@@ -261,23 +292,38 @@
                 android:fontFamily="@font/roboto"
                 android:text="@string/personal_data_processing"
                 android:textSize="16sp"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:background="@color/white"
+
                 />
 
-            <android.widget.Button
-                android:id="@+id/approve"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:background="@drawable/ic_search_button"
-                android:fontFamily="@font/roboto"
-                android:paddingHorizontal="10dp"
-                android:text="@string/apply"
-                android:textColor="@color/search_color_header"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                tools:ignore="TouchTargetSizeCheck"
-                android:layout_marginBottom="15dp"
-                android:enabled="false"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/white"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                >
+                <android.widget.Button
+                    android:id="@+id/approve"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:background="@drawable/ic_search_button"
+                    android:fontFamily="@font/roboto"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/apply"
+                    android:textColor="@color/search_color_header"
+                    android:textAllCaps="false"
+                    android:textSize="20sp"
+                    tools:ignore="TouchTargetSizeCheck"
+                    android:layout_marginBottom="15dp"
+                    android:enabled="false"
+                    android:layout_marginTop="15dp"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

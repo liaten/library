@@ -17,6 +17,7 @@ import com.example.library.fragment.library.LibraryFragment;
 import com.example.library.fragment.search.SearchFragment;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.CheckNetwork;
+import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.FragmentHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -110,5 +111,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             bottomNavigationView.setVisibility(View.GONE);
             new FragmentHelper(this, true, false).execute(new NoConnectionFragment());
         }
+    }
+    private void addBooks(){
+        DatabaseHelper db = new DatabaseHelper(this);
     }
 }

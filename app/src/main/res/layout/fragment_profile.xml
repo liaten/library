@@ -16,7 +16,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
+        android:paddingHorizontal="20dp"
+        android:background="@color/white"
+        android:paddingVertical="10dp"
         >
 
         <TextView
@@ -51,7 +53,10 @@
                 android:id="@+id/full_name_profile_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp">
+                android:paddingHorizontal="20dp"
+                android:background="@color/white"
+                android:paddingVertical="10dp"
+                >
 
                 <TextView
                     android:id="@+id/full_name_profile_textview"
@@ -61,7 +66,8 @@
                     android:fontFamily="@font/pt_serif"
                     android:text="@string/guest"
                     android:textColor="@color/headers_primary"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    />
 
             </LinearLayout>
 
@@ -72,14 +78,18 @@
                 android:orientation="vertical"
                 android:showDividers="middle"
                 android:divider="@drawable/empty_divider"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:background="@color/white"
+                >
 
                 <LinearLayout
                     android:id="@+id/books_on_hands_layout_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingVertical="10dp"
+                    >
 
                     <TextView
                         android:layout_width="0dp"
@@ -126,9 +136,12 @@
                     android:id="@+id/reserved_books_layout_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
+                    android:paddingHorizontal="20dp"
                     android:visibility="visible"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:background="@color/white"
+                    android:paddingVertical="10dp"
+                    >
 
                     <TextView
                         android:layout_width="0dp"
@@ -176,8 +189,11 @@
                     android:id="@+id/wishlist_header_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:orientation="horizontal">
+                    android:paddingHorizontal="20dp"
+                    android:orientation="horizontal"
+                    android:background="@color/white"
+                    android:paddingVertical="10dp"
+                    >
 
                     <TextView
                         android:layout_width="0dp"

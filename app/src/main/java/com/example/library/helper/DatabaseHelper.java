@@ -33,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String BOOK_AUTHOR = "author";
     private static final String BOOK_COVER = "cover";
     private static final String BOOK_THEME = "theme";
+    private static final String BOOK_DATE_ADDED = "date";
 
     private static final String BOOKS_ON_HANDS_TABLE_NAME = "books_on_hands";
     private static final String BOOKS_ON_HANDS_COLUMN_ID = "id";
@@ -60,7 +61,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " (" + BOOK_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 BOOK_TITLE + " TEXT, " +
                 BOOK_AUTHOR + " TEXT, " +
-                BOOK_COVER + " BLOB" +
+                BOOK_COVER + " TEXT, " +
+                BOOK_THEME + " TEXT, " +
+                BOOK_DATE_ADDED + " DATE" +
                 ");";
         String query_user = "CREATE TABLE " + USER_TABLE_NAME +
                 " (" + USER_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -127,17 +130,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d(TAG, "User added"); // Print result to logcat
         }
     }
-    public void addBook(@NonNull String title, @NonNull String author, @NonNull byte[] cover) {
+    public void addBook(@NonNull String title, @NonNull String author, @NonNull String cover,
+                        @NonNull String theme, @NonNull String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(BOOK_TITLE, title);
         cv.put(BOOK_AUTHOR, author);
         cv.put(BOOK_COVER, cover);
+        cv.put(BOOK_THEME, theme);
+        cv.put(BOOK_DATE_ADDED, date);
         long result = db.insert(BOOK_TABLE_NAME, null, cv);
         if (result == -1) {
-            Log.d(TAG, "Failed to add user"); // Print result to logcat
+            Log.d(TAG, "Failed to add book"); // Print result to logcat
         } else {
-            Log.d(TAG, "User added"); // Print result to logcat
+            Log.d(TAG, "Book added"); // Print result to logcat
         }
     }
 }

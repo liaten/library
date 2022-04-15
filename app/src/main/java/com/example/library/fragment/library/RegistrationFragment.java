@@ -52,7 +52,6 @@ public class RegistrationFragment extends Fragment {
     @Nullable
     protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             EmailEditText;
-    private int name_len, surname_len, patronymic_len;
 
     private final TextWatcher cyrillicTextWatcher = new TextWatcher() {
         @Override
@@ -213,13 +212,6 @@ public class RegistrationFragment extends Fragment {
         patronymic = PatronymicEditText.getText().toString();
         phone_str = PhoneNumberEditText.getText().toString();
         email = EmailEditText.getText().toString();
-        surname_hint = SurnameHintTextView.getText().toString();
-        name_hint = NameHintTextView.getText().toString();
-        patronymic_hint = PatronymicHintTextView.getText().toString();
-        phone_hint = PhoneHintTextView.getText().toString();
-        date_birth_hint = DateHintTextView.getText().toString();
-        email_hint = EmailHintTextView.getText().toString();
-
 
         if (surname.equals("") || name.equals("") || patronymic.equals("") || phone_str.equals("")
                 || email.equals("")) {

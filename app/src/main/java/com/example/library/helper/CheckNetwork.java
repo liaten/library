@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -30,7 +29,6 @@ public class CheckNetwork extends AsyncTask<Context, Void, Boolean>{
 //                Log.d(TAG, " internet connection");
 //            }
             return pingCIT();
-            //return true;
         }
     }
 

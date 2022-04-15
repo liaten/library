@@ -35,7 +35,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fontFamily="@font/roboto"
-        android:text="Имя автора\nНазвание книги\naaaaaaaaaa"
+        android:text="Имя автора\nНазвание книги"
         android:maxLines="4"
         android:textColor="@color/text_secondary"
         android:textSize="10sp"
