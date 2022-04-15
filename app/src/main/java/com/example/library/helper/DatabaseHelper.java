@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String BOOK_TITLE = "title";
     private static final String BOOK_AUTHOR = "author";
     private static final String BOOK_COVER = "cover";
+    private static final String BOOK_THEME = "theme";
 
     private static final String BOOKS_ON_HANDS_TABLE_NAME = "books_on_hands";
     private static final String BOOKS_ON_HANDS_COLUMN_ID = "id";
