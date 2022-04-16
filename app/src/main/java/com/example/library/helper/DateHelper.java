@@ -33,30 +33,7 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
     private boolean isDataUpdated = false;
 
-    public static String getSQLDate(int day, int month, int year) {
-        String dayStr, monthStr, yearStr;
-        if (day < 10) {
-            dayStr = "0" + day;
-        } else {
-            dayStr = String.valueOf(day);
-        }
-        if (month < 10) {
-            monthStr = "0" + month;
-        } else {
-            monthStr = String.valueOf(month);
-        }
-        if (year < 10) {
-            yearStr = "000" + year;
-        } else if (year < 100) {
-            yearStr = "00" + year;
-        } else if (year < 1000) {
-            yearStr = "0" + year;
-        } else {
-            yearStr = String.valueOf(year);
-        }
-        Log.d(TAG, "SQLDATE: " + yearStr + "-" + monthStr + "-" + dayStr);
-        return yearStr + "-" + monthStr + "-" + dayStr;
-    }
+
 
     @NonNull
     public static String getMonths(int month) {

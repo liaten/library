@@ -70,4 +70,5 @@
     <string name="email_hint">example@mail.domain</string>
     <string name="no_connection">Нет интернет соединения</string>
     <string name="check_connection">Проверить соединение</string>
+    <string name="user_logged">false</string>
 </resources>

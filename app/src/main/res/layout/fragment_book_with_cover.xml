@@ -24,7 +24,7 @@
             android:background="@drawable/border_book"
             android:contentDescription="@string/image_of_book_on_hands"
             android:scaleType="fitCenter"
-            android:src="@drawable/little_prince" />
+            android:src="@drawable/b13" />
 
     </androidx.cardview.widget.CardView>
 

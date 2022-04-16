@@ -2,6 +2,7 @@ package com.example.library.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.drawable.Drawable;
@@ -12,44 +13,44 @@ import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = "DatabaseHelper";
-    private static final String DATABASE_NAME = "Library.db";
-    private static final int DATABASE_VERSION = 1;
+    public static final String TAG = "DatabaseHelper";
+    public static final String DATABASE_NAME = "Library.db";
+    public static final int DATABASE_VERSION = 1;
 
-    private static final String USER_TABLE_NAME = "user";
-    private static final String USER_COLUMN_ID = "id";
-    private static final String USER_COLUMN_SURNAME = "surname";
-    private static final String USER_COLUMN_NAME = "name";
-    private static final String USER_COLUMN_PATRONYMIC = "patronymic";
-    private static final String USER_COLUMN_PHONE_NUMBER = "phone_number";
-    private static final String USER_COLUMN_BIRTH_DATE = "birth_date";
-    private static final String USER_COLUMN_EMAIL = "email";
-    private static final String USER_COLUMN_USERID = "userid";
-    private static final String USER_COLUMN_PASSWORD = "password";
+    public static final String USER_TABLE_NAME = "user";
+    public static final String USER_COLUMN_ID = "id";
+    public static final String USER_COLUMN_SURNAME = "surname";
+    public static final String USER_COLUMN_NAME = "name";
+    public static final String USER_COLUMN_PATRONYMIC = "patronymic";
+    public static final String USER_COLUMN_PHONE_NUMBER = "phone_number";
+    public static final String USER_COLUMN_BIRTH_DATE = "birth_date";
+    public static final String USER_COLUMN_EMAIL = "email";
+    public static final String USER_COLUMN_USERID = "userid";
+    public static final String USER_COLUMN_PASSWORD = "password";
 
-    private static final String BOOK_TABLE_NAME = "book";
-    private static final String BOOK_COLUMN_ID = "id";
-    private static final String BOOK_TITLE = "title";
-    private static final String BOOK_AUTHOR = "author";
-    private static final String BOOK_COVER = "cover";
-    private static final String BOOK_THEME = "theme";
-    private static final String BOOK_DATE_ADDED = "date";
+    public static final String BOOK_TABLE_NAME = "book";
+    public static final String BOOK_COLUMN_ID = "id";
+    public static final String BOOK_TITLE = "title";
+    public static final String BOOK_AUTHOR = "author";
+    public static final String BOOK_COVER = "cover";
+    public static final String BOOK_THEME = "theme";
+    public static final String BOOK_DATE_ADDED = "date";
 
-    private static final String BOOKS_ON_HANDS_TABLE_NAME = "books_on_hands";
-    private static final String BOOKS_ON_HANDS_COLUMN_ID = "id";
-    private static final String BOOKS_ON_HANDS_COLUMN_USER = "id_user";
-    private static final String BOOKS_ON_HANDS_COLUMN_BOOK = "id_book";
-    private static final String BOOKS_ON_HANDS_COLUMN_DAYS = "days";
+    public static final String BOOKS_ON_HANDS_TABLE_NAME = "books_on_hands";
+    public static final String BOOKS_ON_HANDS_COLUMN_ID = "id";
+    public static final String BOOKS_ON_HANDS_COLUMN_USER = "id_user";
+    public static final String BOOKS_ON_HANDS_COLUMN_BOOK = "id_book";
+    public static final String BOOKS_ON_HANDS_COLUMN_DAYS = "days";
 
-    private static final String RESERVED_BOOKS_TABLE_NAME = "reserved_books";
-    private static final String RESERVED_BOOKS_COLUMN_ID = "id";
-    private static final String RESERVED_BOOKS_COLUMN_USER = "id_user";
-    private static final String RESERVED_BOOKS_COLUMN_BOOK = "id_book";
+    public static final String RESERVED_BOOKS_TABLE_NAME = "reserved_books";
+    public static final String RESERVED_BOOKS_COLUMN_ID = "id";
+    public static final String RESERVED_BOOKS_COLUMN_USER = "id_user";
+    public static final String RESERVED_BOOKS_COLUMN_BOOK = "id_book";
 
-    private static final String WISHLIST_TABLE_NAME = "wishlist_books";
-    private static final String WISHLIST_COLUMN_ID = "id";
-    private static final String WISHLIST_COLUMN_USER = "id_user";
-    private static final String WISHLIST_COLUMN_BOOK = "id_book";
+    public static final String WISHLIST_TABLE_NAME = "wishlist_books";
+    public static final String WISHLIST_COLUMN_ID = "id";
+    public static final String WISHLIST_COLUMN_USER = "id_user";
+    public static final String WISHLIST_COLUMN_BOOK = "id_book";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -145,5 +146,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.d(TAG, "Book added"); // Print result to logcat
         }
+    }
+
+    public Cursor getBooksCount(){
+        String query = "SELECT COUNT("+BOOK_COLUMN_ID+") FROM " + BOOK_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+    public Cursor getTopNewBooks(int num){
+        String query = "SELECT * FROM " + BOOK_TABLE_NAME + " ORDER BY " + BOOK_DATE_ADDED
+                + " desc LIMIT " + num;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public static String getSQLDate(int day, int month, int year) {
+        String dayStr, monthStr, yearStr;
+        if (day < 10) {
+            dayStr = "0" + day;
+        } else {
+            dayStr = String.valueOf(day);
+        }
+        if (month < 10) {
+            monthStr = "0" + month;
+        } else {
+            monthStr = String.valueOf(month);
+        }
+        if (year < 10) {
+            yearStr = "000" + year;
+        } else if (year < 100) {
+            yearStr = "00" + year;
+        } else if (year < 1000) {
+            yearStr = "0" + year;
+        } else {
+            yearStr = String.valueOf(year);
+        }
+        Log.d(TAG, "SQLDATE: " + yearStr + "-" + monthStr + "-" + dayStr);
+        return yearStr + "-" + monthStr + "-" + dayStr;
     }
 }

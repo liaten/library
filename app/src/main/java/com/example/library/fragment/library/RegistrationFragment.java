@@ -1,8 +1,8 @@
 package com.example.library.fragment.library;
 
+import static com.example.library.helper.DatabaseHelper.getSQLDate;
 import static com.example.library.helper.DateHelper.getDay;
 import static com.example.library.helper.DateHelper.getMonth;
-import static com.example.library.helper.DateHelper.getSQLDate;
 import static com.example.library.helper.DateHelper.getYear;
 
 import android.app.DatePickerDialog;
@@ -188,8 +188,7 @@ public class RegistrationFragment extends Fragment {
         }
     };
     @Nullable
-    protected String surname, name, patronymic, phone_str, email, SQLDateBirth, surname_hint,
-            name_hint, patronymic_hint, phone_hint, email_hint, date_birth_hint, password;
+    protected String surname, name, patronymic, phone_str, email, SQLDateBirth, password;
 
     private final View.OnFocusChangeListener numberFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -326,8 +325,5 @@ public class RegistrationFragment extends Fragment {
             javaMailAPI = new JavaMailAPI(email, mSubject, mMessage);
             javaMailAPI.execute();
         }
-    }
-    private void CheckEditTexts(){
-        //
     }
 }

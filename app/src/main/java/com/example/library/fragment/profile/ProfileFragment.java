@@ -1,5 +1,6 @@
 package com.example.library.fragment.profile;
 
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
@@ -61,11 +62,17 @@ public class ProfileFragment extends Fragment {
     private void getBooks(){
         covers.clear();
         titles.clear();
-        covers.add(getResources().getDrawable(R.drawable.b02));
-        String title = "Ветер в ивах";
-        String author = "Мишель Плесси";
-        String title_author = author + "<br><b>" +title + "</b>";
-        Spanned sp = Html.fromHtml(title_author);
+        Resources resources = getResources();
+        int resourceId1 = resources.getIdentifier("b13", "drawable",
+                getContext().getPackageName());
+        covers.add(resources.getDrawable(resourceId1));
+        String author = "Антуан Де Сент-Экзюпери";
+        String title = "Маленький принц";
+        Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
+        titles.add(sp);
+        int resourceId2 = resources.getIdentifier("b13", "drawable",
+                getContext().getPackageName());
+        covers.add(resources.getDrawable(resourceId2));
         titles.add(sp);
         new RecyclerInitializer(requireActivity(), titles, covers).execute(booksOnHandsList);
     }
