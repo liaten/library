@@ -157,9 +157,70 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
     public Cursor getTopNewBooks(int num){
         String query = "SELECT * FROM " + BOOK_TABLE_NAME + " ORDER BY " + BOOK_DATE_ADDED
                 + " desc LIMIT " + num;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public Cursor searchUser(String data){
+        String query = "SELECT " + USER_COLUMN_USERID + " FROM " + USER_TABLE_NAME
+                + " WHERE ("
+                + USER_COLUMN_USERID + " LIKE '" + data + "')";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public Cursor searchName(String data){
+        String query = "SELECT " + USER_COLUMN_NAME + " FROM " + USER_TABLE_NAME
+                + " WHERE ("
+                + USER_COLUMN_USERID + " LIKE '" + data + "')";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public Cursor searchEmail(String data){
+        String query = "SELECT " + USER_COLUMN_EMAIL + " FROM " + USER_TABLE_NAME
+                + " WHERE ("
+                + USER_COLUMN_EMAIL + " LIKE '" + data + "')";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public Cursor searchSurname(String data){
+        String query = "SELECT " + USER_COLUMN_SURNAME + " FROM " + USER_TABLE_NAME
+                + " WHERE ("
+                + USER_COLUMN_USERID + " LIKE '" + data + "')";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
+    public Cursor searchPassword(String data){
+        String query = "SELECT " + USER_COLUMN_PASSWORD + " FROM " + USER_TABLE_NAME
+                + " WHERE ("
+                + USER_COLUMN_USERID + " LIKE '" + data + "')";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
         if(db != null){

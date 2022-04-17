@@ -52,6 +52,7 @@ public class RegistrationFragment extends Fragment {
     @Nullable
     protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             EmailEditText;
+    private View view;
 
     private final TextWatcher cyrillicTextWatcher = new TextWatcher() {
         @Override
@@ -153,8 +154,8 @@ public class RegistrationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setSpinner();
         setViews();
+        setSpinner();
         setOnClickListeners();
         setApplyCheckBox();
         setDatePickerDialog();
@@ -188,7 +189,7 @@ public class RegistrationFragment extends Fragment {
         }
     };
     @Nullable
-    protected String surname, name, patronymic, phone_str, email, SQLDateBirth, password;
+    protected String surname, name, patronymic, phone_str, email, SQLDateBirth, password, userid;
 
     private final View.OnFocusChangeListener numberFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -219,6 +220,7 @@ public class RegistrationFragment extends Fragment {
             // TODO: Сгенерировать user_id, password, перевести номер телефона из строки в long
             Random random = new Random();
             int user_id = random.nextInt(2147483647);
+            userid = String.valueOf(user_id);
             password = String.valueOf(random.nextInt(2147483647));
             Pattern pattern = Pattern.compile("[0-9]{10}$");
             Matcher matcher = pattern.matcher(phone_str);
@@ -230,10 +232,17 @@ public class RegistrationFragment extends Fragment {
                 Log.d(TAG, ": " + result);
                 phone = Long.parseLong(result);
                 if (isMailValid(email)) {
-                    db.addUser(surname, name, patronymic, phone, SQLDateBirth, email, user_id, password);
-                    sendEmail();
-                    Toast.makeText(getActivity(),
-                            "Пароль отправлен на\n" + email, Toast.LENGTH_SHORT).show();
+                    if(db.searchEmail(email).equals(email)){
+                        Toast.makeText(getActivity(),
+                                "Аккаунт под такой электронной почтой уже зарегистрирован",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        db.addUser(surname, name, patronymic, phone, SQLDateBirth, email, user_id, password);
+                        sendEmail();
+                        Toast.makeText(getActivity(),
+                                "Пароль отправлен на\n" + email, Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Почта введена неверно",
                             Toast.LENGTH_SHORT).show();
@@ -249,28 +258,27 @@ public class RegistrationFragment extends Fragment {
     }
 
     private void setViews() {
-        dateBirthButton = requireView().findViewById(R.id.date_birth_button);
-        approveButton = requireView().findViewById(R.id.approve);
-        SurnameEditText = requireView().findViewById(R.id.surname_edit_text);
-        NameEditText = requireView().findViewById(R.id.name_edit_text);
-        PatronymicEditText = requireView().findViewById(R.id.patronymic_edit_text);
-        PhoneNumberEditText = requireView().findViewById(R.id.phone_number_edit_text);
-        EmailEditText = requireView().findViewById(R.id.email_edit_text);
-        applyCheckBox = requireView().findViewById(R.id.checkbox_apply);
-        SurnameHintTextView = requireView().findViewById(R.id.surname_hint);
-        NameHintTextView = requireView().findViewById(R.id.name_hint);
-        PatronymicHintTextView = requireView().findViewById(R.id.patronymic_hint);
-        PhoneHintTextView = requireView().findViewById(R.id.phone_hint);
-        EmailHintTextView = requireView().findViewById(R.id.email_hint);
-        DateHintTextView = requireView().findViewById(R.id.date_birth_hint);
+        view = requireView();
+        dateBirthButton = view.findViewById(R.id.date_birth_button);
+        approveButton = view.findViewById(R.id.approve);
+        SurnameEditText = view.findViewById(R.id.surname_edit_text);
+        NameEditText = view.findViewById(R.id.name_edit_text);
+        PatronymicEditText = view.findViewById(R.id.patronymic_edit_text);
+        PhoneNumberEditText = view.findViewById(R.id.phone_number_edit_text);
+        EmailEditText = view.findViewById(R.id.email_edit_text);
+        applyCheckBox = view.findViewById(R.id.checkbox_apply);
+        SurnameHintTextView = view.findViewById(R.id.surname_hint);
+        NameHintTextView = view.findViewById(R.id.name_hint);
+        PatronymicHintTextView = view.findViewById(R.id.patronymic_hint);
+        PhoneHintTextView = view.findViewById(R.id.phone_hint);
+        EmailHintTextView = view.findViewById(R.id.email_hint);
+        DateHintTextView = view.findViewById(R.id.date_birth_hint);
     }
 
     private void setOnClickListeners() {
-        if(approveButton!=null && dateBirthButton!=null && applyCheckBox!=null){
-            approveButton.setOnClickListener(approveButtonListener);
-            dateBirthButton.setOnClickListener(dateBirthClickListener);
-            applyCheckBox.setOnClickListener(applyCheckboxClickListener);
-        }
+        approveButton.setOnClickListener(approveButtonListener);
+        dateBirthButton.setOnClickListener(dateBirthClickListener);
+        applyCheckBox.setOnClickListener(applyCheckboxClickListener);
     }
 
     private void setApplyCheckBox() {
@@ -305,7 +313,7 @@ public class RegistrationFragment extends Fragment {
     }
 
     private void setSpinner() {
-        Spinner spinner = requireView().findViewById(R.id.gender_spinner);
+        Spinner spinner = view.findViewById(R.id.gender_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -318,6 +326,7 @@ public class RegistrationFragment extends Fragment {
                 "через мобильное приложение"
                 + "\nВаш email: " + email
                 + "\nВаш временный пароль для входа в приложение: " + password
+                + "\nВаш логин для входа в приложение: " + userid
                 + "\nИспользуйте только один вариант: логин в окне авторизации."
                 + "\nВ целях безопасности никому не сообщайте данные из этого сообщения.";
         JavaMailAPI javaMailAPI;

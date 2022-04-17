@@ -30,6 +30,29 @@
             android:paddingVertical="10dp"
             />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/authorized_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:background="@color/white"
+        android:paddingVertical="10dp"
+        >
+
+        <TextView
+            android:id="@+id/authorized_text_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pt_serif"
+            android:text="@string/authorized"
+            android:textColor="@color/headers_primary"
+            android:textSize="24sp"
+            />
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,6 +65,7 @@
         android:background="@color/white"
         >
         <EditText
+            android:id="@+id/login_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -54,6 +78,7 @@
             android:inputType="textEmailAddress"
             android:autofillHints="emailAddress" />
         <EditText
+            android:id="@+id/password_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     //private static final String TAG = "MainActivity";
     private static BottomNavigationView bottomNavigationView;
     public static boolean isNetworkEnabled = false;
-    public SharedPreferences sp;
+    public static SharedPreferences sp;
     DatabaseHelper db;
 
     @SuppressLint("NonConstantResourceId")

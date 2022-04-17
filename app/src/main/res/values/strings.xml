@@ -71,4 +71,5 @@
     <string name="no_connection">Нет интернет соединения</string>
     <string name="check_connection">Проверить соединение</string>
     <string name="user_logged">false</string>
+    <string name="authorized">Вы авторизованы, как:\n</string>
 </resources>

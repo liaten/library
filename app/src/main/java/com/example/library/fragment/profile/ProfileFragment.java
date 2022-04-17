@@ -1,11 +1,8 @@
 package com.example.library.fragment.profile;
 
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +10,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.helper.FragmentHelper;
-import com.example.library.helper.RecyclerInitializer;
 
 import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView;
+    private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, topTitle;
     private RecyclerView booksOnHandsList, reservedBooksTextList, wishlistList;
     private static final ArrayList<Spanned> titles = new ArrayList<>();
     private static final ArrayList<Drawable> covers = new ArrayList<>();
@@ -48,33 +39,29 @@ public class ProfileFragment extends Fragment {
         setViews();
         setOnClickListeners();
         getBooks();
+        setTopTitle();
     }
 
+
     private void setViews() {
-        booksOnHandsTextView = requireView().findViewById(R.id.books_on_hands_view_all);
-        reservedBooksTextView = requireView().findViewById(R.id.reserved_books_view_all);
-        wishlistTextView = requireView().findViewById(R.id.wishlist_view_all);
-        booksOnHandsList = requireView().findViewById(R.id.books_on_hands_list);
-        reservedBooksTextList = requireView().findViewById(R.id.reserved_books_list);
-        wishlistList = requireView().findViewById(R.id.wishlist_books_list);
+        View v = requireView();
+        booksOnHandsTextView = v.findViewById(R.id.books_on_hands_view_all);
+        reservedBooksTextView = v.findViewById(R.id.reserved_books_view_all);
+        wishlistTextView = v.findViewById(R.id.wishlist_view_all);
+        booksOnHandsList = v.findViewById(R.id.books_on_hands_list);
+        reservedBooksTextList = v.findViewById(R.id.reserved_books_list);
+        wishlistList = v.findViewById(R.id.wishlist_books_list);
+        topTitle = v.findViewById(R.id.full_name_profile_textview);
+    }
+
+    private void setTopTitle(){
+        String name = MainActivity.sp.getString("name", "Гость");
+        String surname = MainActivity.sp.getString("surname", "");
+        topTitle.setText(name + " " + surname);
     }
 
     private void getBooks(){
-        covers.clear();
-        titles.clear();
-        Resources resources = getResources();
-        int resourceId1 = resources.getIdentifier("b13", "drawable",
-                getContext().getPackageName());
-        covers.add(resources.getDrawable(resourceId1));
-        String author = "Антуан Де Сент-Экзюпери";
-        String title = "Маленький принц";
-        Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
-        titles.add(sp);
-        int resourceId2 = resources.getIdentifier("b13", "drawable",
-                getContext().getPackageName());
-        covers.add(resources.getDrawable(resourceId2));
-        titles.add(sp);
-        new RecyclerInitializer(requireActivity(), titles, covers).execute(booksOnHandsList);
+        //
     }
 
     private void setOnClickListeners() {

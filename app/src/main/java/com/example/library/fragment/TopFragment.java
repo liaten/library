@@ -29,6 +29,8 @@ public class TopFragment extends Fragment {
 
     private ImageView profileImageView;
     private CardView profileCardView;
+    private View view;
+
     @NonNull
     public View.OnClickListener profileClickListener = view -> new FragmentHelper((MainActivity) requireActivity(),
             false,true).execute(new ProfileFragment());
@@ -49,12 +51,17 @@ public class TopFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         updateDate();
         setViews();
+        setOnClickListeners();
         setImageOnProfile();
     }
 
     private void setViews() {
-        profileCardView = requireView().findViewById(R.id.profile_card_view);
-        profileImageView = requireView().findViewById(R.id.profileImageView);
+        view = requireView();
+        profileCardView = view.findViewById(R.id.profile_card_view);
+        profileImageView = view.findViewById(R.id.profileImageView);
+
+    }
+    private void setOnClickListeners(){
         profileCardView.setOnClickListener(profileClickListener);
         profileImageView.setOnClickListener(profileClickListener);
     }
