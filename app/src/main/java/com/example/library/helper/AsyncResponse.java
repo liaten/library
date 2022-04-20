@@ -8,4 +8,8 @@ public interface AsyncResponse {
     void processFinish(Boolean output);
     void returnBooks(ArrayList<Book> output);
     void processFinish(Bitmap output);
+    void returnUser(String user);
+    void returnPassword(String password);
+    void returnName(String name);
+    void returnSurname(String surname);
 }

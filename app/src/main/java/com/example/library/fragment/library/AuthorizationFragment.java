@@ -1,7 +1,9 @@
 package com.example.library.fragment.library;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +19,22 @@ import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
+import com.example.library.helper.AsyncResponse;
+import com.example.library.helper.Book;
 import com.example.library.helper.DatabaseHelper;
+import com.example.library.helper.Password;
+import com.example.library.helper.Username;
 
-public class AuthorizationFragment extends Fragment {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
+public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     private EditText LoginEditText, PasswordEditText;
     private LinearLayout AuthorizedLayout;
@@ -27,6 +42,8 @@ public class AuthorizationFragment extends Fragment {
     private Button ApplyButton;
     private View view;
     private DatabaseHelper db;
+    private String user, password, login_app, password_app;
+    private static final String TAG = "AuthorizationFragment";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,28 +75,38 @@ public class AuthorizationFragment extends Fragment {
     private final View.OnClickListener applyButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String login = LoginEditText.getText().toString().trim();
-            String password = PasswordEditText.getText().toString().trim();
-            if(login.equals("") || password.equals("")){
+            login_app = LoginEditText.getText().toString().trim();
+            password_app = PasswordEditText.getText().toString().trim();
+            if(login_app.equals("") || password_app.equals("")){
                 Toast.makeText(requireActivity(),
                         "Данные не введены",
                         Toast.LENGTH_SHORT).show();
             }
             else {
-                if(GetUserFromDB(login).equals(login) && GetPasswordByUserFromDB(login).equals(password)){
-                    MainActivity.sp.edit().putBoolean("logged",true).apply();
-                    MainActivity.sp.edit().putString("login", login).apply();
-                    MainActivity.sp.edit().putString("name", GetNameFromDB(login)).apply();
-                    MainActivity.sp.edit().putString("surname", GetSurnameFromDB(login)).apply();
-                    Toast.makeText(requireActivity(),
-                            "Успешный вход",
-                            Toast.LENGTH_SHORT).show();
+                try {
+                    GetUserFromDB(login_app);
+                    GetPasswordByUserFromDB(login_app);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                else {
-                    Toast.makeText(requireActivity(),
-                            "Неверные данные ввода",
-                            Toast.LENGTH_SHORT).show();
-                }
+//                try {
+//                    if(GetUserFromDB(login).equals(login) && GetPasswordByUserFromDB(login).equals(password)){
+//                        MainActivity.sp.edit().putBoolean("logged",true).apply();
+//                        MainActivity.sp.edit().putString("login", login).apply();
+//                        MainActivity.sp.edit().putString("name", GetNameFromDB(login)).apply();
+//                        MainActivity.sp.edit().putString("surname", GetSurnameFromDB(login)).apply();
+//                        Toast.makeText(requireActivity(),
+//                                "Успешный вход",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                    else {
+//                        Toast.makeText(requireActivity(),
+//                                "Неверные данные ввода",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
     };
@@ -96,15 +123,8 @@ public class AuthorizationFragment extends Fragment {
         }
     }
 
-    private String GetUserFromDB(String user){
-        Cursor cursor = db.searchUser(user);
-        String user_from_db = "";
-        if (cursor.getCount() != 0){
-            while (cursor.moveToNext()) {
-                user_from_db = cursor.getString(0);
-            }
-        }
-        return user_from_db;
+    private void GetUserFromDB(String user) throws IOException {
+        new Username(this).execute(user);
     }
 
     private String GetNameFromDB(String user){
@@ -129,14 +149,59 @@ public class AuthorizationFragment extends Fragment {
         return surname;
     }
 
-    private String GetPasswordByUserFromDB(String user){
-        Cursor cursor = db.searchPassword(user);
-        String password_from_db = "";
-        if (cursor.getCount() != 0){
-            while (cursor.moveToNext()) {
-                password_from_db = cursor.getString(0);
-            }
-        }
-        return password_from_db;
+    private void GetPasswordByUserFromDB(String user){
+        new Password(this).execute(user);
     }
+
+    @Override
+    public void processFinish(Boolean output) {
+        //
+    }
+
+    @Override
+    public void returnBooks(ArrayList<Book> output) {
+//
+    }
+
+    @Override
+    public void processFinish(Bitmap output) {
+//
+    }
+
+    @Override
+    public void returnUser(String user) {
+        this.user = user;
+        Log.d(TAG, "returnUser: " + user);
+    }
+
+    @Override
+    public void returnPassword(String password) {
+        this.password = password;
+        Log.d(TAG, "returnPassword: " + password);
+        if(this.user.equals(login_app) && this.password.equals(password_app)){
+            MainActivity.sp.edit().putBoolean("logged",true).apply();
+            MainActivity.sp.edit().putString("login", login_app).apply();
+            GetNameFromDB(login_app);
+            GetSurnameFromDB(login_app);
+            Toast.makeText(requireActivity(),
+                    "Успешный вход",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(requireActivity(),
+                    "Неверные данные ввода",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void returnName(String name) {
+        MainActivity.sp.edit().putString("name", name).apply();
+    }
+
+    @Override
+    public void returnSurname(String surname) {
+        MainActivity.sp.edit().putString("name", surname).apply();
+    }
+
 }

@@ -85,7 +85,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private void getTopNewBooks(){
         BookHelper bookHelper = new BookHelper();
         bookHelper.delegate = this;
-        String topBooksURL = "https://liaten.ru/new_7_books.php";
+        String topBooksURL = "https://liaten.ru/db/new_7_books.php";
         try {
             URL url = new URL(topBooksURL);
             bookHelper.execute(url);
@@ -121,5 +121,25 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     @Override
     public void processFinish(Bitmap output) {
         covers.add(new BitmapDrawable(output));
+    }
+
+    @Override
+    public void returnUser(String user) {
+
+    }
+
+    @Override
+    public void returnPassword(String password) {
+
+    }
+
+    @Override
+    public void returnName(String name) {
+
+    }
+
+    @Override
+    public void returnSurname(String surname) {
+
     }
 }

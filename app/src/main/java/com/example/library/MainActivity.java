@@ -137,4 +137,24 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     public void processFinish(Bitmap output) {
         //
     }
+
+    @Override
+    public void returnUser(String user) {
+
+    }
+
+    @Override
+    public void returnPassword(String password) {
+
+    }
+
+    @Override
+    public void returnName(String name) {
+
+    }
+
+    @Override
+    public void returnSurname(String surname) {
+
+    }
 }
