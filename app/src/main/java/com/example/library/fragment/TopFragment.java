@@ -67,6 +67,6 @@ public class TopFragment extends Fragment {
     }
 
     private void setImageOnProfile() {
-        new ImageDownloader(profileImageView).execute("https://liaten.ru/pictures/m.jpg");
+        new ImageDownloader(profileImageView).execute("https://liaten.ru/pictures_small/m.jpg");
     }
 }

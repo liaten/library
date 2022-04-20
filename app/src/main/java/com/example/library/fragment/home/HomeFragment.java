@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             if(cover.length()<2){
                 cover = "0" + cover;
             }
-            d.execute("https://liaten.ru/libpics/b" + cover + ".jpg");
+            d.execute("https://liaten.ru/libpics_small/b" + cover + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
             Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
