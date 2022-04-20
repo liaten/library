@@ -133,9 +133,10 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Fragment session_fragment = FragmentHelper.getSelectedTopFragment();
-        DayOfDate = session_fragment.requireView().findViewById(R.id.date_day);
-        DayOfWeek = session_fragment.requireView().findViewById(R.id.day_of_the_week);
-        MonthAndYear = session_fragment.requireView().findViewById(R.id.month_year);
+        View view = session_fragment.requireView();
+        DayOfDate = view.findViewById(R.id.date_day);
+        DayOfWeek = view.findViewById(R.id.day_of_the_week);
+        MonthAndYear = view.findViewById(R.id.month_year);
         if (!isDataUpdated) {
             DayOfWeek.setVisibility(View.INVISIBLE);
             DayOfDate.setVisibility(View.INVISIBLE);
@@ -145,8 +146,13 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
 
     @Override
     protected String doInBackground(URL... urls) {
+        result = getJSONFromURL(urls[0]);
+        return result;
+    }
+
+    public static String getJSONFromURL(URL url){
         try {
-            HttpURLConnection connection = (HttpURLConnection) urls[0].openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
@@ -158,12 +164,12 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
                 response.append(inputLine);
             }
             bufferedReader.close();
-            result = response.toString();
+            //Log.d(TAG, "getJSONFromURL: " + response);
+            return response.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //Log.d(TAG,result);
-        return result;
+        return "";
     }
 
     @Override

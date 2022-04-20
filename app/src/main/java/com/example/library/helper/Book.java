@@ -20,11 +20,11 @@ public class Book {
         this.title = title;
     }
 
-    public String getCover() {
+    public int getCover() {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(int cover) {
         this.cover = cover;
     }
 
@@ -54,12 +54,12 @@ public class Book {
 
     private int ID;
     private String title;
-    private String cover;
+    private int cover;
     private String author;
     private String theme;
     private Date date;
 
-    public Book(int ID, String title, String author, String cover, String theme, Date date){
+    public Book(int ID, String title, String author, int cover, String theme, Date date){
 
         setID(ID);
         setTitle(title);

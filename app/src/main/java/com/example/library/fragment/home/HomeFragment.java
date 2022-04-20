@@ -3,7 +3,10 @@ package com.example.library.fragment.home;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -21,20 +24,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.fragment.profile.ProfileFragment;
+import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.Book;
+import com.example.library.helper.BookHelper;
 import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.FragmentHelper;
+import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.RecyclerInitializer;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AsyncResponse {
 
     private static final ArrayList<Spanned> titles = new ArrayList<>();
     private static final ArrayList<Drawable> covers = new ArrayList<>();
     private RecyclerView newBooksList;
     private static final String TAG = "HomeFragment";
+    private ArrayList<Book> books;
     DatabaseHelper db;
 
     private TextView allNewsTextView = null;
@@ -60,19 +69,8 @@ public class HomeFragment extends Fragment {
     private void getBooks(){
         covers.clear();
         titles.clear();
-        ArrayList<Book> books = getTopNewBooks();
-        Resources resources = getResources();
-        for (Book book : books
-             ) {
-            final int resourceID = resources.getIdentifier("b" + book.getCover(),"drawable",
-                    getContext().getPackageName());
-            covers.add(resources.getDrawable(resourceID));
-            String author = book.getAuthor();
-            String title = book.getTitle();
-            Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
-            titles.add(sp);
-        }
-        new RecyclerInitializer(requireActivity(), titles, covers).execute(newBooksList);
+        getTopNewBooks();
+
     }
 
     private void setViews() {
@@ -84,21 +82,44 @@ public class HomeFragment extends Fragment {
         allNewsTextView.setOnClickListener(allNewsListener);
     }
 
-    private ArrayList<Book> getTopNewBooks(){
-        Cursor cursor = db.getTopNewBooks(7);
-        ArrayList<Book> books = new ArrayList<>();
-        if (cursor.getCount() != 0){
-            while (cursor.moveToNext()) {
-                books.add(new Book(
-                        cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getString(4),
-                        new Date(cursor.getLong(5))
-                ));
-            }
+    private void getTopNewBooks(){
+        BookHelper bookHelper = new BookHelper();
+        bookHelper.delegate = this;
+        String topBooksURL = "https://liaten.ru/new_7_books.php";
+        try {
+            URL url = new URL(topBooksURL);
+            bookHelper.execute(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
-        return books;
+    }
+
+    @Override
+    public void processFinish(Boolean output) {
+        //
+    }
+
+    @Override
+    public void returnBooks(ArrayList<Book> output) {
+        for (Book book : output
+        ) {
+            ImageDownloader d = new ImageDownloader();
+            d.delegate = this;
+            String cover = String.valueOf(book.getCover());
+            if(cover.length()<2){
+                cover = "0" + cover;
+            }
+            d.execute("https://liaten.ru/libpics/b" + cover + ".jpg");
+            String author = book.getAuthor();
+            String title = book.getTitle();
+            Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
+            titles.add(sp);
+        }
+        new RecyclerInitializer(requireActivity(), titles, covers).execute(newBooksList);
+    }
+
+    @Override
+    public void processFinish(Bitmap output) {
+        covers.add(new BitmapDrawable(output));
     }
 }

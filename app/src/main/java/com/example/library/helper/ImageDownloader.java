@@ -15,10 +15,14 @@ import java.io.InputStream;
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     @SuppressLint("StaticFieldLeak")
     ImageView bmImage;
+    public AsyncResponse delegate = null;
 
     @SuppressWarnings("deprecation")
     public ImageDownloader(@Nullable ImageView bmImage) {
         this.bmImage = bmImage;
+    }
+    public ImageDownloader(){
+        //
     }
 
     @Nullable
@@ -36,6 +40,11 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(@Nullable Bitmap result) {
-        bmImage.setImageBitmap(result);
+        if(bmImage!=null){
+            bmImage.setImageBitmap(result);
+        }
+        else {
+            delegate.processFinish(result);
+        }
     }
 }

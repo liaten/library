@@ -217,7 +217,6 @@ public class RegistrationFragment extends Fragment {
                 || email.equals("")) {
             Toast.makeText(getActivity(), "Не все поля заполнены", Toast.LENGTH_SHORT).show();
         } else {
-            // TODO: Сгенерировать user_id, password, перевести номер телефона из строки в long
             Random random = new Random();
             int user_id = random.nextInt(2147483647);
             userid = String.valueOf(user_id);

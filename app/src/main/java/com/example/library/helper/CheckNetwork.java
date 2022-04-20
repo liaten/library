@@ -21,15 +21,14 @@ public class CheckNetwork extends AsyncTask<Context, Void, Boolean>{
                 context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
         if (info == null) {
-            Log.d(TAG, "no internet connection");
+//            Log.d(TAG, "no internet connection");
             return false;
         } else {
             if (info.isConnected()) {
-                Log.d(TAG, " internet connection available...");
+//                Log.d(TAG, " internet connection available...");
             } else {
-                Log.d(TAG, " internet connection");
+//                Log.d(TAG, " internet connection");
             }
-//            return pingCIT();
             return true;
         }
     }
@@ -38,19 +37,5 @@ public class CheckNetwork extends AsyncTask<Context, Void, Boolean>{
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
         delegate.processFinish(aBoolean);
-    }
-// TODO: не работает пинг!
-    private boolean pingCIT() {
-        Log.d(TAG, "executeCommand");
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process mIpAddrProcess = runtime.exec("/system/bin/ping -c 1 cit.rkomi.ru");
-            int mExitValue = mIpAddrProcess.waitFor();
-            Log.d(TAG, " mExitValue " + mExitValue);
-            return mExitValue == 0;
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }
