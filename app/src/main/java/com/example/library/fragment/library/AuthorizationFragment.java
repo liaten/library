@@ -119,7 +119,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
         }
         else {
             AuthorizedLayout.setVisibility(View.VISIBLE);
-            AuthorizedTextView.setText(AuthorizedTextView.getText() + name + surname);
+            AuthorizedTextView.setText(String.format("%s%s %s", getResources().getString(R.string.authorized), name, surname));
         }
     }
 
