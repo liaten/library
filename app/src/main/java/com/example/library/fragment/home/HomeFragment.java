@@ -1,16 +1,11 @@
 package com.example.library.fragment.home;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.fragment.profile.ProfileFragment;
 import com.example.library.helper.AsyncResponse;
-import com.example.library.helper.Book;
+import com.example.library.entity.Book;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.RecyclerInitializer;
 
+import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class HomeFragment extends Fragment implements AsyncResponse {
 
@@ -124,22 +119,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void returnUser(String user) {
-
-    }
-
-    @Override
-    public void returnPassword(String password) {
-
-    }
-
-    @Override
-    public void returnName(String name) {
-
-    }
-
-    @Override
-    public void returnSurname(String surname) {
+    public void returnJSONObject(JSONObject jsonObject) {
 
     }
 }

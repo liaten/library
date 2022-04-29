@@ -1,6 +1,5 @@
 package com.example.library.fragment.library;
 
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,18 +19,15 @@ import androidx.fragment.app.Fragment;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.helper.AsyncResponse;
-import com.example.library.helper.Book;
+import com.example.library.entity.Book;
 import com.example.library.helper.DatabaseHelper;
-import com.example.library.helper.Password;
-import com.example.library.helper.Username;
+import com.example.library.helper.GetRequestFromDatabase;
 
-import java.io.BufferedReader;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class AuthorizationFragment extends Fragment implements AsyncResponse {
@@ -41,8 +37,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     private TextView AuthorizedTextView;
     private Button ApplyButton;
     private View view;
-    private DatabaseHelper db;
-    private String user, password, login_app, password_app;
+    private String user, password, login_app, password_app, name, surname;
     private static final String TAG = "AuthorizationFragment";
     @Nullable
     @Override
@@ -69,7 +64,6 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
         ApplyButton = view.findViewById(R.id.auth_ok);
         AuthorizedTextView = view.findViewById(R.id.authorized_text_view);
         AuthorizedLayout = view.findViewById(R.id.authorized_layout);
-        db = new DatabaseHelper(view.getContext());
     }
 
     private final View.OnClickListener applyButtonListener = new View.OnClickListener() {
@@ -86,27 +80,11 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                 try {
                     GetUserFromDB(login_app);
                     GetPasswordByUserFromDB(login_app);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//                try {
-//                    if(GetUserFromDB(login).equals(login) && GetPasswordByUserFromDB(login).equals(password)){
-//                        MainActivity.sp.edit().putBoolean("logged",true).apply();
-//                        MainActivity.sp.edit().putString("login", login).apply();
-//                        MainActivity.sp.edit().putString("name", GetNameFromDB(login)).apply();
-//                        MainActivity.sp.edit().putString("surname", GetSurnameFromDB(login)).apply();
-//                        Toast.makeText(requireActivity(),
-//                                "Успешный вход",
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//                    else {
-//                        Toast.makeText(requireActivity(),
-//                                "Неверные данные ввода",
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+
             }
         }
     };
@@ -122,35 +100,22 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
             AuthorizedTextView.setText(String.format("%s%s %s", getResources().getString(R.string.authorized), name, surname));
         }
     }
+    private void setName(String name, String surname){
+        if(name.equals("Гость")){
+            AuthorizedLayout.setVisibility(View.GONE);
+        }
+        else {
+            AuthorizedLayout.setVisibility(View.VISIBLE);
+            AuthorizedTextView.setText(String.format("%s%s %s", getResources().getString(R.string.authorized), name, surname));
+        }
+    }
 
     private void GetUserFromDB(String user) throws IOException {
-        new Username(this).execute(user);
-    }
-
-    private String GetNameFromDB(String user){
-        Cursor cursor = db.searchName(user);
-        String name_from_db = "";
-        if (cursor.getCount() != 0){
-            while (cursor.moveToNext()) {
-                name_from_db = cursor.getString(0);
-            }
-        }
-        return name_from_db;
-    }
-
-    private String GetSurnameFromDB(String user){
-        Cursor cursor = db.searchSurname(user);
-        String surname = "";
-        if (cursor.getCount() != 0){
-            while (cursor.moveToNext()) {
-                surname = cursor.getString(0);
-            }
-        }
-        return surname;
+        new GetRequestFromDatabase(this).execute(user,"username");
     }
 
     private void GetPasswordByUserFromDB(String user){
-        new Password(this).execute(user);
+        new GetRequestFromDatabase(this).execute(user,"password");
     }
 
     @Override
@@ -169,39 +134,53 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void returnUser(String user) {
-        this.user = user;
-        Log.d(TAG, "returnUser: " + user);
-    }
-
-    @Override
-    public void returnPassword(String password) {
-        this.password = password;
-        Log.d(TAG, "returnPassword: " + password);
-        if(this.user.equals(login_app) && this.password.equals(password_app)){
-            MainActivity.sp.edit().putBoolean("logged",true).apply();
-            MainActivity.sp.edit().putString("login", login_app).apply();
-            GetNameFromDB(login_app);
-            GetSurnameFromDB(login_app);
-            Toast.makeText(requireActivity(),
-                    "Успешный вход",
-                    Toast.LENGTH_SHORT).show();
+    public void returnJSONObject(JSONObject jsonObject) {
+        try {
+            user = jsonObject.getString("userid");
+        } catch (JSONException e) {
+            try {
+                password = jsonObject.getString("password");
+                if(user != null){
+                    if(user.equals(login_app) && password.equals(password_app)){
+                        MainActivity.sp.edit().putBoolean("logged",true).apply();
+                        MainActivity.sp.edit().putString("login", login_app).apply();
+                        GetNameFromDB(login_app);
+                        GetSurnameFromDB(login_app);
+                        Toast.makeText(requireActivity(),
+                                "Успешный вход",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(requireActivity(),
+                                "Неверные данные ввода",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (JSONException jsonException) {
+                try {
+                    name = jsonObject.getString("name");
+                } catch (JSONException exception) {
+                    try {
+                        surname = jsonObject.getString("surname");
+                        if(name!=null){
+                            MainActivity.sp.edit().putString("name", name).apply();
+                            MainActivity.sp.edit().putString("surname", surname).apply();
+                            setName(name, surname);
+                        }
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
         }
-        else {
-            Toast.makeText(requireActivity(),
-                    "Неверные данные ввода",
-                    Toast.LENGTH_SHORT).show();
-        }
     }
 
-    @Override
-    public void returnName(String name) {
-        MainActivity.sp.edit().putString("name", name).apply();
+    private void GetSurnameFromDB(String login) {
+        new GetRequestFromDatabase(this).execute(login,"name");
     }
 
-    @Override
-    public void returnSurname(String surname) {
-        MainActivity.sp.edit().putString("name", surname).apply();
+    private void GetNameFromDB(String login) {
+        new GetRequestFromDatabase(this).execute(login,"surname");
     }
 
 }

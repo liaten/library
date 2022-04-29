@@ -1,7 +1,5 @@
 package com.example.library.mail;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
@@ -46,13 +44,13 @@ public class JavaMailAPI extends AsyncTask<Void, Void, String> {
 
         Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Utils.EMAIL, Utils.PASSWORD);
+                return new PasswordAuthentication(EmailCredentials.EMAIL, EmailCredentials.PASSWORD);
             }
         });
 
         MimeMessage mimeMessage = new MimeMessage(session);
         try {
-            mimeMessage.setFrom(new InternetAddress(Utils.EMAIL));
+            mimeMessage.setFrom(new InternetAddress(EmailCredentials.EMAIL));
             mimeMessage.addRecipients(Message.RecipientType.TO, String.valueOf(new InternetAddress(email)));
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);

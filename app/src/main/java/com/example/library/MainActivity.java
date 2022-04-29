@@ -18,11 +18,13 @@ import com.example.library.fragment.home.HomeFragment;
 import com.example.library.fragment.library.LibraryFragment;
 import com.example.library.fragment.search.SearchFragment;
 import com.example.library.helper.AsyncResponse;
-import com.example.library.helper.Book;
+import com.example.library.entity.Book;
 import com.example.library.helper.CheckNetwork;
 import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.FragmentHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -139,22 +141,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void returnUser(String user) {
-
-    }
-
-    @Override
-    public void returnPassword(String password) {
-
-    }
-
-    @Override
-    public void returnName(String name) {
-
-    }
-
-    @Override
-    public void returnSurname(String surname) {
+    public void returnJSONObject(JSONObject jsonObject) {
 
     }
 }
