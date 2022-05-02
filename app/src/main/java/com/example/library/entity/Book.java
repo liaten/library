@@ -52,14 +52,23 @@ public class Book {
         this.date = date;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     private int ID;
     private String title;
     private int cover;
     private String author;
     private String theme;
     private Date date;
+    private String description;
 
-    public Book(int ID, String title, String author, int cover, String theme, Date date){
+    public Book(int ID, String title, String author, int cover, String theme, Date date, String description){
 
         setID(ID);
         setTitle(title);
@@ -67,6 +76,6 @@ public class Book {
         setAuthor(author);
         setTheme(theme);
         setDate(date);
-
+        setDescription(description);
     }
 }

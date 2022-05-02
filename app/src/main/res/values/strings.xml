@@ -72,4 +72,6 @@
     <string name="check_connection">Проверить соединение</string>
     <string name="user_logged">false</string>
     <string name="authorized">Вы авторизованы, как:\n</string>
+    <string name="add_to_wishlist">Добавить в список\nжелаемого</string>
+    <string name="to_book">Забронировать</string>
 </resources>

@@ -12,15 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.library.entity.Book;
 import com.example.library.fragment.NoConnectionFragment;
 import com.example.library.fragment.events.EventsFragment;
 import com.example.library.fragment.home.HomeFragment;
 import com.example.library.fragment.library.LibraryFragment;
 import com.example.library.fragment.search.SearchFragment;
 import com.example.library.helper.AsyncResponse;
-import com.example.library.entity.Book;
 import com.example.library.helper.CheckNetwork;
-import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.FragmentHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private static BottomNavigationView bottomNavigationView;
     public static boolean isNetworkEnabled = false;
     public static SharedPreferences sp;
-    DatabaseHelper db;
 
     @SuppressLint("NonConstantResourceId")
     private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener
@@ -101,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new DatabaseHelper(this);
         setContentView(R.layout.activity_main);
         setViews();
         setOnClickListeners();

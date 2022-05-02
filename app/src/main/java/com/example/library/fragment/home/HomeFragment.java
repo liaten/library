@@ -18,10 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.helper.AsyncResponse;
 import com.example.library.entity.Book;
+import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelper;
-import com.example.library.helper.DatabaseHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.RecyclerInitializer;
@@ -34,12 +33,13 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements AsyncResponse {
 
-    private static final ArrayList<Spanned> titles = new ArrayList<>();
+    private static final ArrayList<Spanned> titles_authors = new ArrayList<>();
     private static final ArrayList<Drawable> covers = new ArrayList<>();
+    private static final ArrayList<String> descriptions = new ArrayList<>();
+    private static final ArrayList<String> titles = new ArrayList<>();
+    private static final ArrayList<String> authors = new ArrayList<>();
     private RecyclerView newBooksList;
-    private static final String TAG = "HomeFragment";
-    private ArrayList<Book> books;
-    DatabaseHelper db;
+//    private static final String TAG = "HomeFragment";
 
     private TextView allNewsTextView = null;
     View.OnClickListener allNewsListener = view -> {
@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
 
     private void getBooks(){
         covers.clear();
-        titles.clear();
+        titles_authors.clear();
         getTopNewBooks();
 
     }
@@ -71,7 +71,6 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private void setViews() {
         allNewsTextView = requireView().findViewById(R.id.all_news);
         newBooksList = requireView().findViewById(R.id.new_books_list);
-        db = new DatabaseHelper(this.requireActivity());
     }
     private void setOnClickListeners(){
         allNewsTextView.setOnClickListener(allNewsListener);
@@ -108,9 +107,12 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             String author = book.getAuthor();
             String title = book.getTitle();
             Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
-            titles.add(sp);
+            titles_authors.add(sp);
+            descriptions.add(book.getDescription());
+            titles.add(title);
+            authors.add(author);
         }
-        new RecyclerInitializer(requireActivity(), titles, covers).execute(newBooksList);
+        new RecyclerInitializer(requireActivity(), titles_authors, covers, descriptions, titles, authors).execute(newBooksList);
     }
 
     @Override

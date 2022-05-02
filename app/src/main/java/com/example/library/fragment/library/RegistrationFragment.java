@@ -1,12 +1,13 @@
 package com.example.library.fragment.library;
 
-import static com.example.library.helper.DatabaseHelper.getSQLDate;
 import static com.example.library.helper.DateHelper.getDay;
 import static com.example.library.helper.DateHelper.getMonth;
+import static com.example.library.helper.DateHelper.getSQLDate;
 import static com.example.library.helper.DateHelper.getYear;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,11 +32,20 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.helper.DatabaseHelper;
+import com.example.library.entity.Book;
+import com.example.library.helper.AsyncResponse;
+import com.example.library.helper.CreateUser;
 import com.example.library.helper.DateHelper;
+import com.example.library.helper.FragmentHelper;
+import com.example.library.helper.SearchEmailByEmailFromDB;
 import com.example.library.mail.JavaMailAPI;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -43,7 +53,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegistrationFragment extends Fragment {
+public class RegistrationFragment extends Fragment implements AsyncResponse {
 
     @Nullable
     protected DatePickerDialog datePickerDialog;
@@ -52,22 +62,25 @@ public class RegistrationFragment extends Fragment {
     @Nullable
     protected EditText SurnameEditText, NameEditText, PatronymicEditText, PhoneNumberEditText,
             EmailEditText;
+    @Nullable
+    protected Spinner genderSpinner;
+    private static final String NAME_EMAIL_DB = "email";
     private View view;
-
+    private static final String CREATE_USER_DB = "create_user";
     private final TextWatcher cyrillicTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            for (EditText et : cyrillicEditTexts){
+            for (EditText et : cyrillicEditTexts) {
 
                 if (!Pattern.compile("^[А-Я][а-я]*$").matcher(et.getText().toString()).find()) {
                     if (et.getText().toString().length() > 0) {
                         char ch = et.getText().toString().charAt(et.getText().toString().length() - 1);
                         if (ch >= 'а' && ch <= 'я') {
                             et.setText(String.format("%s", (char) ((int) ch - 32)));
-                            //Log.d(TAG, "onTextChanged: " + (int)et.getText().toString().charAt(et.getText().toString().length()-1));
                         } else {
                             et.setText(et.getText().toString().substring(0,
                                     et.getText().toString().length() - 1));
@@ -107,6 +120,7 @@ public class RegistrationFragment extends Fragment {
         public void afterTextChanged(Editable editable) {
         }
     };
+    protected String surname, name, patronymic, phone_str, email, SQLDateBirth, password, userid, gender;
     List<EditText> cyrillicEditTexts;
     @Nullable
     protected CheckBox applyCheckBox;
@@ -162,16 +176,18 @@ public class RegistrationFragment extends Fragment {
         setCyrillicEditTexts();
         addTextChangeListeners();
     }
+
     private final OnDateSetListener dateSetListener = new OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            SQLDateBirth = getSQLDate((short) day, (short) month, (short) year);
+            SQLDateBirth = getSQLDate((short) day, (short) (month+1), (short) year);
             String dateShowToUser = day + " " +
                     DateHelper.getRussianMonthsGenitive((short) (month + 1)) + " " + year;
             dateBirthButton.setText(dateShowToUser);
             dateBirthButton.setTextColor(Color.BLACK);
         }
     };
+
     protected TextView SurnameHintTextView, NameHintTextView, PatronymicHintTextView,
             PhoneHintTextView, EmailHintTextView, DateHintTextView;
 
@@ -188,8 +204,7 @@ public class RegistrationFragment extends Fragment {
             approveButton.setEnabled(applyCheckBox.isChecked());
         }
     };
-    @Nullable
-    protected String surname, name, patronymic, phone_str, email, SQLDateBirth, password, userid;
+
 
     private final View.OnFocusChangeListener numberFocusListener = new View.OnFocusChangeListener() {
         @Override
@@ -205,14 +220,22 @@ public class RegistrationFragment extends Fragment {
     };
     private final View.OnClickListener approveButtonListener = view -> {
 
-        DatabaseHelper db = new DatabaseHelper(this.getContext());
-
         surname = SurnameEditText.getText().toString();
         name = NameEditText.getText().toString();
         patronymic = PatronymicEditText.getText().toString();
+        gender = genderSpinner.getSelectedItem().toString();
         phone_str = PhoneNumberEditText.getText().toString();
         email = EmailEditText.getText().toString();
 
+        switch (gender){
+            case "Мужской":
+                gender = "m";
+                break;
+            case "Женский":
+                gender = "f";
+                break;
+        }
+        Log.d(TAG, ": " + gender);
         if (surname.equals("") || name.equals("") || patronymic.equals("") || phone_str.equals("")
                 || email.equals("")) {
             Toast.makeText(getActivity(), "Не все поля заполнены", Toast.LENGTH_SHORT).show();
@@ -221,31 +244,11 @@ public class RegistrationFragment extends Fragment {
             int user_id = random.nextInt(2147483647);
             userid = String.valueOf(user_id);
             password = String.valueOf(random.nextInt(2147483647));
-            Pattern pattern = Pattern.compile("[0-9]{10}$");
-            Matcher matcher = pattern.matcher(phone_str);
-            long phone;
-            while (matcher.find()) {
-                int start = matcher.start();
-                int end = matcher.end();
-                String result = phone_str.substring(start, end);
-                Log.d(TAG, ": " + result);
-                phone = Long.parseLong(result);
-                if (isMailValid(email)) {
-                    if(db.searchEmail(email).equals(email)){
-                        Toast.makeText(getActivity(),
-                                "Аккаунт под такой электронной почтой уже зарегистрирован",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        db.addUser(surname, name, patronymic, phone, SQLDateBirth, email, user_id, password);
-                        sendEmail();
-                        Toast.makeText(getActivity(),
-                                "Пароль отправлен на\n" + email, Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "Почта введена неверно",
-                            Toast.LENGTH_SHORT).show();
-                }
+            if (isMailValid(email)) {
+                GetEmailFromDB(email);
+            } else {
+                Toast.makeText(getActivity(), "Почта введена неверно",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -272,12 +275,23 @@ public class RegistrationFragment extends Fragment {
         PhoneHintTextView = view.findViewById(R.id.phone_hint);
         EmailHintTextView = view.findViewById(R.id.email_hint);
         DateHintTextView = view.findViewById(R.id.date_birth_hint);
+        genderSpinner = view.findViewById(R.id.gender_spinner);
     }
 
     private void setOnClickListeners() {
         approveButton.setOnClickListener(approveButtonListener);
         dateBirthButton.setOnClickListener(dateBirthClickListener);
         applyCheckBox.setOnClickListener(applyCheckboxClickListener);
+    }
+
+    private void createUser(String surname, String name, String patronymic, String phone,
+                            String SQLDateBirth, String email, String user_id, String password, String gender) {
+        new CreateUser(this).execute(surname, name, patronymic, phone, SQLDateBirth, email,
+                user_id, password, gender);
+    }
+
+    private void GetEmailFromDB(String email) {
+        new SearchEmailByEmailFromDB(this).execute(email);
     }
 
     private void setApplyCheckBox() {
@@ -288,7 +302,7 @@ public class RegistrationFragment extends Fragment {
         applyCheckBox.setText(Html.fromHtml(checkBoxText, Html.FROM_HTML_MODE_LEGACY));
     }
 
-    private void setCyrillicEditTexts(){
+    private void setCyrillicEditTexts() {
         cyrillicEditTexts = Arrays.asList(SurnameEditText,NameEditText,PatronymicEditText);
     }
 
@@ -312,11 +326,11 @@ public class RegistrationFragment extends Fragment {
     }
 
     private void setSpinner() {
-        Spinner spinner = view.findViewById(R.id.gender_spinner);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.gender, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        genderSpinner.setAdapter(adapter);
     }
 
     private void sendEmail() {
@@ -324,14 +338,61 @@ public class RegistrationFragment extends Fragment {
         String mMessage = "Вами был успешно создан аккаунт в детской библиотеке им. Маршака " +
                 "через мобильное приложение"
                 + "\nВаш email: " + email
-                + "\nВаш временный пароль для входа в приложение: " + password
                 + "\nВаш логин для входа в приложение: " + userid
+                + "\nВаш временный пароль для входа в приложение: " + password
                 + "\nИспользуйте только один вариант: логин в окне авторизации."
                 + "\nВ целях безопасности никому не сообщайте данные из этого сообщения.";
         JavaMailAPI javaMailAPI;
         if (email != null) {
             javaMailAPI = new JavaMailAPI(email, mSubject, mMessage);
             javaMailAPI.execute();
+        }
+    }
+
+    @Override
+    public void processFinish(Boolean output) {
+
+    }
+
+    @Override
+    public void returnBooks(ArrayList<Book> output) {
+
+    }
+
+    @Override
+    public void processFinish(Bitmap output) {
+
+    }
+
+    @Override
+    public void returnJSONObject(JSONObject jsonObject) {
+        try {
+            if (jsonObject.getBoolean("success")) {
+                String type = jsonObject.getString("type");
+                switch (type) {
+                    case NAME_EMAIL_DB:
+                        Toast.makeText(getActivity(),
+                                "Аккаунт под такой электронной почтой уже зарегистрирован",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case CREATE_USER_DB:
+                        sendEmail();
+                        Toast.makeText(getActivity(),
+                                "Пароль отправлен на\n" + email, Toast.LENGTH_SHORT).show();
+                        new FragmentHelper((MainActivity) requireActivity(),
+                                false,true).execute(new AuthorizationFragment());
+                        break;
+                }
+            } else {
+                String type = jsonObject.getString("type");
+                if (type.equals(NAME_EMAIL_DB)) {
+                    Log.d(TAG, "User credentials:" + surname + name + patronymic +
+                            phone_str + SQLDateBirth + email + userid + password);
+                    createUser(surname, name, patronymic, phone_str, SQLDateBirth, email, userid, password, gender);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

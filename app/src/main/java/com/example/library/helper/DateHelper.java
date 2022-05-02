@@ -19,7 +19,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.Date;
 
 public class DateHelper extends AsyncTask<URL, Void, String> {
 
@@ -148,6 +147,31 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     protected String doInBackground(URL... urls) {
         result = getJSONFromURL(urls[0]);
         return result;
+    }
+
+    public static String getSQLDate(short day, short month, short year) {
+        String dayStr, monthStr, yearStr;
+        if (day < 10) {
+            dayStr = "0" + day;
+        } else {
+            dayStr = String.valueOf(day);
+        }
+        if (month < 10) {
+            monthStr = "0" + month;
+        } else {
+            monthStr = String.valueOf(month);
+        }
+        if (year < 10) {
+            yearStr = "000" + year;
+        } else if (year < 100) {
+            yearStr = "00" + year;
+        } else if (year < 1000) {
+            yearStr = "0" + year;
+        } else {
+            yearStr = String.valueOf(year);
+        }
+        Log.d(TAG, "SQLDATE: " + yearStr + "-" + monthStr + "-" + dayStr);
+        return yearStr + "-" + monthStr + "-" + dayStr;
     }
 
     public static String getJSONFromURL(URL url){

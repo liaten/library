@@ -2,6 +2,7 @@ package com.example.library.helper;
 
 import static com.example.library.helper.DateHelper.getJSONFromURL;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 
 import com.example.library.entity.Book;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
 
     public AsyncResponse delegate = null;
-    private static final String TAG = "BookHelper";
+//    private static final String TAG = "BookHelper";
 
     @Override
     protected ArrayList<Book> doInBackground(URL... urls) {
@@ -28,6 +29,7 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
             JSONArray books = jsonObject.getJSONArray("books");
             for(int i=0;i<books.length();i++){
                 JSONObject book = books.getJSONObject(i);
+                @SuppressLint("SimpleDateFormat")
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 booksList.add(new Book(
                         book.getInt("id"),
@@ -35,11 +37,10 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
                         book.getString("author"),
                         book.getInt("cover"),
                         book.getString("theme"),
-                        sdf.parse(book.getString("date"))
+                        sdf.parse(book.getString("date")),
+                        book.getString("description")
                 ));
             }
-            //Log.d(TAG, "onPostExecute: " + booksList.size());
-//            delegate.processFinish(booksList);
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
         }

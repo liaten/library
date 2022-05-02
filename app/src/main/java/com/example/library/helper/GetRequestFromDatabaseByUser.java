@@ -4,22 +4,15 @@ import static com.example.library.helper.DateHelper.getJSONFromURL;
 
 import android.os.AsyncTask;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URL;
 
-public class GetRequestFromDatabase extends AsyncTask<String, Void, JSONObject> {
+public class GetRequestFromDatabaseByUser extends AsyncTask<String, Void, JSONObject> {
 
-    public AsyncResponse delegate = null;
-    private static final String TAG = "Username";
-    public GetRequestFromDatabase(AsyncResponse delegate){
+    public AsyncResponse delegate;
+//    private static final String TAG = "Username";
+    public GetRequestFromDatabaseByUser(AsyncResponse delegate){
         this.delegate = delegate;
     }
     @Override
