@@ -2,6 +2,7 @@ package com.example.library.fragment.library;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     private static final String PASSWORD_PHP_DB = "password";
     private static final String NAME_PHP_DB = "name";
     private static final String SURNAME_PHP_DB = "surname";
-//    private static final String TAG = "AuthorizationFragment";
+    private static final String TAG = "AuthorizationFragment";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -89,13 +90,19 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
         setName(name, surname);
     }
     private void setName(String name, String surname){
-        if(name.equals("Гость")){
-            AuthorizedLayout.setVisibility(View.GONE);
+        if(name!=null && surname!=null){
+            if(name.equals("Гость")){
+                AuthorizedLayout.setVisibility(View.GONE);
+            }
+            else {
+                AuthorizedLayout.setVisibility(View.VISIBLE);
+                AuthorizedTextView.setText(String.format("%s%s %s", getResources().getString(R.string.authorized), name, surname));
+            }
         }
         else {
-            AuthorizedLayout.setVisibility(View.VISIBLE);
-            AuthorizedTextView.setText(String.format("%s%s %s", getResources().getString(R.string.authorized), name, surname));
+            AuthorizedLayout.setVisibility(View.GONE);
         }
+
     }
 
     private void GetUserFromDB(String user) {
@@ -123,6 +130,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
+        Log.d(TAG, "returnJSONObject: " + jsonObject);
         try {
             if(jsonObject.getBoolean("success")){
                 String type = jsonObject.getString("type");
@@ -151,14 +159,13 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                         break;
                     case NAME_PHP_DB:
                         name = jsonObject.getString("name");
+                        MainActivity.sp.edit().putString("name", name).apply();
+                        setName(name, surname);
                         break;
                     case SURNAME_PHP_DB:
                         surname = jsonObject.getString("surname");
-                        if(name!=null){
-                            MainActivity.sp.edit().putString("name", name).apply();
-                            MainActivity.sp.edit().putString("surname", surname).apply();
-                            setName(name, surname);
-                        }
+                        MainActivity.sp.edit().putString("surname", surname).apply();
+                        setName(name, surname);
                         break;
                 }
             }
