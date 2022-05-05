@@ -387,8 +387,8 @@ public class RegistrationFragment extends Fragment implements AsyncResponse {
             } else {
                 String type = jsonObject.getString("type");
                 if (type.equals(NAME_EMAIL_DB)) {
-                    Log.d(TAG, "User credentials:" + surname + name + patronymic +
-                            phone_str + SQLDateBirth + email + userid + password);
+//                    Log.d(TAG, "User credentials:" + surname + name + patronymic +
+//                            phone_str + SQLDateBirth + email + userid + password);
                     createUser(surname, name, patronymic, phone_str, SQLDateBirth, email, userid, password, gender);
                 }
             }

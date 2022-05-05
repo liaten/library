@@ -18,9 +18,11 @@ public class GetRequestFromDatabaseByUser extends AsyncTask<String, Void, JSONOb
     @Override
     protected JSONObject doInBackground(String... strings) {
         try{
-            String userid = strings[0];
-            String searchable = strings[1];
-            URL url = new URL("https://liaten.ru/db/"+searchable+".php?userid="+userid);
+            String searchable = strings[0];     // Искомый столбец
+            String type = strings[1];           // Данные
+            String typeValue = strings[2];      // Тип данных
+            URL url = new URL("https://liaten.ru/db/search_from_user.php?type=" +
+                    type + "&typeValue=" + typeValue + "&searchable=" + searchable);
             return new JSONObject(getJSONFromURL(url));
         } catch(Exception e){
             e.printStackTrace();

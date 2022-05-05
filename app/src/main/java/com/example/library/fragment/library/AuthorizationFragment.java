@@ -34,7 +34,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     private TextView AuthorizedTextView;
     private Button ApplyButton;
     private View view;
-    private String user, password, login_app, password_app, name, surname;
+    private String user, password, login_app, password_app, name, surname, email;
     private static final String USERID_PHP_DB = "userid";
     private static final String PASSWORD_PHP_DB = "password";
     private static final String NAME_PHP_DB = "name";
@@ -106,11 +106,19 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     }
 
     private void GetUserFromDB(String user) {
-        new GetRequestFromDatabaseByUser(this).execute(user,"username");
+        new GetRequestFromDatabaseByUser(this).execute("userid","userid",user);
     }
 
     private void GetPasswordByUserFromDB(String user){
-        new GetRequestFromDatabaseByUser(this).execute(user,"password");
+        new GetRequestFromDatabaseByUser(this).execute("password","userid", user);
+    }
+
+    private void GetEmailFromDB(String email) {
+        new GetRequestFromDatabaseByUser(this).execute("email","email",email);
+    }
+
+    private void GetPasswordByEmailFromDB(String email){
+        new GetRequestFromDatabaseByUser(this).execute("password","email", email);
     }
 
     @Override
