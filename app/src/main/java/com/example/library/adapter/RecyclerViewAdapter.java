@@ -1,13 +1,18 @@
 package com.example.library.adapter;
 
+import static com.example.library.MainActivity.scale;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,34 +22,37 @@ import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.fragment.BookInfo;
 import com.example.library.helper.FragmentHelper;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private final ArrayList<Spanned> titles_authors;
     private final ArrayList<Drawable> covers;
     private final ArrayList<String> descriptions;
     private final ArrayList<String> titles;
     private final ArrayList<String> authors;
+    private final ArrayList<String> coversIDs;
     private final Context context;
-    final float scale;
-    private static final int COVER_HEIGHT = 148;
+
+//    private static final int COVER_HEIGHT = 148;
 
 
-    public RecyclerViewAdapter(Context context, ArrayList<Spanned> titles_authors,
+    public RecyclerViewAdapter(Context context,
                                ArrayList<Drawable> covers, ArrayList<String> descriptions,
-                               ArrayList<String> titles, ArrayList<String> authors
+                               ArrayList<String> titles, ArrayList<String> authors,
+                               ArrayList<String> coversIDs
     ) {
         this.context = context;
-        this.titles_authors = titles_authors;
         this.covers = covers;
         this.descriptions = descriptions;
         this.titles = titles;
         this.authors = authors;
-        scale = context.getResources().getDisplayMetrics().density;
+        this.coversIDs = coversIDs;
         //Log.d(TAG, "scale: " + scale);
     }
 
@@ -66,13 +74,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         pixelsHeight/=coefficient;
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int)pixelsWidth,(int)pixelsHeight);
         holder.cover.setLayoutParams(lp);
-        holder.title.setText(titles_authors.get(position));
+        String regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
+        Pattern myPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher m = myPattern.matcher(authors.get(position));
+        String author = m.replaceAll("$0\u200b");
+        m = myPattern.matcher(titles.get(position));
+        String title = m.replaceAll("$0\u200b");
+        Log.d(TAG, "onBindViewHolder: " + author + " " + title);
+        Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
+        holder.title.setText(sp);
         holder.cover.setImageDrawable(covers.get(position));
         View.OnClickListener bookListener = view ->{
 //            Toast.makeText(context,titles.get(position),Toast.LENGTH_SHORT).show();
             new FragmentHelper((MainActivity) context,
                     false,true).execute(new BookInfo(
-                            titles.get(position), authors.get(position),descriptions.get(position)
+                            titles.get(position), authors.get(position),descriptions.get(position),
+                    coversIDs.get(position)
             ));
         };
         holder.cover.setOnClickListener(bookListener);
@@ -81,7 +98,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return titles_authors.size();
+        return titles.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

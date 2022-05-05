@@ -40,6 +40,7 @@
         android:textSize="10sp"
         tools:ignore="SmallSp"
         android:scrollHorizontally="false"
+        android:hyphenationFrequency="none"
         />
 
 </LinearLayout>

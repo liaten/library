@@ -19,25 +19,25 @@ import java.util.ArrayList;
 public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> {
 
     private static FragmentActivity activity;
-    private static ArrayList<Spanned> titles_authors;
     private static ArrayList<Drawable> covers;
     private static ArrayList<String> descriptions;
     private static ArrayList<String> titles;
     private static ArrayList<String> authors;
+    private static ArrayList<String> coversIDs;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private RecyclerViewAdapter adapter;
     private DividerItemDecoration itemDecoration;
 
-    public RecyclerInitializer(FragmentActivity activity,
-                               ArrayList<Spanned> titles_authors, ArrayList<Drawable> covers,
-                               ArrayList<String> descriptions, ArrayList<String> titles, ArrayList<String> authors) {
+    public RecyclerInitializer(FragmentActivity activity, ArrayList<Drawable> covers,
+                               ArrayList<String> descriptions, ArrayList<String> titles,
+                               ArrayList<String> authors, ArrayList<String> coversIDs) {
         RecyclerInitializer.activity = activity;
-        RecyclerInitializer.titles_authors = titles_authors;
         RecyclerInitializer.covers = covers;
         RecyclerInitializer.descriptions = descriptions;
         RecyclerInitializer.titles = titles;
         RecyclerInitializer.authors = authors;
+        RecyclerInitializer.coversIDs = coversIDs;
     }
 
 
@@ -52,7 +52,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> {
     protected void onPostExecute(Void unused) {
         super.onPostExecute(unused);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(activity, titles_authors,covers,descriptions, titles, authors);
+        adapter = new RecyclerViewAdapter(activity, covers,descriptions, titles, authors, coversIDs);
         recyclerView.setAdapter(adapter);
         itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL);
         itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.empty_divider_horizontal));

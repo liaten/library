@@ -21,7 +21,8 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     public ImageDownloader(@Nullable ImageView bmImage) {
         this.bmImage = bmImage;
     }
-    public ImageDownloader(){
+    public ImageDownloader(AsyncResponse delegate){
+        this.delegate = delegate;
         //
     }
 

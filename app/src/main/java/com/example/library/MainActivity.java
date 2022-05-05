@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     private static BottomNavigationView bottomNavigationView;
     public static boolean isNetworkEnabled = false;
     public static SharedPreferences sp;
+    public static float scale;
 
     @SuppressLint("NonConstantResourceId")
     private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         setOnClickListeners();
         checkNetwork(this, this);
         sp = getSharedPreferences("login", MODE_PRIVATE);
+        scale = getApplicationContext().getResources().getDisplayMetrics().density;
     }
 
     @Override

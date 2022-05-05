@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
 
     private static final ArrayList<Spanned> titles_authors = new ArrayList<>();
     private static final ArrayList<Drawable> covers = new ArrayList<>();
+    private static final ArrayList<String> coversIDs = new ArrayList<>();
     private static final ArrayList<String> descriptions = new ArrayList<>();
     private static final ArrayList<String> titles = new ArrayList<>();
     private static final ArrayList<String> authors = new ArrayList<>();
@@ -95,29 +96,33 @@ public class HomeFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
+        covers.clear();
+        descriptions.clear();
+        titles.clear();
+        authors.clear();
+        coversIDs.clear();
         for (Book book : output
         ) {
-            ImageDownloader d = new ImageDownloader();
-            d.delegate = this;
-            String cover = String.valueOf(book.getCover());
-            if(cover.length()<2){
-                cover = "0" + cover;
+            ImageDownloader d = new ImageDownloader(this);
+            String coverID = String.valueOf(book.getCover());
+            if(coverID.length()<2){
+                coverID = "0" + coverID;
             }
-            d.execute("https://liaten.ru/libpics_small/b" + cover + ".jpg");
+            d.execute("https://liaten.ru/libpics_small/b" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
-            Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
-            titles_authors.add(sp);
+            coversIDs.add(coverID);
             descriptions.add(book.getDescription());
             titles.add(title);
             authors.add(author);
         }
-        new RecyclerInitializer(requireActivity(), titles_authors, covers, descriptions, titles, authors).execute(newBooksList);
+        new RecyclerInitializer(requireActivity(), covers, descriptions, titles, authors, coversIDs).execute(newBooksList);
     }
 
     @Override
     public void processFinish(Bitmap output) {
-        covers.add(new BitmapDrawable(output));
+        Drawable image = new BitmapDrawable(output);
+        covers.add(image);
     }
 
     @Override
