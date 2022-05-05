@@ -1,5 +1,6 @@
 package com.example.library.fragment.profile;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spanned;
@@ -15,11 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
+import com.example.library.entity.Book;
+import com.example.library.helper.AsyncResponse;
+import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements AsyncResponse {
 
     private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, topTitle;
     private RecyclerView booksOnHandsList, reservedBooksTextList, wishlistList;
@@ -61,7 +69,13 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getBooks(){
-        //
+        String topBooksURL = "https://liaten.ru/db/new_7_books.php";
+        try {
+            URL url = new URL(topBooksURL);
+            new BookHelper(this).execute(url);
+        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+        }
     }
 
     private void setOnClickListeners() {
@@ -82,4 +96,24 @@ public class ProfileFragment extends Fragment {
         new FragmentHelper((MainActivity) requireActivity(),
                 false, true).execute(new WishlistFragment());
     };
+
+    @Override
+    public void processFinish(Boolean output) {
+        //
+    }
+
+    @Override
+    public void returnBooks(ArrayList<Book> output) {
+
+    }
+
+    @Override
+    public void processFinish(Bitmap output) {
+
+    }
+
+    @Override
+    public void returnJSONObject(JSONObject jsonObject) {
+
+    }
 }

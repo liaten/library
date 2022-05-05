@@ -367,6 +367,7 @@ public class RegistrationFragment extends Fragment implements AsyncResponse {
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
         try {
+            Log.d(TAG, "returnJSONObject: " + jsonObject);
             if (jsonObject.getBoolean("success")) {
                 String type = jsonObject.getString("type");
                 switch (type) {

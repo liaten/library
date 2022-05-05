@@ -21,6 +21,10 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
     public AsyncResponse delegate = null;
 //    private static final String TAG = "BookHelper";
 
+    public BookHelper(AsyncResponse delegate){
+        this.delegate = delegate;
+    }
+
     @Override
     protected ArrayList<Book> doInBackground(URL... urls) {
         ArrayList<Book> booksList = new ArrayList<>();
@@ -42,7 +46,7 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
                 ));
             }
         } catch (JSONException | ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return booksList;
     }

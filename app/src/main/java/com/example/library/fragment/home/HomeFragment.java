@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,33 +58,25 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         super.onViewCreated(view, savedInstanceState);
         setViews();
         setOnClickListeners();
-        getBooks();
-    }
-
-    private void getBooks(){
-        covers.clear();
-        titles_authors.clear();
         getTopNewBooks();
-
     }
 
     private void setViews() {
-        allNewsTextView = requireView().findViewById(R.id.all_news);
-        newBooksList = requireView().findViewById(R.id.new_books_list);
+        View view = requireView();
+        allNewsTextView = view.findViewById(R.id.all_news);
+        newBooksList = view.findViewById(R.id.new_books_list);
     }
     private void setOnClickListeners(){
         allNewsTextView.setOnClickListener(allNewsListener);
     }
 
     private void getTopNewBooks(){
-        BookHelper bookHelper = new BookHelper();
-        bookHelper.delegate = this;
         String topBooksURL = "https://liaten.ru/db/new_7_books.php";
         try {
             URL url = new URL(topBooksURL);
-            bookHelper.execute(url);
+            new BookHelper(this).execute(url);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
