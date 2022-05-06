@@ -37,6 +37,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     private String user, password, login_app, password_app, name, surname, email;
     private static final String USERID_PHP_DB = "userid";
     private static final String PASSWORD_PHP_DB = "password";
+    private static final String EMAIL_PHP_DB = "email";
     private static final String NAME_PHP_DB = "name";
     private static final String SURNAME_PHP_DB = "surname";
     private static final String TAG = "AuthorizationFragment";
@@ -79,13 +80,13 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
             }
             else {
                 GetUserFromDB(login_app);
-                GetPasswordByUserFromDB(login_app);
+
             }
         }
     };
 
     private void setName(){
-        String name = MainActivity.sp.getString("name", "Гость");
+        String name = MainActivity.sp.getString(NAME_PHP_DB, "Гость");
         String surname = MainActivity.sp.getString("surname", "");
         setName(name, surname);
     }
@@ -106,19 +107,19 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     }
 
     private void GetUserFromDB(String user) {
-        new GetRequestFromDatabaseByUser(this).execute("userid","userid",user);
+        new GetRequestFromDatabaseByUser(this).execute(USERID_PHP_DB,USERID_PHP_DB,user);
     }
 
     private void GetPasswordByUserFromDB(String user){
-        new GetRequestFromDatabaseByUser(this).execute("password","userid", user);
+        new GetRequestFromDatabaseByUser(this).execute(PASSWORD_PHP_DB,USERID_PHP_DB, user);
     }
 
     private void GetEmailFromDB(String email) {
-        new GetRequestFromDatabaseByUser(this).execute("email","email",email);
+        new GetRequestFromDatabaseByUser(this).execute(EMAIL_PHP_DB,EMAIL_PHP_DB,email);
     }
 
     private void GetPasswordByEmailFromDB(String email){
-        new GetRequestFromDatabaseByUser(this).execute("password","email", email);
+        new GetRequestFromDatabaseByUser(this).execute(PASSWORD_PHP_DB,EMAIL_PHP_DB, email);
     }
 
     @Override
@@ -138,13 +139,14 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
-        Log.d(TAG, "returnJSONObject: " + jsonObject);
+//        Log.d(TAG, "returnJSONObject: " + jsonObject);
         try {
             if(jsonObject.getBoolean("success")){
                 String type = jsonObject.getString("type");
                 switch (type){
                     case USERID_PHP_DB:
                         user = jsonObject.getString(USERID_PHP_DB);
+                        GetPasswordByUserFromDB(login_app);
                         break;
                     case PASSWORD_PHP_DB:
                         password = jsonObject.getString(PASSWORD_PHP_DB);
@@ -164,29 +166,65 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
+                        else {
+                            if(email.equals(login_app) && password.equals(password_app)){
+                                MainActivity.sp.edit().putBoolean("logged",true).apply();
+                                MainActivity.sp.edit().putString("login", login_app).apply();
+                                GetNameFromDBByEmail(login_app);
+                                GetSurnameFromDBByEmail(login_app);
+                                Toast.makeText(requireActivity(),
+                                        "Успешный вход",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(requireActivity(),
+                                        "Неверные данные ввода",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
                         break;
                     case NAME_PHP_DB:
-                        name = jsonObject.getString("name");
-                        MainActivity.sp.edit().putString("name", name).apply();
+                        name = jsonObject.getString(NAME_PHP_DB);
+                        MainActivity.sp.edit().putString(NAME_PHP_DB, name).apply();
                         setName(name, surname);
                         break;
                     case SURNAME_PHP_DB:
-                        surname = jsonObject.getString("surname");
-                        MainActivity.sp.edit().putString("surname", surname).apply();
+                        surname = jsonObject.getString(SURNAME_PHP_DB);
+                        MainActivity.sp.edit().putString(SURNAME_PHP_DB, surname).apply();
                         setName(name, surname);
                         break;
+                    case EMAIL_PHP_DB:
+                        email = jsonObject.getString(EMAIL_PHP_DB);
+                        GetPasswordByEmailFromDB(email);
+                        break;
+                }
+            }
+            else {
+                String supposed = jsonObject.getString("supposed_to_be");
+                if(supposed.equals(USERID_PHP_DB)){
+                    user = null;
+                    String typeValue = jsonObject.getString("typeValue");
+                    GetEmailFromDB(typeValue);
                 }
             }
         } catch (JSONException ignored) {
         }
     }
 
-    private void GetSurnameFromDB(String login) {
-        new GetRequestFromDatabaseByUser(this).execute(login,NAME_PHP_DB);
+    private void GetSurnameFromDB(String userid) {
+        new GetRequestFromDatabaseByUser(this).execute(SURNAME_PHP_DB, USERID_PHP_DB, userid);
     }
 
-    private void GetNameFromDB(String login) {
-        new GetRequestFromDatabaseByUser(this).execute(login,SURNAME_PHP_DB);
+    private void GetSurnameFromDBByEmail(String email) {
+        new GetRequestFromDatabaseByUser(this).execute(SURNAME_PHP_DB, EMAIL_PHP_DB, email);
+    }
+
+    private void GetNameFromDB(String userid) {
+        new GetRequestFromDatabaseByUser(this).execute(NAME_PHP_DB, USERID_PHP_DB, userid);
+    }
+
+    private void GetNameFromDBByEmail(String email) {
+        new GetRequestFromDatabaseByUser(this).execute(NAME_PHP_DB, EMAIL_PHP_DB, email);
     }
 
 }
