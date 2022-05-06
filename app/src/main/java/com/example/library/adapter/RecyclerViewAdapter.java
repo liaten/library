@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,9 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.fragment.BookInfo;
+import com.example.library.fragment.other.BookInfo;
 import com.example.library.helper.FragmentHelper;
-import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

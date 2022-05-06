@@ -1,4 +1,4 @@
-package com.example.library.fragment;
+package com.example.library.fragment.other;
 
 import static com.example.library.MainActivity.scale;
 

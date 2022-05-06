@@ -80,7 +80,6 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
             }
             else {
                 GetUserFromDB(login_app);
-
             }
         }
     };
@@ -118,6 +117,10 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
         new GetRequestFromDatabaseByUser(this).execute(EMAIL_PHP_DB,EMAIL_PHP_DB,email);
     }
 
+    private void GetEmailFromDBByUserID(String userid) {
+        new GetRequestFromDatabaseByUser(this).execute(EMAIL_PHP_DB,USERID_PHP_DB,userid);
+    }
+
     private void GetPasswordByEmailFromDB(String email){
         new GetRequestFromDatabaseByUser(this).execute(PASSWORD_PHP_DB,EMAIL_PHP_DB, email);
     }
@@ -146,16 +149,23 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                 switch (type){
                     case USERID_PHP_DB:
                         user = jsonObject.getString(USERID_PHP_DB);
-                        GetPasswordByUserFromDB(login_app);
+                        if(email==null){
+                            GetPasswordByUserFromDB(user);
+                        }
+                        else {
+                            MainActivity.sp.edit().putString("userid", user).apply();
+                        }
+
                         break;
                     case PASSWORD_PHP_DB:
                         password = jsonObject.getString(PASSWORD_PHP_DB);
                         if(user != null){
                             if(user.equals(login_app) && password.equals(password_app)){
                                 MainActivity.sp.edit().putBoolean("logged",true).apply();
-                                MainActivity.sp.edit().putString("login", login_app).apply();
+                                MainActivity.sp.edit().putString("userid", login_app).apply();
                                 GetNameFromDB(login_app);
                                 GetSurnameFromDB(login_app);
+                                GetEmailFromDBByUserID(login_app);
                                 Toast.makeText(requireActivity(),
                                         "Успешный вход",
                                         Toast.LENGTH_SHORT).show();
@@ -169,7 +179,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                         else {
                             if(email.equals(login_app) && password.equals(password_app)){
                                 MainActivity.sp.edit().putBoolean("logged",true).apply();
-                                MainActivity.sp.edit().putString("login", login_app).apply();
+                                MainActivity.sp.edit().putString("email", login_app).apply();
                                 GetNameFromDBByEmail(login_app);
                                 GetSurnameFromDBByEmail(login_app);
                                 Toast.makeText(requireActivity(),
@@ -195,7 +205,13 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                         break;
                     case EMAIL_PHP_DB:
                         email = jsonObject.getString(EMAIL_PHP_DB);
-                        GetPasswordByEmailFromDB(email);
+                        if(user==null){
+                            GetPasswordByEmailFromDB(email);
+                        }
+                        else {
+                            MainActivity.sp.edit().putString("email", login_app).apply();
+                        }
+
                         break;
                 }
             }

@@ -46,10 +46,13 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         super.onViewCreated(view, savedInstanceState);
         setViews();
         setOnClickListeners();
-        getBooks();
+        getBookLists();
         setTopTitle();
     }
 
+    private void getBookLists() {
+        getBooks("books_on_hands",MainActivity.sp.getString("userid",""));
+    }
 
     private void setViews() {
         View v = requireView();
@@ -68,7 +71,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         topTitle.setText(name + " " + surname);
     }
 
-    private void getBooks(){
+    private void getBooks(String table, String userid){
         String topBooksURL = "https://liaten.ru/db/new_7_books.php";
         try {
             URL url = new URL(topBooksURL);

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.library.entity.Book;
-import com.example.library.fragment.NoConnectionFragment;
+import com.example.library.fragment.other.NoConnectionFragment;
 import com.example.library.fragment.events.EventsFragment;
 import com.example.library.fragment.home.HomeFragment;
 import com.example.library.fragment.library.LibraryFragment;
