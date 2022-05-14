@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class BookInfo extends Fragment implements AsyncResponse {
     private String title, author, description, coverID;
     private ImageView CoverView;
     private TextView TitleView, AuthorView, DescriptionView;
+    private Button WishlistButton, SecondButton;
     private final int id;
 
     public BookInfo(int id, String title, String author, String description, String coverID) {
@@ -53,9 +55,12 @@ public class BookInfo extends Fragment implements AsyncResponse {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setViews();
+        setOnClickListeners();
         setDetails();
         downloadBookCover();
     }
+
+
 
     private void setDetails() {
         String regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
@@ -77,7 +82,32 @@ public class BookInfo extends Fragment implements AsyncResponse {
         TitleView = view.findViewById(R.id.title);
         AuthorView = view.findViewById(R.id.author);
         DescriptionView = view.findViewById(R.id.description);
+        WishlistButton = view.findViewById(R.id.wishlist_button);
+        SecondButton = view.findViewById(R.id.second_button);
     }
+
+    private void setOnClickListeners() {
+        WishlistButton.setOnClickListener(wishlistButtonListener);
+        SecondButton.setOnClickListener(secondButtonListener);
+    }
+
+    View.OnClickListener wishlistButtonListener = view -> {
+        if(WishlistButton.getText().equals(getResources().getString(R.string.add_to_wishlist))){
+            WishlistButton.setText(getResources().getString(R.string.remove_from_wishlist));
+        }
+        else {
+            WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
+        }
+    };
+
+    View.OnClickListener secondButtonListener = view -> {
+        if(SecondButton.getText().equals(getResources().getString(R.string.to_book))){
+            SecondButton.setText(getResources().getString(R.string.to_unbook));
+        }
+        else {
+            SecondButton.setText(getResources().getString(R.string.to_book));
+        }
+    };
 
     private void downloadBookCover(){
         ImageDownloader d = new ImageDownloader(this);

@@ -73,7 +73,9 @@
     <string name="user_logged">false</string>
     <string name="authorized">Вы авторизованы, как:\n</string>
     <string name="add_to_wishlist">Добавить в список желаемого</string>
+    <string name="remove_from_wishlist">Убрать из списка желаемого</string>
     <string name="to_book">Забронировать</string>
+    <string name="to_unbook">Снять бронь</string>
     <string name="all_regs">Всего регистраций в приложении:</string>
     <string name="all_auths">Всего авторизаций в приложении:</string>
     <string name="fio_stats">ФИО:</string>
