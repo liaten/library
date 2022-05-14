@@ -33,6 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final ArrayList<Drawable> covers;
     private final ArrayList<String> descriptions;
     private final ArrayList<String> titles;
+    private final ArrayList<Integer> ids;
     private final ArrayList<String> authors;
     private final ArrayList<String> coversIDs;
     private final Context context;
@@ -40,12 +41,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //    private static final int COVER_HEIGHT = 148;
 
 
-    public RecyclerViewAdapter(Context context,
+    public RecyclerViewAdapter(Context context, ArrayList<Integer> ids,
                                ArrayList<Drawable> covers, ArrayList<String> descriptions,
                                ArrayList<String> titles, ArrayList<String> authors,
                                ArrayList<String> coversIDs
     ) {
         this.context = context;
+        this.ids = ids;
         this.covers = covers;
         this.descriptions = descriptions;
         this.titles = titles;
@@ -86,8 +88,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 //            Toast.makeText(context,titles.get(position),Toast.LENGTH_SHORT).show();
             new FragmentHelper((MainActivity) context,
                     false,true).execute(new BookInfo(
-                            titles.get(position), authors.get(position),descriptions.get(position),
-                    coversIDs.get(position)
+                            ids.get(position),
+                            titles.get(position),
+                            authors.get(position),
+                            descriptions.get(position),
+                            coversIDs.get(position)
             ));
         };
         holder.cover.setOnClickListener(bookListener);

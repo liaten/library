@@ -33,8 +33,10 @@ public class BookInfo extends Fragment implements AsyncResponse {
     private String title, author, description, coverID;
     private ImageView CoverView;
     private TextView TitleView, AuthorView, DescriptionView;
+    private final int id;
 
-    public BookInfo(String title, String author, String description, String coverID) {
+    public BookInfo(int id, String title, String author, String description, String coverID) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;

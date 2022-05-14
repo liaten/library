@@ -377,18 +377,19 @@ public class RegistrationFragment extends Fragment implements AsyncResponse {
                                 Toast.LENGTH_SHORT).show();
                         break;
                     case CREATE_USER_DB:
+                        int regs_num = MainActivity.getSP().getInt("regs_num", 0) + 1;
+                        MainActivity.getSP().edit().putInt("regs_num", regs_num).apply();
                         sendEmail();
                         Toast.makeText(getActivity(),
                                 "Пароль отправлен на\n" + email, Toast.LENGTH_SHORT).show();
                         new FragmentHelper((MainActivity) requireActivity(),
-                                false,true).execute(new AuthorizationFragment());
+                                false,true)
+                                .execute(new AuthorizationFragment());
                         break;
                 }
             } else {
                 String type = jsonObject.getString("type");
                 if (type.equals(NAME_EMAIL_DB)) {
-//                    Log.d(TAG, "User credentials:" + surname + name + patronymic +
-//                            phone_str + SQLDateBirth + email + userid + password);
                     createUser(surname, name, patronymic, phone_str, SQLDateBirth, email, userid, password, gender);
                 }
             }

@@ -32,8 +32,8 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements AsyncResponse {
 
-    private static final ArrayList<Spanned> titles_authors = new ArrayList<>();
     private static final ArrayList<Drawable> covers = new ArrayList<>();
+    private static final ArrayList<Integer> ids = new ArrayList<>();
     private static final ArrayList<String> coversIDs = new ArrayList<>();
     private static final ArrayList<String> descriptions = new ArrayList<>();
     private static final ArrayList<String> titles = new ArrayList<>();
@@ -87,6 +87,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
+        ids.clear();
         covers.clear();
         descriptions.clear();
         titles.clear();
@@ -102,12 +103,14 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             d.execute("https://liaten.ru/libpics_small/b" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
+            int id = book.getID();
+            ids.add(id);
             coversIDs.add(coverID);
             descriptions.add(book.getDescription());
             titles.add(title);
             authors.add(author);
         }
-        new RecyclerInitializer(requireActivity(), covers, descriptions, titles, authors, coversIDs).execute(newBooksList);
+        new RecyclerInitializer(requireActivity(), ids, covers, descriptions, titles, authors, coversIDs).execute(newBooksList);
     }
 
     @Override

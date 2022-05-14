@@ -51,7 +51,7 @@
     <string name="app_executions">Входов в приложение:</string>
     <string name="all_added_books_to_wishlist">Всего добавлено книг в список желаемого:</string>
     <string name="all_reserved_books">Всего забронированно книг:</string>
-    <string name="all_books_on_hands_of_all_time">Всего книг на руках:</string>
+    <string name="all_books_on_hands_of_all_time">Всего было взято книг на рук:</string>
     <string name="author_name">Имя автора</string>
     <string name="theme">Тема</string>
     <string name="find_book">Найти книгу!</string>
@@ -74,4 +74,10 @@
     <string name="authorized">Вы авторизованы, как:\n</string>
     <string name="add_to_wishlist">Добавить в список желаемого</string>
     <string name="to_book">Забронировать</string>
+    <string name="all_regs">Всего регистраций в приложении:</string>
+    <string name="all_auths">Всего авторизаций в приложении:</string>
+    <string name="fio_stats">ФИО:</string>
+    <string name="login_stats">Логин:</string>
+    <string name="email_stats">Email:</string>
+    <string name="logout">Выйти из аккаунта</string>
 </resources>

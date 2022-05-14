@@ -7,6 +7,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 public class ProfileFragment extends Fragment implements AsyncResponse {
 
     private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, topTitle;
+    private LinearLayout booksOnHandsLinearLayout, reservedBooksLinearLayout, wishlistLinearLayout;
     private RecyclerView booksOnHandsList, reservedBooksTextList, wishlistList;
     private static final ArrayList<Spanned> titles = new ArrayList<>();
     private static final ArrayList<Drawable> covers = new ArrayList<>();
@@ -51,7 +53,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     }
 
     private void getBookLists() {
-        getBooks("books_on_hands",MainActivity.sp.getString("userid",""));
+        getBooks("books_on_hands",MainActivity.getSP().getString("userid",""));
     }
 
     private void setViews() {
@@ -63,11 +65,14 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         reservedBooksTextList = v.findViewById(R.id.reserved_books_list);
         wishlistList = v.findViewById(R.id.wishlist_books_list);
         topTitle = v.findViewById(R.id.full_name_profile_textview);
+        booksOnHandsLinearLayout = v.findViewById(R.id.books_on_hands_layout_main);
+        reservedBooksLinearLayout = v.findViewById(R.id.reserved_books_main_layout);
+        wishlistLinearLayout = v.findViewById(R.id.main_wishlist_header_layout);
     }
 
     private void setTopTitle(){
-        String name = MainActivity.sp.getString("name", "Гость");
-        String surname = MainActivity.sp.getString("surname", "");
+        String name = MainActivity.getSP().getString("name", "Гость");
+        String surname = MainActivity.getSP().getString("surname", "");
         topTitle.setText(name + " " + surname);
     }
 
@@ -76,8 +81,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         try {
             URL url = new URL(topBooksURL);
             new BookHelper(this).execute(url);
-        } catch (MalformedURLException e) {
-//            e.printStackTrace();
+        } catch (MalformedURLException ignored) {
         }
     }
 

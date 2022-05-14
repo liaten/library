@@ -49,7 +49,7 @@
                 android:id="@+id/fio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ФИО:"
+                android:text="@string/fio_stats"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_gravity="start"
@@ -65,7 +65,7 @@
                 android:id="@+id/login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Логин:"
+                android:text="@string/login_stats"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_gravity="start"
@@ -81,7 +81,7 @@
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email:"
+                android:text="@string/email_stats"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_gravity="start"
@@ -94,63 +94,94 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
+
             <TextView
+                android:id="@+id/enters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:text="@string/app_executions"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_gravity="start"
-                />
+                android:textSize="20sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
+
             <TextView
+                android:id="@+id/all_wishlist_added"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:text="@string/all_added_books_to_wishlist"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_gravity="start"
-                />
+                android:textSize="20sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
+
             <TextView
+                android:id="@+id/all_booked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:text="@string/all_reserved_books"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_gravity="start"
-                />
+                android:textSize="20sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
+
             <TextView
+                android:id="@+id/all_was_on_hands"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:text="@string/all_books_on_hands_of_all_time"
                 android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_gravity="start"
-                />
+                android:textSize="20sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
 
+            <TextView
+                android:id="@+id/regs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/all_regs"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/auths"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/all_auths"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </LinearLayout>
 
     </LinearLayout>
-
-
-
 
 </LinearLayout>

@@ -33,8 +33,12 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     //private static final String TAG = "MainActivity";
     private static BottomNavigationView bottomNavigationView;
     public static boolean isNetworkEnabled = false;
-    public static SharedPreferences sp;
+    private static SharedPreferences sp;
     public static float scale;
+
+    public static SharedPreferences getSP() {
+        return sp;
+    }
 
     @SuppressLint("NonConstantResourceId")
     private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener
@@ -105,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         setOnClickListeners();
         checkNetwork(this, this);
         sp = getSharedPreferences("login", MODE_PRIVATE);
+        int enters = getSP().getInt("enters", 0) + 1;
+        getSP().edit().putInt("enters", enters).apply();
         scale = getApplicationContext().getResources().getDisplayMetrics().density;
     }
 

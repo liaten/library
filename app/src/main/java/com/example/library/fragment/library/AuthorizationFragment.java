@@ -30,9 +30,9 @@ import java.util.ArrayList;
 public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     private EditText LoginEditText, PasswordEditText;
-    private LinearLayout AuthorizedLayout;
+    private LinearLayout AuthorizedLayout, LoginActive, LoginInactive;
     private TextView AuthorizedTextView;
-    private Button ApplyButton;
+    private Button ApplyButton, LogoutButton;
     private View view;
     private String user, password, login_app, password_app, name, surname, email;
     private static final String USERID_PHP_DB = "userid";
@@ -57,6 +57,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     private void setOnClickListeners() {
         ApplyButton.setOnClickListener(applyButtonListener);
+        LogoutButton.setOnClickListener(logoutButtonListener);
     }
 
     private void setViews() {
@@ -64,43 +65,60 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
         LoginEditText = view.findViewById(R.id.login_edit_text);
         PasswordEditText = view.findViewById(R.id.password_edit_text);
         ApplyButton = view.findViewById(R.id.auth_ok);
+        LogoutButton = view.findViewById(R.id.logout);
         AuthorizedTextView = view.findViewById(R.id.authorized_text_view);
         AuthorizedLayout = view.findViewById(R.id.authorized_layout);
+        LoginActive = view.findViewById(R.id.login_active);
+        LoginInactive = view.findViewById(R.id.login_inactive);
     }
 
-    private final View.OnClickListener applyButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            login_app = LoginEditText.getText().toString().trim();
-            password_app = PasswordEditText.getText().toString().trim();
-            if(login_app.equals("") || password_app.equals("")){
-                Toast.makeText(requireActivity(),
-                        "Данные не введены",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else {
-                GetUserFromDB(login_app);
-            }
+    private final View.OnClickListener applyButtonListener = view -> {
+        login_app = LoginEditText.getText().toString().trim();
+        password_app = PasswordEditText.getText().toString().trim();
+        if(login_app.equals("") || password_app.equals("")){
+            Toast.makeText(requireActivity(),
+                    "Данные не введены",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            GetUserFromDB(login_app);
         }
     };
 
+    private final View.OnClickListener logoutButtonListener = view -> {
+        MainActivity.getSP().edit().putBoolean("logged",false).apply();
+        MainActivity.getSP().edit().putString("email", null).apply();
+        MainActivity.getSP().edit().putString("userid", null).apply();
+        MainActivity.getSP().edit().putString("password", null).apply();
+        MainActivity.getSP().edit().putString(NAME_PHP_DB, null).apply();
+        MainActivity.getSP().edit().putString(SURNAME_PHP_DB, null).apply();
+        setName();
+    };
+
     private void setName(){
-        String name = MainActivity.sp.getString(NAME_PHP_DB, "Гость");
-        String surname = MainActivity.sp.getString("surname", "");
+        String name = MainActivity.getSP().getString(NAME_PHP_DB, "Гость");
+        String surname = MainActivity.getSP().getString(SURNAME_PHP_DB, "");
         setName(name, surname);
     }
     private void setName(String name, String surname){
         if(name!=null && surname!=null){
             if(name.equals("Гость")){
                 AuthorizedLayout.setVisibility(View.GONE);
+                LoginActive.setVisibility(View.VISIBLE);
+                LoginInactive.setVisibility(View.GONE);
             }
             else {
                 AuthorizedLayout.setVisibility(View.VISIBLE);
                 AuthorizedTextView.setText(String.format("%s%s %s", getResources().getString(R.string.authorized), name, surname));
+                LoginActive.setVisibility(View.GONE);
+                LoginInactive.setVisibility(View.VISIBLE);
             }
         }
         else {
             AuthorizedLayout.setVisibility(View.GONE);
+            LoginActive.setVisibility(View.VISIBLE);
+            LoginInactive.setVisibility(View.GONE);
+
         }
 
     }
@@ -153,7 +171,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                             GetPasswordByUserFromDB(user);
                         }
                         else {
-                            MainActivity.sp.edit().putString("userid", user).apply();
+                            MainActivity.getSP().edit().putString("userid", user).apply();
                         }
 
                         break;
@@ -161,8 +179,12 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                         password = jsonObject.getString(PASSWORD_PHP_DB);
                         if(user != null){
                             if(user.equals(login_app) && password.equals(password_app)){
-                                MainActivity.sp.edit().putBoolean("logged",true).apply();
-                                MainActivity.sp.edit().putString("userid", login_app).apply();
+                                int auths_num = MainActivity.getSP().getInt("auths_num", 0) + 1;
+                                MainActivity.getSP().edit().putInt("auths_num", auths_num).apply();
+
+                                MainActivity.getSP().edit().putBoolean("logged",true).apply();
+                                MainActivity.getSP().edit().putString("userid", login_app).apply();
+                                MainActivity.getSP().edit().putString("password", password).apply();
                                 GetNameFromDB(login_app);
                                 GetSurnameFromDB(login_app);
                                 GetEmailFromDBByUserID(login_app);
@@ -178,8 +200,11 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                         }
                         else {
                             if(email.equals(login_app) && password.equals(password_app)){
-                                MainActivity.sp.edit().putBoolean("logged",true).apply();
-                                MainActivity.sp.edit().putString("email", login_app).apply();
+                                int auths_num = MainActivity.getSP().getInt("auths_num", 0) + 1;
+                                MainActivity.getSP().edit().putInt("auths_num", auths_num).apply();
+                                MainActivity.getSP().edit().putBoolean("logged",true).apply();
+                                MainActivity.getSP().edit().putString("email", login_app).apply();
+                                MainActivity.getSP().edit().putString("password", password).apply();
                                 GetNameFromDBByEmail(login_app);
                                 GetSurnameFromDBByEmail(login_app);
                                 Toast.makeText(requireActivity(),
@@ -195,12 +220,12 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                         break;
                     case NAME_PHP_DB:
                         name = jsonObject.getString(NAME_PHP_DB);
-                        MainActivity.sp.edit().putString(NAME_PHP_DB, name).apply();
+                        MainActivity.getSP().edit().putString(NAME_PHP_DB, name).apply();
                         setName(name, surname);
                         break;
                     case SURNAME_PHP_DB:
                         surname = jsonObject.getString(SURNAME_PHP_DB);
-                        MainActivity.sp.edit().putString(SURNAME_PHP_DB, surname).apply();
+                        MainActivity.getSP().edit().putString(SURNAME_PHP_DB, surname).apply();
                         setName(name, surname);
                         break;
                     case EMAIL_PHP_DB:
@@ -209,7 +234,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                             GetPasswordByEmailFromDB(email);
                         }
                         else {
-                            MainActivity.sp.edit().putString("email", login_app).apply();
+                            MainActivity.getSP().edit().putString("email", login_app).apply();
                         }
 
                         break;
