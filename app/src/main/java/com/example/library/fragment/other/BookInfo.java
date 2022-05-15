@@ -21,7 +21,9 @@ import androidx.fragment.app.Fragment;
 import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.helper.AsyncResponse;
+import com.example.library.helper.CreateUser;
 import com.example.library.helper.ImageDownloader;
+import com.example.library.helper.PostRequestBookUser;
 
 import org.json.JSONObject;
 
@@ -35,10 +37,10 @@ public class BookInfo extends Fragment implements AsyncResponse {
     private ImageView CoverView;
     private TextView TitleView, AuthorView, DescriptionView;
     private Button WishlistButton, SecondButton;
-    private final int id;
+    private final int bookID;
 
-    public BookInfo(int id, String title, String author, String description, String coverID) {
-        this.id = id;
+    public BookInfo(int bookID, String title, String author, String description, String coverID) {
+        this.bookID = bookID;
         this.title = title;
         this.author = author;
         this.description = description;
@@ -59,8 +61,6 @@ public class BookInfo extends Fragment implements AsyncResponse {
         setDetails();
         downloadBookCover();
     }
-
-
 
     private void setDetails() {
         String regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
@@ -112,6 +112,10 @@ public class BookInfo extends Fragment implements AsyncResponse {
     private void downloadBookCover(){
         ImageDownloader d = new ImageDownloader(this);
         d.execute("https://liaten.ru/libpics_medium/b" + coverID + ".jpg");
+    }
+
+    private void postRequestBookUser(String table, String method, String id_user, String id_book) {
+        new PostRequestBookUser(this).execute(table, method, id_user, id_book);
     }
 
     @Override

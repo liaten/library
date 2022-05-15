@@ -11,7 +11,6 @@ import java.net.URL;
 public class CreateUser extends AsyncTask<String, Void, JSONObject> {
 
     public AsyncResponse delegate;
-//    private static final String TAG = "Username";
     public CreateUser(AsyncResponse delegate){
         this.delegate = delegate;
     }
@@ -40,7 +39,7 @@ public class CreateUser extends AsyncTask<String, Void, JSONObject> {
             URL url = new URL(link);
             return new JSONObject(getJSONFromURL(url));
         } catch(Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
             return new JSONObject();
         }
     }
