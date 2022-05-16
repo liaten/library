@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +14,22 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.CreateUser;
+import com.example.library.helper.GetRequestFromDatabaseByUser;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.PostRequestBookUser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -34,10 +39,15 @@ import java.util.regex.Pattern;
 public class BookInfo extends Fragment implements AsyncResponse {
 
     private String title, author, description, coverID;
+    private String user_id = "";
+    private String active_table = "";
+    private String active_method = "";
     private ImageView CoverView;
     private TextView TitleView, AuthorView, DescriptionView;
-    private Button WishlistButton, SecondButton;
-    private final int bookID;
+    private Button WishlistButton, ToBookButton;
+    @NonNull
+    private int bookID;
+    private static final String TAG = "BookInfo";
 
     public BookInfo(int bookID, String title, String author, String description, String coverID) {
         this.bookID = bookID;
@@ -83,29 +93,33 @@ public class BookInfo extends Fragment implements AsyncResponse {
         AuthorView = view.findViewById(R.id.author);
         DescriptionView = view.findViewById(R.id.description);
         WishlistButton = view.findViewById(R.id.wishlist_button);
-        SecondButton = view.findViewById(R.id.second_button);
+        ToBookButton = view.findViewById(R.id.second_button);
     }
 
     private void setOnClickListeners() {
         WishlistButton.setOnClickListener(wishlistButtonListener);
-        SecondButton.setOnClickListener(secondButtonListener);
+        ToBookButton.setOnClickListener(bookButtonListener);
     }
 
     View.OnClickListener wishlistButtonListener = view -> {
+        active_table = "wishlist_books";
         if(WishlistButton.getText().equals(getResources().getString(R.string.add_to_wishlist))){
             WishlistButton.setText(getResources().getString(R.string.remove_from_wishlist));
+            active_method = "insert";
         }
         else {
             WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
+            active_method = "delete";
         }
+        GetUserIDFromDB();
     };
 
-    View.OnClickListener secondButtonListener = view -> {
-        if(SecondButton.getText().equals(getResources().getString(R.string.to_book))){
-            SecondButton.setText(getResources().getString(R.string.to_unbook));
+    View.OnClickListener bookButtonListener = view -> {
+        if(ToBookButton.getText().equals(getResources().getString(R.string.to_book))){
+            ToBookButton.setText(getResources().getString(R.string.to_unbook));
         }
         else {
-            SecondButton.setText(getResources().getString(R.string.to_book));
+            ToBookButton.setText(getResources().getString(R.string.to_book));
         }
     };
 
@@ -116,6 +130,11 @@ public class BookInfo extends Fragment implements AsyncResponse {
 
     private void postRequestBookUser(String table, String method, String id_user, String id_book) {
         new PostRequestBookUser(this).execute(table, method, id_user, id_book);
+    }
+
+    private void GetUserIDFromDB() {
+        String userid = MainActivity.getSP().getString("userid", "");
+        new GetRequestFromDatabaseByUser(this).execute("id","userid",userid);
     }
 
     @Override
@@ -145,6 +164,33 @@ public class BookInfo extends Fragment implements AsyncResponse {
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
-
+        Log.d(TAG, "returnJSONObject: " + jsonObject);
+        try {
+            String type = jsonObject.getString("type");
+            if(jsonObject.getBoolean("success")) {
+                switch (type) {
+                    case "id":
+                        user_id = jsonObject.getString("id");
+                        postRequestBookUser(active_table,active_method,user_id, String.valueOf(bookID));
+                        break;
+                    case "insert":
+                        Toast.makeText(requireActivity(),
+                                "Книга добавлена в список желаемого",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+            else {
+                switch (type) {
+                    case "insert":
+                        Toast.makeText(requireActivity(),
+                                "Книга уже в списке желаемого",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        } catch (JSONException e) {
+//            e.printStackTrace();
+        }
     }
 }
