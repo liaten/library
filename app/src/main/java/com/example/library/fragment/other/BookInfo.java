@@ -70,6 +70,7 @@ public class BookInfo extends Fragment implements AsyncResponse {
         setOnClickListeners();
         setDetails();
         downloadBookCover();
+        setBookStatus();
     }
 
     private void setDetails() {
@@ -111,17 +112,26 @@ public class BookInfo extends Fragment implements AsyncResponse {
             WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
             active_method = "delete";
         }
-        GetUserIDFromDB();
+        postRequestBookUser(active_table,active_method,user_id, String.valueOf(bookID));
     };
 
     View.OnClickListener bookButtonListener = view -> {
+        active_table = "reserved_books";
         if(ToBookButton.getText().equals(getResources().getString(R.string.to_book))){
             ToBookButton.setText(getResources().getString(R.string.to_unbook));
+            active_method = "insert";
         }
         else {
             ToBookButton.setText(getResources().getString(R.string.to_book));
+            active_method = "delete";
         }
+        postRequestBookUser(active_table,active_method,user_id, String.valueOf(bookID));
     };
+
+    private void setBookStatus(){
+        active_method = "select";
+        GetUserIDFromDB();
+    }
 
     private void downloadBookCover(){
         ImageDownloader d = new ImageDownloader(this);
@@ -171,11 +181,19 @@ public class BookInfo extends Fragment implements AsyncResponse {
                 switch (type) {
                     case "id":
                         user_id = jsonObject.getString("id");
-                        postRequestBookUser(active_table,active_method,user_id, String.valueOf(bookID));
                         break;
                     case "insert":
+                        switch (active_table){
+                            case "wishlist_books":
+                        }
+
                         Toast.makeText(requireActivity(),
                                 "Книга добавлена в список желаемого",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case "delete":
+                        Toast.makeText(requireActivity(),
+                                "Книга удалена из списка желаемого",
                                 Toast.LENGTH_SHORT).show();
                         break;
                 }
