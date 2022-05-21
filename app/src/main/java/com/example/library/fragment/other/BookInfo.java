@@ -144,7 +144,13 @@ public class BookInfo extends Fragment implements AsyncResponse {
 
     private void GetUserIDFromDB() {
         String userid = MainActivity.getSP().getString("userid", "");
-        new GetRequestFromDatabaseByUser(this).execute("id","userid",userid);
+        if(!userid.equals("")){
+            new GetRequestFromDatabaseByUser(this).execute("id","userid",userid);
+        }
+        else {
+            WishlistButton.setEnabled(false);
+            ToBookButton.setEnabled(false);
+        }
     }
 
     @Override
@@ -174,6 +180,7 @@ public class BookInfo extends Fragment implements AsyncResponse {
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
+        String alert;
         Log.d(TAG, "returnJSONObject: " + jsonObject);
         try {
             String type = jsonObject.getString("type");
@@ -183,17 +190,31 @@ public class BookInfo extends Fragment implements AsyncResponse {
                         user_id = jsonObject.getString("id");
                         break;
                     case "insert":
+                        alert = "Книга добавлена в ";
                         switch (active_table){
                             case "wishlist_books":
+                                alert += "список желаемого";
+                                break;
+                            case "reserved_books":
+                                alert += "\"забронированные\"";
+                                break;
                         }
-
                         Toast.makeText(requireActivity(),
-                                "Книга добавлена в список желаемого",
+                                alert,
                                 Toast.LENGTH_SHORT).show();
                         break;
                     case "delete":
+                        alert = "Книга удалена из ";
+                        switch (active_table){
+                            case "wishlist_books":
+                                alert+="списка желаемого";
+                                break;
+                            case "reserved_books":
+                                alert+="списка забронированных";
+                                break;
+                        }
                         Toast.makeText(requireActivity(),
-                                "Книга удалена из списка желаемого",
+                                alert,
                                 Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -201,8 +222,17 @@ public class BookInfo extends Fragment implements AsyncResponse {
             else {
                 switch (type) {
                     case "insert":
+                        alert = "Книга уже в списке ";
+                        switch (active_table){
+                            case "wishlist_books":
+                                alert+="желаемого";
+                                break;
+                            case "reserved_books":
+                                alert+="забронированных";
+                                break;
+                        }
                         Toast.makeText(requireActivity(),
-                                "Книга уже в списке желаемого",
+                                alert,
                                 Toast.LENGTH_SHORT).show();
                         break;
                 }
