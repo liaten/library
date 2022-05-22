@@ -2,7 +2,6 @@ package com.example.library.fragment.library;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,17 +153,32 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
+    public void returnBooks(ArrayList<Book> output, String table) {
+
+    }
+
+    @Override
+    public void returnTable(String table) {
+
+    }
+
+    @Override
     public void processFinish(Bitmap output) {
 //
+    }
+
+    @Override
+    public void processFinish(Bitmap output, String table) {
+
     }
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
 //        Log.d(TAG, "returnJSONObject: " + jsonObject);
         try {
-            if(jsonObject.getBoolean("success")){
+            if (jsonObject.getBoolean("success")) {
                 String type = jsonObject.getString("type");
-                switch (type){
+                switch (type) {
                     case USERID_PHP_DB:
                         user = jsonObject.getString(USERID_PHP_DB);
                         if(email==null){

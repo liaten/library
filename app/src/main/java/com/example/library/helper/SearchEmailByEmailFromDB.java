@@ -1,6 +1,6 @@
 package com.example.library.helper;
 
-import static com.example.library.helper.DateHelper.getJSONFromURL;
+import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 
 import android.os.AsyncTask;
 
@@ -11,7 +11,6 @@ import java.net.URL;
 public class SearchEmailByEmailFromDB extends AsyncTask<String, Void, JSONObject> {
 
     public AsyncResponse delegate;
-//    private static final String TAG = "Username";
     public SearchEmailByEmailFromDB(AsyncResponse delegate){
         this.delegate = delegate;
     }
@@ -22,7 +21,6 @@ public class SearchEmailByEmailFromDB extends AsyncTask<String, Void, JSONObject
             URL url = new URL("https://liaten.ru/db/email.php?email="+email);
             return new JSONObject(getJSONFromURL(url));
         } catch(Exception e){
-            e.printStackTrace();
             return new JSONObject();
         }
     }

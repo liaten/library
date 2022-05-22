@@ -360,7 +360,22 @@ public class RegistrationFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
+    public void returnBooks(ArrayList<Book> output, String table) {
+
+    }
+
+    @Override
+    public void returnTable(String table) {
+
+    }
+
+    @Override
     public void processFinish(Bitmap output) {
+
+    }
+
+    @Override
+    public void processFinish(Bitmap output, String table) {
 
     }
 

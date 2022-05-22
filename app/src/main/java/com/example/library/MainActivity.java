@@ -13,10 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.library.entity.Book;
-import com.example.library.fragment.other.NoConnectionFragment;
 import com.example.library.fragment.events.EventsFragment;
 import com.example.library.fragment.home.HomeFragment;
 import com.example.library.fragment.library.LibraryFragment;
+import com.example.library.fragment.other.NoConnectionFragment;
 import com.example.library.fragment.search.SearchFragment;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.CheckNetwork;
@@ -141,8 +141,23 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
+    public void returnBooks(ArrayList<Book> output, String table) {
+
+    }
+
+    @Override
+    public void returnTable(String table) {
+
+    }
+
+    @Override
     public void processFinish(Bitmap output) {
         //
+    }
+
+    @Override
+    public void processFinish(Bitmap output, String table) {
+
     }
 
     @Override

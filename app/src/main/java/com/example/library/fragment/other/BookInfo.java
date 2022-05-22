@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,6 @@ import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.helper.AsyncResponse;
-import com.example.library.helper.CreateUser;
 import com.example.library.helper.GetRequestFromDatabaseByUser;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.PostRequestBookUser;
@@ -38,16 +38,19 @@ import java.util.regex.Pattern;
 
 public class BookInfo extends Fragment implements AsyncResponse {
 
-    private String title, author, description, coverID;
+    private final String title, author, description, coverID;
     private String user_id = "";
     private String active_table = "";
     private String active_method = "";
     private ImageView CoverView;
     private TextView TitleView, AuthorView, DescriptionView;
     private Button WishlistButton, ToBookButton;
-    @NonNull
+
+    private boolean wishlist_books_checked = false;
+    private boolean reserved_books_checked = false;
     private int bookID;
     private static final String TAG = "BookInfo";
+    private boolean cover_downloaded = false;
 
     public BookInfo(int bookID, String title, String author, String description, String coverID) {
         this.bookID = bookID;
@@ -86,21 +89,13 @@ public class BookInfo extends Fragment implements AsyncResponse {
         AuthorView.setText(authorS);
         DescriptionView.setText(descriptionS);
     }
-
-    private void setViews() {
-        View view = requireView();
-        CoverView = view.findViewById(R.id.cover);
-        TitleView = view.findViewById(R.id.title);
-        AuthorView = view.findViewById(R.id.author);
-        DescriptionView = view.findViewById(R.id.description);
-        WishlistButton = view.findViewById(R.id.wishlist_button);
-        ToBookButton = view.findViewById(R.id.second_button);
-    }
+    private boolean userid_checked = false;
 
     private void setOnClickListeners() {
         WishlistButton.setOnClickListener(wishlistButtonListener);
         ToBookButton.setOnClickListener(bookButtonListener);
     }
+    private LinearLayout LoadingL, LoadedL;
 
     View.OnClickListener wishlistButtonListener = view -> {
         active_table = "wishlist_books";
@@ -112,9 +107,8 @@ public class BookInfo extends Fragment implements AsyncResponse {
             WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
             active_method = "delete";
         }
-        postRequestBookUser(active_table,active_method,user_id, String.valueOf(bookID));
+        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
     };
-
     View.OnClickListener bookButtonListener = view -> {
         active_table = "reserved_books";
         if(ToBookButton.getText().equals(getResources().getString(R.string.to_book))){
@@ -125,32 +119,54 @@ public class BookInfo extends Fragment implements AsyncResponse {
             ToBookButton.setText(getResources().getString(R.string.to_book));
             active_method = "delete";
         }
-        postRequestBookUser(active_table,active_method,user_id, String.valueOf(bookID));
+        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
     };
+
+    private void setViews() {
+        View view = requireView();
+        CoverView = view.findViewById(R.id.cover);
+        TitleView = view.findViewById(R.id.title);
+        AuthorView = view.findViewById(R.id.author);
+        DescriptionView = view.findViewById(R.id.description);
+        WishlistButton = view.findViewById(R.id.wishlist_button);
+        ToBookButton = view.findViewById(R.id.second_button);
+        LoadingL = view.findViewById(R.id.loading);
+        LoadedL = view.findViewById(R.id.loaded);
+        LoadingL.setVisibility(View.VISIBLE);
+        LoadedL.setVisibility(View.GONE);
+    }
 
     private void setBookStatus(){
         active_method = "select";
-        GetUserIDFromDB();
+        getUserIDFromDB();
     }
 
     private void downloadBookCover(){
         ImageDownloader d = new ImageDownloader(this);
-        d.execute("https://liaten.ru/libpics_medium/b" + coverID + ".jpg");
+        d.execute("https://liaten.ru/libpics_medium/" + coverID + ".jpg");
     }
 
-    private void postRequestBookUser(String table, String method, String id_user, String id_book) {
+    private void createPostRequestBookUser(String table, String method, String id_user, String id_book) {
         new PostRequestBookUser(this).execute(table, method, id_user, id_book);
     }
 
-    private void GetUserIDFromDB() {
+    private void getUserIDFromDB() {
         String userid = MainActivity.getSP().getString("userid", "");
-        if(!userid.equals("")){
-            new GetRequestFromDatabaseByUser(this).execute("id","userid",userid);
-        }
-        else {
+        if (userid.equals("")) {
             WishlistButton.setEnabled(false);
             ToBookButton.setEnabled(false);
+            userid_checked = true;
+            if (cover_downloaded) {
+                showData();
+            }
+        } else {
+            new GetRequestFromDatabaseByUser(this).execute("id", "userid", userid);
         }
+    }
+
+    private void showData() {
+        LoadingL.setVisibility(View.GONE);
+        LoadedL.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -164,18 +180,38 @@ public class BookInfo extends Fragment implements AsyncResponse {
     }
 
     @Override
+    public void returnBooks(ArrayList<Book> output, String table) {
+
+    }
+
+    @Override
+    public void returnTable(String table) {
+
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public void processFinish(Bitmap output) {
         Drawable image = new BitmapDrawable(output);
         int coverWidth = image.getIntrinsicWidth();
         int coverHeight = image.getIntrinsicHeight();
         double pixelsWidth = coverWidth * scale + 0.5f;
         double pixelsHeight = coverHeight * scale + 0.5f;
-        double coefficient = pixelsHeight/600;
-        pixelsWidth/=coefficient;
-        pixelsHeight/=coefficient;
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int)pixelsWidth,(int)pixelsHeight);
+        double coefficient = pixelsHeight / 600;
+        pixelsWidth /= coefficient;
+        pixelsHeight /= coefficient;
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int) pixelsWidth, (int) pixelsHeight);
         CoverView.setLayoutParams(lp);
         CoverView.setImageDrawable(image);
+        cover_downloaded = true;
+        if (userid_checked) {
+            showData();
+        }
+    }
+
+    @Override
+    public void processFinish(Bitmap output, String table) {
+
     }
 
     @Override
@@ -184,14 +220,18 @@ public class BookInfo extends Fragment implements AsyncResponse {
         Log.d(TAG, "returnJSONObject: " + jsonObject);
         try {
             String type = jsonObject.getString("type");
-            if(jsonObject.getBoolean("success")) {
+            if (jsonObject.getBoolean("success")) {
                 switch (type) {
                     case "id":
                         user_id = jsonObject.getString("id");
+                        active_table = "wishlist_books";
+                        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
+                        active_table = "reserved_books";
+                        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
                         break;
                     case "insert":
                         alert = "Книга добавлена в ";
-                        switch (active_table){
+                        switch (active_table) {
                             case "wishlist_books":
                                 alert += "список желаемого";
                                 break;
@@ -207,38 +247,68 @@ public class BookInfo extends Fragment implements AsyncResponse {
                         alert = "Книга удалена из ";
                         switch (active_table){
                             case "wishlist_books":
-                                alert+="списка желаемого";
+                                alert += "списка желаемого";
                                 break;
                             case "reserved_books":
-                                alert+="списка забронированных";
+                                alert += "списка забронированных";
                                 break;
                         }
                         Toast.makeText(requireActivity(),
                                 alert,
                                 Toast.LENGTH_SHORT).show();
+                        break;
+                    case "select":
+                        String select_result = jsonObject.getString("select");
+                        String table = jsonObject.getString("table");
+                        switch (select_result) {
+                            case "No entries":
+                                switch (table) {
+                                    case "wishlist_books":
+                                        WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
+                                        wishlist_books_checked = true;
+                                        break;
+                                    case "reserved_books":
+                                        ToBookButton.setText(getResources().getString(R.string.to_book));
+                                        reserved_books_checked = true;
+                                        break;
+                                }
+                                break;
+                            default:
+                                switch (table) {
+                                    case "wishlist_books":
+                                        WishlistButton.setText(getResources().getString(R.string.remove_from_wishlist));
+                                        wishlist_books_checked = true;
+                                        break;
+                                    case "reserved_books":
+                                        ToBookButton.setText(getResources().getString(R.string.to_unbook));
+                                        reserved_books_checked = true;
+                                        break;
+                                }
+                                break;
+                        }
+                        if (wishlist_books_checked && reserved_books_checked && cover_downloaded) {
+                            showData();
+                        }
                         break;
                 }
             }
             else {
-                switch (type) {
-                    case "insert":
-                        alert = "Книга уже в списке ";
-                        switch (active_table){
-                            case "wishlist_books":
-                                alert+="желаемого";
-                                break;
-                            case "reserved_books":
-                                alert+="забронированных";
-                                break;
-                        }
-                        Toast.makeText(requireActivity(),
-                                alert,
-                                Toast.LENGTH_SHORT).show();
-                        break;
+                if (type.equals("insert")) {
+                    alert = "Книга уже в списке ";
+                    switch (active_table) {
+                        case "wishlist_books":
+                            alert += "желаемого";
+                            break;
+                        case "reserved_books":
+                            alert += "забронированных";
+                            break;
+                    }
+                    Toast.makeText(requireActivity(),
+                            alert,
+                            Toast.LENGTH_SHORT).show();
                 }
             }
-        } catch (JSONException e) {
-//            e.printStackTrace();
+        } catch (JSONException ignored) {
         }
     }
 }

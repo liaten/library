@@ -1,9 +1,11 @@
 package com.example.library.fragment.profile;
 
+
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +21,13 @@ import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.helper.AsyncResponse;
-import com.example.library.helper.BookHelper;
+import com.example.library.helper.BookHelperExtended;
 import com.example.library.helper.FragmentHelper;
+import com.example.library.helper.GetRequestFromDatabaseByUser;
+import com.example.library.helper.ImageDownloader;
+import com.example.library.helper.RecyclerInitializer;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -30,11 +36,26 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment implements AsyncResponse {
 
+    private static final ArrayList<Integer> wishlist_ids = new ArrayList<>();
+    private static final ArrayList<Drawable> wishlist_covers = new ArrayList<>();
+    private static final ArrayList<String> wishlist_coversIDs = new ArrayList<>();
+    private static final ArrayList<String> wishlist_descriptions = new ArrayList<>();
+    private static final ArrayList<String> wishlist_titles = new ArrayList<>();
+    private static final ArrayList<String> wishlist_authors = new ArrayList<>();
+
+    private static final ArrayList<Integer> reserved_ids = new ArrayList<>();
+    private static final ArrayList<Drawable> reserved_covers = new ArrayList<>();
+    private static final ArrayList<String> reserved_coversIDs = new ArrayList<>();
+    private static final ArrayList<String> reserved_descriptions = new ArrayList<>();
+    private static final ArrayList<String> reserved_titles = new ArrayList<>();
+    private static final ArrayList<String> reserved_authors = new ArrayList<>();
+
     private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, topTitle;
-    private LinearLayout booksOnHandsLinearLayout, reservedBooksLinearLayout, wishlistLinearLayout;
-    private RecyclerView booksOnHandsList, reservedBooksTextList, wishlistList;
-    private static final ArrayList<Spanned> titles = new ArrayList<>();
-    private static final ArrayList<Drawable> covers = new ArrayList<>();
+    private String user_id = "";
+    private RecyclerView reservedBooksRecycler, wishlistRecycler, onHandsRecycler;
+    private LinearLayout LoadingReserved, LoadingWishlist;
+    private TextView onHandsAlert, bookedAlert, wishlistAlert;
+
     private static final String TAG = "ProfileFragment";
 
     @Nullable
@@ -48,12 +69,8 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         super.onViewCreated(view, savedInstanceState);
         setViews();
         setOnClickListeners();
-        getBookLists();
         setTopTitle();
-    }
-
-    private void getBookLists() {
-        getBooks("books_on_hands",MainActivity.getSP().getString("userid",""));
+        getUserIDFromDB();
     }
 
     private void setViews() {
@@ -61,28 +78,21 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         booksOnHandsTextView = v.findViewById(R.id.books_on_hands_view_all);
         reservedBooksTextView = v.findViewById(R.id.reserved_books_view_all);
         wishlistTextView = v.findViewById(R.id.wishlist_view_all);
-        booksOnHandsList = v.findViewById(R.id.books_on_hands_list);
-        reservedBooksTextList = v.findViewById(R.id.reserved_books_list);
-        wishlistList = v.findViewById(R.id.wishlist_books_list);
+        reservedBooksRecycler = v.findViewById(R.id.booked_recycler);
+        wishlistRecycler = v.findViewById(R.id.wishlist_recycler);
         topTitle = v.findViewById(R.id.full_name_profile_textview);
-        booksOnHandsLinearLayout = v.findViewById(R.id.books_on_hands_layout_main);
-        reservedBooksLinearLayout = v.findViewById(R.id.reserved_books_main_layout);
-        wishlistLinearLayout = v.findViewById(R.id.main_wishlist_header_layout);
+        LoadingWishlist = v.findViewById(R.id.loading_wishlist);
+        LoadingReserved = v.findViewById(R.id.loading_booked);
+        onHandsAlert = v.findViewById(R.id.on_hands_alert);
+        bookedAlert = v.findViewById(R.id.booked_alert);
+        wishlistAlert = v.findViewById(R.id.wishlist_alert);
+        onHandsRecycler = v.findViewById(R.id.on_hands_recycler);
     }
 
     private void setTopTitle(){
         String name = MainActivity.getSP().getString("name", "Гость");
         String surname = MainActivity.getSP().getString("surname", "");
         topTitle.setText(name + " " + surname);
-    }
-
-    private void getBooks(String table, String userid){
-        String topBooksURL = "https://liaten.ru/db/new_7_books.php";
-        try {
-            URL url = new URL(topBooksURL);
-            new BookHelper(this).execute(url);
-        } catch (MalformedURLException ignored) {
-        }
     }
 
     private void setOnClickListeners() {
@@ -104,6 +114,25 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 false, true).execute(new WishlistFragment());
     };
 
+    private void getBookListsByUser(String[] tables, String id_user) {
+        for (String table : tables) {
+            try {
+                String link = "https://liaten.ru/db/books_from_booklists_by_user.php" +
+                        "?table=" + table +
+                        "&id_user=" + id_user;
+                new BookHelperExtended(this, table).execute(new URL(link));
+            } catch (MalformedURLException ignored) {
+            }
+        }
+    }
+
+    private void getUserIDFromDB() {
+        String userid = MainActivity.getSP().getString("userid", "");
+        if (!userid.equals("")) {
+            new GetRequestFromDatabaseByUser(this).execute("id", "userid", userid);
+        }
+    }
+
     @Override
     public void processFinish(Boolean output) {
         //
@@ -115,12 +144,131 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(Bitmap output) {
+    public void returnBooks(ArrayList<Book> output, String table) {
+        switch (table) {
+            case "wishlist_books":
+                wishlist_ids.clear();
+                wishlist_covers.clear();
+                wishlist_descriptions.clear();
+                wishlist_titles.clear();
+                wishlist_authors.clear();
+                wishlist_coversIDs.clear();
+                for (Book book : output
+                ) {
+                    ImageDownloader d = new ImageDownloader(this, table);
+                    String coverID = String.valueOf(book.getCover());
+                    d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
+                    wishlist_ids.add(book.getID());
+                    wishlist_descriptions.add(book.getDescription());
+                    wishlist_titles.add(book.getTitle());
+                    wishlist_authors.add(book.getAuthor());
+                    wishlist_coversIDs.add(coverID);
+                }
 
+                class InitWishlist extends Thread {
+                    public void run() {
+                        while (output.size() > wishlist_covers.size()) {
+                            try {
+                                Log.d(TAG, "output.size = " + output.size() + " wishlist_covers.size = " + wishlist_covers.size());
+                                Thread.sleep(500);
+                            } catch (InterruptedException ignored) {
+                            }
+                        }
+                        new RecyclerInitializer(requireActivity(), wishlist_ids, wishlist_covers,
+                                wishlist_descriptions, wishlist_titles, wishlist_authors,
+                                wishlist_coversIDs, LoadingWishlist).execute(wishlistRecycler);
+                    }
+                }
+                InitWishlist end_wishlist = new InitWishlist();
+                end_wishlist.start();
+
+                break;
+            case "reserved_books":
+                reserved_ids.clear();
+                reserved_covers.clear();
+                reserved_descriptions.clear();
+                reserved_titles.clear();
+                reserved_authors.clear();
+                reserved_coversIDs.clear();
+                for (Book book : output
+                ) {
+                    ImageDownloader d = new ImageDownloader(this, table);
+                    String coverID = String.valueOf(book.getCover());
+                    d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
+                    reserved_ids.add(book.getID());
+                    reserved_descriptions.add(book.getDescription());
+                    reserved_titles.add(book.getTitle());
+                    reserved_authors.add(book.getAuthor());
+                    reserved_coversIDs.add(coverID);
+                }
+
+                class InitReserved extends Thread {
+                    public void run() {
+                        while (output.size() > reserved_covers.size()) {
+                            try {
+                                Log.d(TAG, "output.size = " + output.size() + " reserved_covers.size = " + reserved_covers.size());
+                                Thread.sleep(500);
+                            } catch (InterruptedException ignored) {
+                            }
+                        }
+                        new RecyclerInitializer(requireActivity(), reserved_ids, reserved_covers,
+                                reserved_descriptions, reserved_titles, reserved_authors, reserved_coversIDs,
+                                LoadingReserved).execute(reservedBooksRecycler);
+                    }
+                }
+                InitReserved end_reserved = new InitReserved();
+                end_reserved.start();
+                break;
+        }
+    }
+
+    @Override
+    public void returnTable(String table) {
+        switch (table){
+            case "wishlist_books":
+                LoadingWishlist.setVisibility(View.GONE);
+                wishlistRecycler.setVisibility(View.GONE);
+                wishlistAlert.setVisibility(View.VISIBLE);
+                break;
+            case "reserved_books":
+                LoadingReserved.setVisibility(View.GONE);
+                reservedBooksRecycler.setVisibility(View.GONE);
+                bookedAlert.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    @Override
+    public void processFinish(Bitmap output) {
+    }
+
+    @Override
+    public void processFinish(Bitmap output, String table) {
+        switch (table) {
+            case "wishlist_books":
+                wishlist_covers.add(new BitmapDrawable(output));
+                break;
+            case "reserved_books":
+                reserved_covers.add(new BitmapDrawable(output));
+                break;
+        }
     }
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
+        Log.d(TAG, "returnJSONObject: " + jsonObject);
+        try {
+            String type = jsonObject.getString("type");
+            if (jsonObject.getBoolean("success")) {
+                switch (type) {
+                    case "id":
+                        user_id = jsonObject.getString("id");
+                        getBookListsByUser(new String[]{"wishlist_books", "reserved_books"}, user_id);
+                        break;
+                }
+            }
+        } catch (JSONException ignored) {
+        }
 
     }
 }

@@ -1,6 +1,6 @@
 package com.example.library.helper;
 
-import static com.example.library.helper.DateHelper.getJSONFromURL;
+import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 
 import android.os.AsyncTask;
 

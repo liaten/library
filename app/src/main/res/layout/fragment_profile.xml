@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:orientation="horizontal"
-                    android:paddingVertical="10dp"
+                    android:paddingTop="10dp"
                     >
 
                     <TextView
@@ -105,21 +105,52 @@
                         android:id="@+id/books_on_hands_view_all"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
                         android:text="@string/watch_all"
                         android:gravity="center_vertical"
                         android:textColor="@color/text_secondary" />
 
                 </LinearLayout>
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/books_on_hands_list"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/on_hands_recycler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:scrollbars="none"
+                    android:visibility="gone"
+                    android:clipToPadding="false"
+                    android:paddingStart="20dp"
+                    android:paddingBottom="20dp"
+                    />
+                <LinearLayout
+                    android:id="@+id/loading_on_hands"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingHorizontal="20dp"
+                    android:background="@color/white"
+                    android:paddingBottom="15dp"
+                    android:visibility="gone"
+                    >
+                    <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:scrollbars="none"
-                        android:visibility="gone"
-                        android:clipToPadding="false"
-                        android:paddingStart="20dp"
-                        />
+                        android:indeterminate="true" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/on_hands_alert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:text="В настоящее время нет ни одной книги на руках"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:paddingHorizontal="20dp"
+                    android:visibility="visible"
+                    android:paddingBottom="10dp"
+                    />
 
             </LinearLayout> <!--книги на руках-->
 
@@ -130,6 +161,7 @@
                 android:orientation="vertical"
                 android:showDividers="middle"
                 android:divider="@drawable/empty_divider"
+                android:background="@color/white"
                 android:visibility="visible">
 
                 <LinearLayout
@@ -139,8 +171,7 @@
                     android:paddingHorizontal="20dp"
                     android:visibility="visible"
                     android:orientation="horizontal"
-                    android:background="@color/white"
-                    android:paddingVertical="10dp"
+                    android:paddingTop="10dp"
                     >
 
                     <TextView
@@ -157,6 +188,7 @@
                         android:id="@+id/reserved_books_view_all"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
                         android:text="@string/watch_all"
                         android:gravity="center_vertical"
                         android:textColor="@color/text_secondary"
@@ -165,14 +197,44 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/reserved_books_list"
+                    android:id="@+id/booked_recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:scrollbars="none"
                     android:visibility="gone"
                     android:clipToPadding="false"
-                    android:paddingStart="20dp"/>
+                    android:paddingStart="20dp"
+                    android:paddingBottom="20dp"
+                    />
+                <LinearLayout
+                    android:id="@+id/loading_booked"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingHorizontal="20dp"
+                    android:background="@color/white"
+                    android:paddingBottom="15dp"
+                    android:visibility="visible"
+                    >
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="true" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/booked_alert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="В настоящее время ни одной книги не забронировано"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:paddingHorizontal="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:visibility="gone"
+                    android:paddingBottom="10dp"
+                    />
 
             </LinearLayout> <!--забронированные-->
 
@@ -183,7 +245,9 @@
                 android:orientation="vertical"
                 android:showDividers="middle"
                 android:divider="@drawable/empty_divider"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:background="@color/white"
+                >
 
                 <LinearLayout
                     android:id="@+id/wishlist_header_layout"
@@ -191,8 +255,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="20dp"
                     android:orientation="horizontal"
-                    android:background="@color/white"
-                    android:paddingVertical="10dp"
+                    android:paddingTop="10dp"
                     >
 
                     <TextView
@@ -209,6 +272,7 @@
                         android:id="@+id/wishlist_view_all"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:fontFamily="@font/roboto"
                         android:text="@string/watch_all"
                         android:gravity="center_vertical"
                         android:textColor="@color/text_secondary"
@@ -216,7 +280,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/wishlist_books_list"
+                    android:id="@+id/wishlist_recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -225,6 +289,36 @@
                     android:clipToPadding="false"
                     android:paddingStart="20dp"
                     android:paddingBottom="20dp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/loading_wishlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingHorizontal="20dp"
+                    android:background="@color/white"
+                    android:paddingBottom="15dp"
+                    android:visibility="visible"
+                    >
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="true" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/wishlist_alert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="В настоящее время нет ни одной книги в списке желаемого"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/text_secondary"
+                    android:paddingHorizontal="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:visibility="gone"
+                    android:paddingBottom="10dp"
                     />
 
             </LinearLayout> <!--список желаемого-->

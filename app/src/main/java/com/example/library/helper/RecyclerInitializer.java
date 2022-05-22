@@ -2,8 +2,8 @@ package com.example.library.helper;
 
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.text.Spanned;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -25,6 +25,8 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> {
     private static ArrayList<String> titles;
     private static ArrayList<String> authors;
     private static ArrayList<String> coversIDs;
+    private static LinearLayout LoadingL;
+
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private RecyclerViewAdapter adapter;
@@ -33,7 +35,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> {
     public RecyclerInitializer(FragmentActivity activity, ArrayList<Integer> ids,
                                ArrayList<Drawable> covers,
                                ArrayList<String> descriptions, ArrayList<String> titles,
-                               ArrayList<String> authors, ArrayList<String> coversIDs) {
+                               ArrayList<String> authors, ArrayList<String> coversIDs, LinearLayout LoadingL) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
@@ -41,8 +43,8 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> {
         RecyclerInitializer.titles = titles;
         RecyclerInitializer.authors = authors;
         RecyclerInitializer.coversIDs = coversIDs;
+        RecyclerInitializer.LoadingL = LoadingL;
     }
-
 
     @Override
     protected Void doInBackground(RecyclerView... recyclerViews) {
@@ -60,6 +62,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> {
         itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL);
         itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.empty_divider_horizontal));
         recyclerView.addItemDecoration(itemDecoration);
+        LoadingL.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 }

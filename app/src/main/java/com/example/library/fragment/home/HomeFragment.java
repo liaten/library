@@ -4,10 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private static final ArrayList<String> titles = new ArrayList<>();
     private static final ArrayList<String> authors = new ArrayList<>();
     private RecyclerView newBooksList;
+    private LinearLayout LoadingL;
 //    private static final String TAG = "HomeFragment";
 
     private TextView allNewsTextView = null;
@@ -65,18 +66,17 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         View view = requireView();
         allNewsTextView = view.findViewById(R.id.all_news);
         newBooksList = view.findViewById(R.id.new_books_list);
+        LoadingL = view.findViewById(R.id.loading);
+        LoadingL.setVisibility(View.VISIBLE);
     }
     private void setOnClickListeners(){
         allNewsTextView.setOnClickListener(allNewsListener);
     }
 
     private void getTopNewBooks(){
-        String topBooksURL = "https://liaten.ru/db/new_7_books.php";
         try {
-            URL url = new URL(topBooksURL);
-            new BookHelper(this).execute(url);
-        } catch (MalformedURLException e) {
-//            e.printStackTrace();
+            new BookHelper(this).execute(new URL("https://liaten.ru/db/new_books.php"));
+        } catch (MalformedURLException ignored) {
         }
     }
 
@@ -97,26 +97,37 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         ) {
             ImageDownloader d = new ImageDownloader(this);
             String coverID = String.valueOf(book.getCover());
-            if(coverID.length()<2){
-                coverID = "0" + coverID;
-            }
-            d.execute("https://liaten.ru/libpics_small/b" + coverID + ".jpg");
+            d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
             int id = book.getID();
             ids.add(id);
-            coversIDs.add(coverID);
             descriptions.add(book.getDescription());
             titles.add(title);
             authors.add(author);
+            coversIDs.add(coverID);
         }
-        new RecyclerInitializer(requireActivity(), ids, covers, descriptions, titles, authors, coversIDs).execute(newBooksList);
+        new RecyclerInitializer(requireActivity(), ids, covers, descriptions, titles, authors, coversIDs, LoadingL).execute(newBooksList);
+    }
+
+    @Override
+    public void returnBooks(ArrayList<Book> output, String table) {
+
+    }
+
+    @Override
+    public void returnTable(String table) {
+
     }
 
     @Override
     public void processFinish(Bitmap output) {
-        Drawable image = new BitmapDrawable(output);
-        covers.add(image);
+        covers.add(new BitmapDrawable(output));
+    }
+
+    @Override
+    public void processFinish(Bitmap output, String table) {
+
     }
 
     @Override

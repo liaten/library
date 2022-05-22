@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import com.example.library.fragment.other.BookInfo;
 import com.example.library.helper.FragmentHelper;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -37,9 +35,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final ArrayList<String> authors;
     private final ArrayList<String> coversIDs;
     private final Context context;
-
-//    private static final int COVER_HEIGHT = 148;
-
+    private final String hyphen_regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
+    private final Pattern hyphenPattern = Pattern.compile(hyphen_regex, Pattern.CASE_INSENSITIVE);
 
     public RecyclerViewAdapter(Context context, ArrayList<Integer> ids,
                                ArrayList<Drawable> covers, ArrayList<String> descriptions,
@@ -53,7 +50,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.titles = titles;
         this.authors = authors;
         this.coversIDs = coversIDs;
-        //Log.d(TAG, "scale: " + scale);
     }
 
     @NonNull
@@ -69,27 +65,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         int coverHeight = covers.get(position).getIntrinsicHeight();
         double pixelsWidth = coverWidth * scale + 0.5f;
         double pixelsHeight = coverHeight * scale + 0.5f;
-        double coefficient = pixelsHeight/400;
-        pixelsWidth/=coefficient;
-        pixelsHeight/=coefficient;
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int)pixelsWidth,(int)pixelsHeight);
+        double coefficient = pixelsHeight / 400;
+        pixelsWidth /= coefficient;
+        pixelsHeight /= coefficient;
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int) pixelsWidth, (int) pixelsHeight);
         holder.cover.setLayoutParams(lp);
-        String regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
-        Pattern myPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher m = myPattern.matcher(authors.get(position));
-        String author = m.replaceAll("$0\u200b");
-        m = myPattern.matcher(titles.get(position));
-        String title = m.replaceAll("$0\u200b");
-        Log.d(TAG, "onBindViewHolder: " + author + " " + title);
+
+        String author = setHyphenation(authors.get(position));
+        String title = setHyphenation(titles.get(position));
+
         Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
         holder.title.setText(sp);
+
         holder.cover.setImageDrawable(covers.get(position));
-        View.OnClickListener bookListener = view ->{
-//            Toast.makeText(context,titles.get(position),Toast.LENGTH_SHORT).show();
+        View.OnClickListener bookListener = view -> {
             new FragmentHelper((MainActivity) context,
-                    false,true).execute(new BookInfo(
-                            ids.get(position),
-                            titles.get(position),
+                    false, true).execute(new BookInfo(
+                    ids.get(position),
+                    titles.get(position),
                             authors.get(position),
                             descriptions.get(position),
                             coversIDs.get(position)
@@ -104,7 +97,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return titles.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    private String setHyphenation(String text) {
+        return hyphenPattern.matcher(text).replaceAll("$0\u200b");
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView cover;
 

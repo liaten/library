@@ -1,6 +1,6 @@
 package com.example.library.helper;
 
-import static com.example.library.helper.DateHelper.getJSONFromURL;
+import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -18,8 +18,7 @@ import java.util.ArrayList;
 
 public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
 
-    public AsyncResponse delegate = null;
-//    private static final String TAG = "BookHelper";
+    public AsyncResponse delegate;
 
     public BookHelper(AsyncResponse delegate){
         this.delegate = delegate;
@@ -45,8 +44,7 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
                         book.getString("description")
                 ));
             }
-        } catch (JSONException | ParseException e) {
-//            e.printStackTrace();
+        } catch (JSONException | ParseException ignored) {
         }
         return booksList;
     }
@@ -54,7 +52,6 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
     @Override
     protected void onPostExecute(ArrayList<Book> books) {
         super.onPostExecute(books);
-        //Log.d(TAG, "onPostExecute: " + books.size());
         delegate.returnBooks(books);
     }
 }

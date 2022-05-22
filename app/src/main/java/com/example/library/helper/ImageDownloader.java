@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -16,14 +15,20 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     @SuppressLint("StaticFieldLeak")
     ImageView bmImage;
     public AsyncResponse delegate = null;
+    private String table;
 
     @SuppressWarnings("deprecation")
     public ImageDownloader(@Nullable ImageView bmImage) {
         this.bmImage = bmImage;
     }
-    public ImageDownloader(AsyncResponse delegate){
+
+    public ImageDownloader(AsyncResponse delegate) {
         this.delegate = delegate;
-        //
+    }
+
+    public ImageDownloader(AsyncResponse delegate, String table) {
+        this.delegate = delegate;
+        this.table = table;
     }
 
     @Nullable
@@ -33,9 +38,7 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
         try {
             InputStream in = new java.net.URL(urlDisplay).openStream();
             image = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            Log.e("Image Downloading Error", e.getMessage());
-            e.printStackTrace();
+        } catch (Exception ignored) {
         }
         return image;
     }
@@ -45,7 +48,12 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
             bmImage.setImageBitmap(result);
         }
         else {
-            delegate.processFinish(result);
+            if (table == null) {
+                delegate.processFinish(result);
+            } else {
+                delegate.processFinish(result, table);
+            }
+
         }
     }
 }

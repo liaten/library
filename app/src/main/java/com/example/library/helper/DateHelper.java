@@ -1,7 +1,8 @@
 package com.example.library.helper;
 
+import static com.example.library.helper.NetworkHelper.getJSONFromURL;
+
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,10 +14,6 @@ import com.example.library.R;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 
@@ -31,8 +28,6 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     protected String result = "";
     private TextView DayOfDate, DayOfWeek, MonthAndYear;
     private boolean isDataUpdated = false;
-
-
 
     @NonNull
     public static String getMonths(int month) {
@@ -170,31 +165,10 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
         } else {
             yearStr = String.valueOf(year);
         }
-        Log.d(TAG, "SQLDATE: " + yearStr + "-" + monthStr + "-" + dayStr);
+//        Log.d(TAG, "SQLDATE: " + yearStr + "-" + monthStr + "-" + dayStr);
         return yearStr + "-" + monthStr + "-" + dayStr;
     }
 
-    public static String getJSONFromURL(URL url){
-        try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-            connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-            connection.setRequestProperty("Content-Type", "application/json");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = bufferedReader.readLine()) != null) {
-                response.append(inputLine);
-            }
-            bufferedReader.close();
-            //Log.d(TAG, "getJSONFromURL: " + response);
-            return response.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 
     @Override
     protected void onPostExecute(@Nullable String _result) {
