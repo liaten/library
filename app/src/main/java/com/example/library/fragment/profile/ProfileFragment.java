@@ -1,6 +1,5 @@
 package com.example.library.fragment.profile;
 
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,11 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.fragment.other.BooksExtendedList;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelperExtended;
 import com.example.library.helper.FragmentHelper;
@@ -50,11 +51,12 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     private static final ArrayList<String> reserved_titles = new ArrayList<>();
     private static final ArrayList<String> reserved_authors = new ArrayList<>();
 
-    private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, topTitle;
+    private TextView booksOnHandsTextView, reservedBooksTextView, wishlistTextView, topTitle, booksOnHandsHeader, reservedHeader, wishlistHeader;
     private String user_id = "";
     private RecyclerView reservedBooksRecycler, wishlistRecycler, onHandsRecycler;
     private LinearLayout LoadingReserved, LoadingWishlist;
     private TextView onHandsAlert, bookedAlert, wishlistAlert;
+    private String active_header;
 
     private static final String TAG = "ProfileFragment";
 
@@ -87,6 +89,9 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         bookedAlert = v.findViewById(R.id.booked_alert);
         wishlistAlert = v.findViewById(R.id.wishlist_alert);
         onHandsRecycler = v.findViewById(R.id.on_hands_recycler);
+        booksOnHandsHeader = v.findViewById(R.id.books_on_hands_header);
+        reservedHeader = v.findViewById(R.id.reserved_header);
+        wishlistHeader = v.findViewById(R.id.wishlist_header);
     }
 
     private void setTopTitle(){
@@ -96,30 +101,55 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     }
 
     private void setOnClickListeners() {
-        booksOnHandsTextView.setOnClickListener(booksOnHandsListener);
-        reservedBooksTextView.setOnClickListener(reservedBooksListener);
-        wishlistTextView.setOnClickListener(wishlistListener);
+        booksOnHandsTextView.setOnClickListener(watchAllOnHandsListener);
+        reservedBooksTextView.setOnClickListener(watchAllReservedListener);
+        wishlistTextView.setOnClickListener(watchAllWishlistListener);
     }
 
-    View.OnClickListener booksOnHandsListener = view -> {
+    View.OnClickListener watchAllReservedListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),
-                false, true).execute(new BooksOnHandsFragment());
-    };
-    View.OnClickListener reservedBooksListener = view -> {
-        new FragmentHelper((MainActivity) requireActivity(),
-                false, true).execute(new ReservedBooksFragment());
-    };
-    View.OnClickListener wishlistListener = view -> {
-        new FragmentHelper((MainActivity) requireActivity(),
-                false, true).execute(new WishlistFragment());
+                false,true).execute(
+                new BooksExtendedList(
+                        reservedHeader.getText().toString(), "reserved"
+                ));
     };
 
-    private void getBookListsByUser(String[] tables, String id_user) {
+    View.OnClickListener watchAllWishlistListener = view -> {
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(
+                new BooksExtendedList(
+                        wishlistHeader.getText().toString(),"wishlist"
+                ));
+    };
+
+    View.OnClickListener watchAllOnHandsListener = view -> {
+        new FragmentHelper((MainActivity) requireActivity(),
+                false,true).execute(
+                new BooksExtendedList(
+                        booksOnHandsHeader.getText().toString(), "on_hands"
+                ));
+    };
+
+//    View.OnClickListener booksOnHandsListener = view -> {
+//        new FragmentHelper((MainActivity) requireActivity(),
+//                false, true).execute(new BooksOnHandsFragment());
+//    };
+//    View.OnClickListener reservedBooksListener = view -> {
+//        new FragmentHelper((MainActivity) requireActivity(),
+//                false, true).execute(new ReservedBooksFragment());
+//    };
+//    View.OnClickListener wishlistListener = view -> {
+//        new FragmentHelper((MainActivity) requireActivity(),
+//                false, true).execute(new WishlistFragment());
+//    };
+
+    private void getBookListsByUser(String[] tables, String id_user, String limited) {
         for (String table : tables) {
             try {
                 String link = "https://liaten.ru/db/books_from_booklists_by_user.php" +
                         "?table=" + table +
-                        "&id_user=" + id_user;
+                        "&id_user=" + id_user +
+                        "&limited=" + limited;
                 new BookHelperExtended(this, table).execute(new URL(link));
             } catch (MalformedURLException ignored) {
             }
@@ -133,14 +163,46 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         }
     }
 
+    private class InitList extends Thread {
+        ArrayList<Book> output;
+        ArrayList<Drawable> covers;
+        String list;
+        FragmentActivity activity;
+        InitList(FragmentActivity activity, ArrayList<Book> output, ArrayList<Drawable> covers, String list){
+            this.output = output;
+            this.covers = covers;
+            this.list = list;
+            this.activity = activity;
+        }
+        public void run() {
+            while (output.size() > covers.size()) {
+                try {
+                    Log.d(TAG, "output.size = " + output.size() + " covers.size = " + covers.size());
+                    Thread.sleep(500);
+                } catch (InterruptedException ignored) {
+                }
+            }
+            switch (list){
+                case "wishlist":
+                    new RecyclerInitializer(activity, wishlist_ids, covers,
+                            wishlist_descriptions, wishlist_titles, wishlist_authors,
+                            wishlist_coversIDs, LoadingWishlist).execute(wishlistRecycler);
+                    break;
+                case "reserved":
+                    new RecyclerInitializer(activity, reserved_ids, covers,
+                            reserved_descriptions, reserved_titles, reserved_authors, reserved_coversIDs,
+                            LoadingReserved).execute(reservedBooksRecycler);
+                    break;
+            }
+        }
+    }
+
     @Override
     public void processFinish(Boolean output) {
-        //
     }
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
-
     }
 
     @Override
@@ -164,24 +226,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                     wishlist_authors.add(book.getAuthor());
                     wishlist_coversIDs.add(coverID);
                 }
-
-                class InitWishlist extends Thread {
-                    public void run() {
-                        while (output.size() > wishlist_covers.size()) {
-                            try {
-                                Log.d(TAG, "output.size = " + output.size() + " wishlist_covers.size = " + wishlist_covers.size());
-                                Thread.sleep(500);
-                            } catch (InterruptedException ignored) {
-                            }
-                        }
-                        new RecyclerInitializer(requireActivity(), wishlist_ids, wishlist_covers,
-                                wishlist_descriptions, wishlist_titles, wishlist_authors,
-                                wishlist_coversIDs, LoadingWishlist).execute(wishlistRecycler);
-                    }
-                }
-                InitWishlist end_wishlist = new InitWishlist();
-                end_wishlist.start();
-
+                new InitList(requireActivity(),output, wishlist_covers,"wishlist").start();
                 break;
             case "reserved_books":
                 reserved_ids.clear();
@@ -201,23 +246,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                     reserved_authors.add(book.getAuthor());
                     reserved_coversIDs.add(coverID);
                 }
-
-                class InitReserved extends Thread {
-                    public void run() {
-                        while (output.size() > reserved_covers.size()) {
-                            try {
-                                Log.d(TAG, "output.size = " + output.size() + " reserved_covers.size = " + reserved_covers.size());
-                                Thread.sleep(500);
-                            } catch (InterruptedException ignored) {
-                            }
-                        }
-                        new RecyclerInitializer(requireActivity(), reserved_ids, reserved_covers,
-                                reserved_descriptions, reserved_titles, reserved_authors, reserved_coversIDs,
-                                LoadingReserved).execute(reservedBooksRecycler);
-                    }
-                }
-                InitReserved end_reserved = new InitReserved();
-                end_reserved.start();
+                new InitList(requireActivity(),output, reserved_covers,"reserved").start();
                 break;
         }
     }
@@ -263,12 +292,11 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 switch (type) {
                     case "id":
                         user_id = jsonObject.getString("id");
-                        getBookListsByUser(new String[]{"wishlist_books", "reserved_books"}, user_id);
+                        getBookListsByUser(new String[]{"wishlist_books", "reserved_books"}, user_id, "y");
                         break;
                 }
             }
         } catch (JSONException ignored) {
         }
-
     }
 }

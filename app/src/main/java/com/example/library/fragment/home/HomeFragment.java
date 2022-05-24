@@ -1,5 +1,6 @@
 package com.example.library.fragment.home;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,11 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.fragment.other.BooksExtendedList;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
@@ -40,12 +43,17 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private static final ArrayList<String> authors = new ArrayList<>();
     private RecyclerView newBooksList;
     private LinearLayout LoadingL;
+    private TextView newBooksTextView, allNewsTextView;
+
 //    private static final String TAG = "HomeFragment";
 
-    private TextView allNewsTextView = null;
     View.OnClickListener allNewsListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),
-                false,true).execute(new NewBooksFragment());
+                false,true).execute(
+                        new BooksExtendedList(
+                                newBooksTextView.getText().toString(),
+                                "new_books"
+                        ));
     };
 
     @Nullable
@@ -59,23 +67,33 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         super.onViewCreated(view, savedInstanceState);
         setViews();
         setOnClickListeners();
-        getTopNewBooks();
+        getTopNewBooks(this,"y");
     }
 
     private void setViews() {
-        View view = requireView();
-        allNewsTextView = view.findViewById(R.id.all_news);
-        newBooksList = view.findViewById(R.id.new_books_list);
-        LoadingL = view.findViewById(R.id.loading);
+        View v = requireView();
+        allNewsTextView = v.findViewById(R.id.all_news);
+        newBooksList = v.findViewById(R.id.new_books_list);
+        LoadingL = v.findViewById(R.id.loading);
+        newBooksTextView = v.findViewById(R.id.new_books_text_view);
         LoadingL.setVisibility(View.VISIBLE);
     }
     private void setOnClickListeners(){
         allNewsTextView.setOnClickListener(allNewsListener);
     }
 
-    private void getTopNewBooks(){
+    public static void getTopNewBooks(Fragment fragment, String limited){
         try {
-            new BookHelper(this).execute(new URL("https://liaten.ru/db/new_books.php"));
+            String link = "";
+            switch (limited){
+                case "y":
+                    link = "https://liaten.ru/db/new_books.php?limited=y";
+                    break;
+                case "n":
+                    link = "https://liaten.ru/db/new_books.php?limited=n";
+                    break;
+            }
+            new BookHelper((AsyncResponse) fragment).execute(new URL(link));
         } catch (MalformedURLException ignored) {
         }
     }
