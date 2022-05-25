@@ -130,19 +130,6 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 ));
     };
 
-//    View.OnClickListener booksOnHandsListener = view -> {
-//        new FragmentHelper((MainActivity) requireActivity(),
-//                false, true).execute(new BooksOnHandsFragment());
-//    };
-//    View.OnClickListener reservedBooksListener = view -> {
-//        new FragmentHelper((MainActivity) requireActivity(),
-//                false, true).execute(new ReservedBooksFragment());
-//    };
-//    View.OnClickListener wishlistListener = view -> {
-//        new FragmentHelper((MainActivity) requireActivity(),
-//                false, true).execute(new WishlistFragment());
-//    };
-
     private void getBookListsByUser(String[] tables, String id_user, String limited) {
         for (String table : tables) {
             try {
@@ -163,16 +150,35 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         }
     }
 
-    private class InitList extends Thread {
-        ArrayList<Book> output;
-        ArrayList<Drawable> covers;
-        String list;
-        FragmentActivity activity;
-        InitList(FragmentActivity activity, ArrayList<Book> output, ArrayList<Drawable> covers, String list){
+    public class InitList extends Thread {
+        private final ArrayList<Book> output;
+        private final FragmentActivity activity;
+        private ArrayList<Integer> ids;
+        private ArrayList<Drawable> covers;
+        private ArrayList<String> coversIDs;
+        private ArrayList<String> descriptions;
+        private ArrayList<String> titles;
+        private ArrayList<String> authors;
+        private LinearLayout LoadingL;
+        private RecyclerView recycler;
+
+        InitList(FragmentActivity activity, ArrayList<Book> output, ArrayList<Integer> ids,
+                 ArrayList<Drawable> covers,
+                 ArrayList<String> descriptions, ArrayList<String> titles,
+                 ArrayList<String> authors, ArrayList<String> coversIDs, LinearLayout LoadingL,
+                 RecyclerView recycler){
+
             this.output = output;
-            this.covers = covers;
-            this.list = list;
             this.activity = activity;
+            this.ids = ids;
+            this.covers = covers;
+            this.descriptions = descriptions;
+            this.titles = titles;
+            this.authors = authors;
+            this.coversIDs = coversIDs;
+            this.LoadingL = LoadingL;
+            this.recycler = recycler;
+
         }
         public void run() {
             while (output.size() > covers.size()) {
@@ -182,18 +188,21 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 } catch (InterruptedException ignored) {
                 }
             }
-            switch (list){
-                case "wishlist":
-                    new RecyclerInitializer(activity, wishlist_ids, covers,
-                            wishlist_descriptions, wishlist_titles, wishlist_authors,
-                            wishlist_coversIDs, LoadingWishlist).execute(wishlistRecycler);
-                    break;
-                case "reserved":
-                    new RecyclerInitializer(activity, reserved_ids, covers,
-                            reserved_descriptions, reserved_titles, reserved_authors, reserved_coversIDs,
-                            LoadingReserved).execute(reservedBooksRecycler);
-                    break;
-            }
+            new RecyclerInitializer(activity, ids, covers,
+                    descriptions, titles, authors,
+                    coversIDs, LoadingL).execute(recycler);
+//            switch (list){
+//                case "wishlist":
+//                    new RecyclerInitializer(activity, wishlist_ids, covers,
+//                            wishlist_descriptions, wishlist_titles, wishlist_authors,
+//                            wishlist_coversIDs, LoadingWishlist).execute(wishlistRecycler);
+//                    break;
+//                case "reserved":
+//                    new RecyclerInitializer(activity, reserved_ids, covers,
+//                            reserved_descriptions, reserved_titles, reserved_authors, reserved_coversIDs,
+//                            LoadingReserved).execute(reservedBooksRecycler);
+//                    break;
+//            }
         }
     }
 
@@ -226,7 +235,9 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                     wishlist_authors.add(book.getAuthor());
                     wishlist_coversIDs.add(coverID);
                 }
-                new InitList(requireActivity(),output, wishlist_covers,"wishlist").start();
+                new InitList(requireActivity(),output, wishlist_ids, wishlist_covers,
+                        wishlist_descriptions,wishlist_titles,wishlist_authors,wishlist_coversIDs,
+                        LoadingWishlist,wishlistRecycler).start();
                 break;
             case "reserved_books":
                 reserved_ids.clear();
@@ -246,7 +257,10 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                     reserved_authors.add(book.getAuthor());
                     reserved_coversIDs.add(coverID);
                 }
-                new InitList(requireActivity(),output, reserved_covers,"reserved").start();
+                new InitList(requireActivity(),output, reserved_ids, reserved_covers,
+                        reserved_descriptions,reserved_titles,reserved_authors,reserved_coversIDs,
+                        LoadingReserved,reservedBooksRecycler).start();
+//                new InitList(requireActivity(),output, reserved_covers,"reserved").start();
                 break;
         }
     }
