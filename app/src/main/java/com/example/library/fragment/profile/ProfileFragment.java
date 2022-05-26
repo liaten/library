@@ -26,6 +26,7 @@ import com.example.library.helper.BookHelperExtended;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.GetRequestFromDatabaseByUser;
 import com.example.library.helper.ImageDownloader;
+import com.example.library.helper.InitList;
 import com.example.library.helper.RecyclerInitializer;
 
 import org.json.JSONException;
@@ -147,62 +148,6 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         String userid = MainActivity.getSP().getString("userid", "");
         if (!userid.equals("")) {
             new GetRequestFromDatabaseByUser(this).execute("id", "userid", userid);
-        }
-    }
-
-    public class InitList extends Thread {
-        private final ArrayList<Book> output;
-        private final FragmentActivity activity;
-        private ArrayList<Integer> ids;
-        private ArrayList<Drawable> covers;
-        private ArrayList<String> coversIDs;
-        private ArrayList<String> descriptions;
-        private ArrayList<String> titles;
-        private ArrayList<String> authors;
-        private LinearLayout LoadingL;
-        private RecyclerView recycler;
-
-        InitList(FragmentActivity activity, ArrayList<Book> output, ArrayList<Integer> ids,
-                 ArrayList<Drawable> covers,
-                 ArrayList<String> descriptions, ArrayList<String> titles,
-                 ArrayList<String> authors, ArrayList<String> coversIDs, LinearLayout LoadingL,
-                 RecyclerView recycler){
-
-            this.output = output;
-            this.activity = activity;
-            this.ids = ids;
-            this.covers = covers;
-            this.descriptions = descriptions;
-            this.titles = titles;
-            this.authors = authors;
-            this.coversIDs = coversIDs;
-            this.LoadingL = LoadingL;
-            this.recycler = recycler;
-
-        }
-        public void run() {
-            while (output.size() > covers.size()) {
-                try {
-                    Log.d(TAG, "output.size = " + output.size() + " covers.size = " + covers.size());
-                    Thread.sleep(500);
-                } catch (InterruptedException ignored) {
-                }
-            }
-            new RecyclerInitializer(activity, ids, covers,
-                    descriptions, titles, authors,
-                    coversIDs, LoadingL).execute(recycler);
-//            switch (list){
-//                case "wishlist":
-//                    new RecyclerInitializer(activity, wishlist_ids, covers,
-//                            wishlist_descriptions, wishlist_titles, wishlist_authors,
-//                            wishlist_coversIDs, LoadingWishlist).execute(wishlistRecycler);
-//                    break;
-//                case "reserved":
-//                    new RecyclerInitializer(activity, reserved_ids, covers,
-//                            reserved_descriptions, reserved_titles, reserved_authors, reserved_coversIDs,
-//                            LoadingReserved).execute(reservedBooksRecycler);
-//                    break;
-//            }
         }
     }
 

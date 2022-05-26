@@ -25,6 +25,7 @@ import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
+import com.example.library.helper.InitList;
 import com.example.library.helper.RecyclerInitializer;
 
 import org.json.JSONObject;
@@ -125,7 +126,9 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             authors.add(author);
             coversIDs.add(coverID);
         }
-        new RecyclerInitializer(requireActivity(), ids, covers, descriptions, titles, authors, coversIDs, LoadingL).execute(newBooksList);
+        new InitList(requireActivity(),output, ids, covers,
+                descriptions,titles,authors,coversIDs,
+                LoadingL,newBooksList).start();
     }
 
     @Override
