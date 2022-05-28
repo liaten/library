@@ -23,8 +23,7 @@ public class NetworkHelper {
             }
             bufferedReader.close();
             return response.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
         return "";
     }

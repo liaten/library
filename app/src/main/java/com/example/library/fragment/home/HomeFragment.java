@@ -1,6 +1,5 @@
 package com.example.library.fragment.home;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
@@ -25,8 +23,7 @@ import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
-import com.example.library.helper.InitList;
-import com.example.library.helper.RecyclerInitializer;
+import com.example.library.helper.ListWaiter;
 
 import org.json.JSONObject;
 
@@ -114,8 +111,8 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         coversIDs.clear();
         for (Book book : output
         ) {
-            ImageDownloader d = new ImageDownloader(this);
             String coverID = String.valueOf(book.getCover());
+            ImageDownloader d = new ImageDownloader(this);
             d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
@@ -126,7 +123,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             authors.add(author);
             coversIDs.add(coverID);
         }
-        new InitList(requireActivity(),output, ids, covers,
+        new ListWaiter(requireActivity(),output, ids, covers,
                 descriptions,titles,authors,coversIDs,
                 LoadingL,newBooksList).start();
     }

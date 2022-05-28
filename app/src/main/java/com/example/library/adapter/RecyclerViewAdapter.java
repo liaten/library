@@ -26,14 +26,14 @@ import java.util.regex.Pattern;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private static final String TAG = "RecyclerViewAdapter";
+//    private static final String TAG = "RecyclerViewAdapter";
 
     private final ArrayList<Drawable> covers;
-    private final ArrayList<String> descriptions;
-    private final ArrayList<String> titles;
+
+    private final ArrayList<String> descriptions, titles, authors, coversIDs;
+
     private final ArrayList<Integer> ids;
-    private final ArrayList<String> authors;
-    private final ArrayList<String> coversIDs;
+
     private final Context context;
     private final String hyphen_regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
     private final Pattern hyphenPattern = Pattern.compile(hyphen_regex, Pattern.CASE_INSENSITIVE);

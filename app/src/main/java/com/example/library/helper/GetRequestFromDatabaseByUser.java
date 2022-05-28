@@ -25,7 +25,7 @@ public class GetRequestFromDatabaseByUser extends AsyncTask<String, Void, JSONOb
                     type + "&typeValue=" + typeValue + "&searchable=" + searchable);
             return new JSONObject(getJSONFromURL(url));
         } catch(Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
             return new JSONObject();
         }
     }

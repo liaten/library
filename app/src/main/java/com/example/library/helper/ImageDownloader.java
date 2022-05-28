@@ -13,8 +13,8 @@ import java.io.InputStream;
 
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     @SuppressLint("StaticFieldLeak")
-    ImageView bmImage;
-    public AsyncResponse delegate = null;
+    private ImageView bmImage;
+    private AsyncResponse delegate = null;
     private String table;
 
     @SuppressWarnings("deprecation")
