@@ -66,7 +66,6 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> {
         itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.empty_divider_horizontal));
         recyclerView.addItemDecoration(itemDecoration);
         LoadingL.setVisibility(View.GONE);
-        Log.d(TAG, "ВЬЮХА, УХОДИ!");
         recyclerView.setVisibility(View.VISIBLE);
     }
 }

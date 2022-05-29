@@ -1,6 +1,5 @@
 package com.example.library.fragment.other;
 
-import static com.example.library.fragment.home.HomeFragment.getTopNewBooks;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.R;
 import com.example.library.entity.Book;
-import com.example.library.fragment.home.HomeFragment;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.RecyclerInitializer;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
 
 public class BooksExtendedList extends Fragment implements AsyncResponse {
 
-    private String headerText, type;
+    private String headerText, link;
     private TextView headerTextView;
     private RecyclerView booksList;
     private LinearLayout LoadingL;
@@ -44,9 +42,9 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
 
     private static final String TAG = "BooksExtendedList";
 
-    public BooksExtendedList(String headerText, String type){
+    public BooksExtendedList(String headerText, String link){
         this.headerText = headerText;
-        this.type = type;
+        this.link = link;
     }
 
     @Nullable
@@ -75,17 +73,7 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
     }
 
     private void setBooksRecycler(){
-        switch (type){
-            case "new_books":
-                getTopNewBooks(this,"n");
-                break;
-            case "reserved":
-                break;
-            case "wishlist":
-                break;
-            case "on_hands":
-                break;
-        }
+        Log.d(TAG, "setBooksRecycler: " + link);
     }
 
     private void setHeaderText(){

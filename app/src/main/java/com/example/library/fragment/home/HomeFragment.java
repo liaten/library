@@ -42,16 +42,14 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private RecyclerView newBooksList;
     private LinearLayout LoadingL;
     private TextView newBooksTextView, allNewsTextView;
+    private static String link = "";
 
 //    private static final String TAG = "HomeFragment";
 
     View.OnClickListener allNewsListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),
                 false,true).execute(
-                        new BooksExtendedList(
-                                newBooksTextView.getText().toString(),
-                                "new_books"
-                        ));
+                new BooksExtendedList(newBooksTextView.getText().toString(), link + "n"));
     };
 
     @Nullable
@@ -82,23 +80,21 @@ public class HomeFragment extends Fragment implements AsyncResponse {
 
     public static void getTopNewBooks(Fragment fragment, String limited){
         try {
-            String link = "";
+            link = "https://liaten.ru/db/new_books.php?limited=";
             switch (limited){
                 case "y":
-                    link = "https://liaten.ru/db/new_books.php?limited=y";
+                    new BookHelper((AsyncResponse) fragment).execute(new URL(link + "y"));
                     break;
                 case "n":
-                    link = "https://liaten.ru/db/new_books.php?limited=n";
+                    new BookHelper((AsyncResponse) fragment).execute(new URL(link + "n"));
                     break;
             }
-            new BookHelper((AsyncResponse) fragment).execute(new URL(link));
         } catch (MalformedURLException ignored) {
         }
     }
 
     @Override
     public void processFinish(Boolean output) {
-        //
     }
 
     @Override
@@ -116,8 +112,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
-            int id = book.getID();
-            ids.add(id);
+            ids.add(book.getID());
             descriptions.add(book.getDescription());
             titles.add(title);
             authors.add(author);
