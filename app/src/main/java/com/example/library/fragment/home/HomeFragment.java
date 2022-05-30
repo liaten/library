@@ -1,5 +1,6 @@
 package com.example.library.fragment.home;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
@@ -49,7 +51,10 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     View.OnClickListener allNewsListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),
                 false,true).execute(
-                new BooksExtendedList(newBooksTextView.getText().toString(), link + "n"));
+                new BooksExtendedList(
+                        newBooksTextView.getText().toString(),
+                        link + "n&page=1&recsPerPage=5")
+        );
     };
 
     @Nullable
@@ -120,7 +125,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         }
         new ListWaiter(requireActivity(),output, ids, covers,
                 descriptions,titles,authors,coversIDs,
-                LoadingL,newBooksList).start();
+                LoadingL,newBooksList, "horizontal", this).start();
     }
 
     @Override

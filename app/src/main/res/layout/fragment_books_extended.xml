@@ -34,17 +34,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/white"
-        android:paddingBottom="10dp"
         >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/books_list"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:scrollbars="none"
             android:visibility="gone"
             android:clipToPadding="false"
-            android:paddingStart="20dp"
+            android:paddingStart="15dp"
+            android:paddingBottom="10dp"
             />
         <LinearLayout
             android:id="@+id/loading"

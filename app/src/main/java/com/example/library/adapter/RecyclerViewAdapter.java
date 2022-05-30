@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,13 +36,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final ArrayList<Integer> ids;
 
     private final Context context;
+    private static String orientation;
+
     private final String hyphen_regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
     private final Pattern hyphenPattern = Pattern.compile(hyphen_regex, Pattern.CASE_INSENSITIVE);
 
     public RecyclerViewAdapter(Context context, ArrayList<Integer> ids,
                                ArrayList<Drawable> covers, ArrayList<String> descriptions,
                                ArrayList<String> titles, ArrayList<String> authors,
-                               ArrayList<String> coversIDs
+                               ArrayList<String> coversIDs, String orientation
     ) {
         this.context = context;
         this.ids = ids;
@@ -50,13 +53,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.titles = titles;
         this.authors = authors;
         this.coversIDs = coversIDs;
+        RecyclerViewAdapter.orientation = orientation;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_book_with_cover,parent,false);
-        return new ViewHolder(view);
+        switch (orientation){
+            case "vertical":
+                return new ViewHolder(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_book_with_cover_vertical,parent,false)
+                );
+            case "horizontal":
+                return new ViewHolder(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_book_with_cover_horizontal,parent,false)
+                );
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -65,31 +79,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         int coverHeight = covers.get(position).getIntrinsicHeight();
         double pixelsWidth = coverWidth * scale + 0.5f;
         double pixelsHeight = coverHeight * scale + 0.5f;
-        double coefficient = pixelsHeight / 400;
+        double coefficient = 0;
+        switch (orientation){
+            case "horizontal":
+                coefficient = pixelsHeight / 400;
+                break;
+            case "vertical":
+                coefficient = pixelsHeight / 250;
+                break;
+        }
         pixelsWidth /= coefficient;
         pixelsHeight /= coefficient;
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int) pixelsWidth, (int) pixelsHeight);
         holder.cover.setLayoutParams(lp);
-
         String author = setHyphenation(authors.get(position));
         String title = setHyphenation(titles.get(position));
-
         Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
         holder.title.setText(sp);
-
         holder.cover.setImageDrawable(covers.get(position));
         View.OnClickListener bookListener = view -> {
             new FragmentHelper((MainActivity) context,
                     false, true).execute(new BookInfo(
                     ids.get(position),
                     titles.get(position),
-                            authors.get(position),
-                            descriptions.get(position),
-                            coversIDs.get(position)
+                    authors.get(position),
+                    descriptions.get(position),
+                    coversIDs.get(position)
             ));
         };
-        holder.cover.setOnClickListener(bookListener);
-        holder.title.setOnClickListener(bookListener);
+        holder.layout.setOnClickListener(bookListener);
     }
 
     @Override
@@ -104,11 +122,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ImageView cover;
+        LinearLayout layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cover = itemView.findViewById(R.id.cover);
             title = itemView.findViewById(R.id.title);
+            switch (orientation){
+                case "vertical":
+                    layout = itemView.findViewById(R.id.book_vertical_layout);
+                    break;
+                case "horizontal":
+                    layout = itemView.findViewById(R.id.book_horizontal_layout);
+                    break;
+            }
         }
     }
 }

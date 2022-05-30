@@ -2,6 +2,7 @@ package com.example.library.fragment.other;
 
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.helper.AsyncResponse;
+import com.example.library.helper.BookHelper;
 import com.example.library.helper.ImageDownloader;
+import com.example.library.helper.ListWaiter;
 import com.example.library.helper.RecyclerInitializer;
 
 import org.json.JSONObject;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class BooksExtendedList extends Fragment implements AsyncResponse {
@@ -32,6 +37,7 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
     private TextView headerTextView;
     private RecyclerView booksList;
     private LinearLayout LoadingL;
+
 
     private static final ArrayList<Drawable> covers = new ArrayList<>();
     private static final ArrayList<Integer> ids = new ArrayList<>();
@@ -73,7 +79,11 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
     }
 
     private void setBooksRecycler(){
-        Log.d(TAG, "setBooksRecycler: " + link);
+        try {
+            new BookHelper((AsyncResponse) this).execute(new URL(link));
+        } catch (MalformedURLException ignored) {
+        }
+//        Log.d(TAG, "setBooksRecycler: " + link);
     }
 
     private void setHeaderText(){
@@ -107,7 +117,9 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
             authors.add(author);
             coversIDs.add(coverID);
         }
-        new RecyclerInitializer(requireActivity(), ids, covers, descriptions, titles, authors, coversIDs, LoadingL).execute(booksList);
+        new ListWaiter(requireActivity(),output, ids, covers,
+                descriptions,titles,authors,coversIDs,
+                LoadingL,booksList, "vertical", this).start();
     }
 
     @Override
@@ -122,7 +134,7 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
 
     @Override
     public void processFinish(Bitmap output) {
-
+        covers.add(new BitmapDrawable(output));
     }
 
     @Override

@@ -203,7 +203,10 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 author.get(table),
                 coverID.get(table),
                 loading.get(table),
-                recycler.get(table)).start();
+                recycler.get(table),
+                "horizontal",
+                this
+        ).start();
     }
 
     // Если возвращает таблицу, то значит она пустая!
