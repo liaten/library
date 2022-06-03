@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +46,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     private static final Map<String,ArrayList<String>> description = new HashMap<>();
     private static final Map<String,ArrayList<String>> title = new HashMap<>();
     private static final Map<String,ArrayList<String>> author = new HashMap<>();
-    private static final Map<String,LinearLayout> loading = new HashMap<>();
+    private static final Map<String, ProgressBar> loading = new HashMap<>();
     private static final Map<String,RecyclerView> recycler = new HashMap<>();
     private static final Map<String,TextView> alert = new HashMap<>();
     private static final Map<String,TextView> header = new HashMap<>();

@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +38,7 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
     private String headerText, link;
     private TextView headerTextView;
     private RecyclerView booksList;
-    private LinearLayout LoadingL;
+    private ProgressBar LoadingL;
 
 
     private static final ArrayList<Drawable> covers = new ArrayList<>();

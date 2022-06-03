@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.library.entity.Book;
 import com.example.library.fragment.events.EventsFragment;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
-    //private static final String TAG = "MainActivity";
     private static BottomNavigationView bottomNavigationView;
     public static boolean isNetworkEnabled = false;
     private static SharedPreferences sp;
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setViews();
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
                 getSP().getInt("enters", 0) + 1
                 ).apply();
         scale = getApplicationContext().getResources().getDisplayMetrics().density;
+
     }
 
     @Override
@@ -118,17 +120,13 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         if (output) {
             if (!isNetworkEnabled) {
                 isNetworkEnabled = true;
-                //Toast.makeText(getApplicationContext(), "Есть интернет соединение",Toast.LENGTH_SHORT).show();
                 new FragmentHelper(this, true, true)
                         .execute(new HomeFragment());
-                //bottomNavigationView.setVisibility(View.VISIBLE);
                 setBottomNavigationViewVisible();
             }
         } else {
             isNetworkEnabled = false;
-            //Toast.makeText(getApplicationContext(), "Нет интернет соединения", Toast.LENGTH_SHORT).show();
             setBottomNavigationViewInvisible();
-            //bottomNavigationView.setVisibility(View.GONE);
             new FragmentHelper(this, true, false)
                     .execute(new NoConnectionFragment());
         }
@@ -136,31 +134,25 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
-        //
     }
 
     @Override
     public void returnBooks(ArrayList<Book> output, String table) {
-
     }
 
     @Override
     public void returnTable(String table) {
-
     }
 
     @Override
     public void processFinish(Bitmap output) {
-        //
     }
 
     @Override
     public void processFinish(Bitmap output, String table) {
-
     }
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
-
     }
 }

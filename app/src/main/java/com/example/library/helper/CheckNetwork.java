@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
-@SuppressWarnings("deprecation")
 public class CheckNetwork extends AsyncTask<Context, Void, Boolean>{
 
 //    private static final String TAG = CheckNetwork.class.getSimpleName();

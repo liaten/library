@@ -1,6 +1,7 @@
 package com.example.library.helper;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -19,6 +20,8 @@ public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {
     private static final Fragment selectedTopFragment = new TopFragment();
     private static BottomNavigationView mainBottomNavigationView;
     private static MainActivity mainActivity;
+
+    private static final String TAG = "FragmentHelper";
 
     public FragmentHelper(@NonNull MainActivity activity,
                           boolean checkBottomNavigation,

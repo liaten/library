@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -37,7 +39,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     private static ArrayList<String> authors;
     private static ArrayList<String> coversIDs;
 
-    private static LinearLayout LoadingL;
+    private static ProgressBar LoadingL;
     private static int page;
     private AsyncResponse asyncResponse = this;
     private static Fragment fragment;
@@ -60,7 +62,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                                ArrayList<Drawable> covers,
                                ArrayList<String> descriptions, ArrayList<String> titles,
                                ArrayList<String> authors, ArrayList<String> coversIDs,
-                               LinearLayout LoadingL, String orientation, Fragment fragment) {
+                               ProgressBar LoadingL, String orientation, Fragment fragment) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
@@ -77,7 +79,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                                ArrayList<Drawable> covers,
                                ArrayList<String> descriptions, ArrayList<String> titles,
                                ArrayList<String> authors, ArrayList<String> coversIDs,
-                               LinearLayout LoadingL, String orientation, Fragment fragment, int page) {
+                               ProgressBar LoadingL, String orientation, Fragment fragment, int page) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
@@ -188,16 +190,9 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                         } catch (InterruptedException ignored) {
                         }
                     }
-                    try {
                         adapter.notifyItemInserted(covers.size());
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    finally {
                         LoadingL.setVisibility(View.GONE);
                         loading = true;
-                    }
 
                 }
             }

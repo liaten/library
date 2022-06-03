@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -111,46 +114,59 @@
                         android:textColor="@color/text_secondary" />
 
                 </LinearLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/on_hands_recycler"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:scrollbars="none"
-                    android:visibility="gone"
-                    android:clipToPadding="false"
-                    android:paddingStart="20dp"
-                    android:paddingBottom="20dp"
-                    />
-                <LinearLayout
-                    android:id="@+id/loading_on_hands"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_on_hands"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingHorizontal="20dp"
                     android:background="@color/white"
-                    android:paddingBottom="15dp"
                     android:visibility="visible"
                     >
-                    <ProgressBar
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/on_hands_recycler"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:indeterminate="false" />
-                </LinearLayout>
+                        android:orientation="horizontal"
+                        android:scrollbars="none"
+                        android:visibility="gone"
+                        android:clipToPadding="false"
+                        android:paddingStart="20dp"
+                        android:paddingBottom="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <ProgressBar
+                        android:id="@+id/loading_on_hands"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/on_hands_alert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:text="В настоящее время нет ни одной книги на руках"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_secondary"
+                        android:visibility="gone"
+                        android:paddingBottom="10dp"
+                        android:paddingHorizontal="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/on_hands_alert"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto"
-                    android:text="В настоящее время нет ни одной книги на руках"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/text_secondary"
-                    android:paddingHorizontal="20dp"
-                    android:visibility="gone"
-                    android:paddingBottom="10dp"
-                    />
+
 
             </LinearLayout> <!--книги на руках-->
 
@@ -197,45 +213,58 @@
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/booked_recycler"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:scrollbars="none"
-                    android:visibility="gone"
-                    android:clipToPadding="false"
-                    android:paddingStart="20dp"
-                    android:paddingBottom="20dp"
-                    />
-                <LinearLayout
-                    android:id="@+id/loading_booked"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/booked_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingHorizontal="20dp"
                     android:background="@color/white"
-                    android:paddingBottom="15dp"
                     android:visibility="visible"
                     >
-                    <ProgressBar
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/booked_recycler"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:indeterminate="false" />
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/booked_alert"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="В настоящее время ни одной книги не забронировано"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/text_secondary"
-                    android:paddingHorizontal="20dp"
-                    android:fontFamily="@font/roboto"
-                    android:visibility="gone"
-                    android:paddingBottom="10dp"
-                    />
+                        android:orientation="horizontal"
+                        android:scrollbars="none"
+                        android:visibility="gone"
+                        android:clipToPadding="false"
+                        android:paddingStart="20dp"
+                        android:paddingBottom="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <ProgressBar
+                        android:id="@+id/loading_booked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/booked_alert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="В настоящее время ни одной книги не забронировано"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_secondary"
+                        android:fontFamily="@font/roboto"
+                        android:visibility="gone"
+                        android:paddingBottom="10dp"
+                        android:paddingHorizontal="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </LinearLayout> <!--забронированные-->
 
@@ -281,50 +310,59 @@
                         />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/wishlist_recycler"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:scrollbars="none"
-                    android:visibility="gone"
-                    android:clipToPadding="false"
-                    android:paddingStart="20dp"
-                    android:paddingBottom="20dp"
-                    />
 
-                <LinearLayout
-                    android:id="@+id/loading_wishlist"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/wishlist_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingHorizontal="20dp"
                     android:background="@color/white"
-                    android:paddingBottom="15dp"
                     android:visibility="visible"
                     >
-                    <ProgressBar
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/wishlist_recycler"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:indeterminate="false" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/wishlist_alert"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="В настоящее время нет ни одной книги в списке желаемого"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/text_secondary"
-                    android:paddingHorizontal="20dp"
-                    android:fontFamily="@font/roboto"
-                    android:visibility="gone"
-                    android:paddingBottom="10dp"
-                    />
-
+                        android:orientation="horizontal"
+                        android:scrollbars="none"
+                        android:visibility="gone"
+                        android:clipToPadding="false"
+                        android:paddingStart="20dp"
+                        android:paddingBottom="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <ProgressBar
+                        android:id="@+id/loading_wishlist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                    <TextView
+                        android:id="@+id/wishlist_alert"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="В настоящее время нет ни одной книги в списке желаемого"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/text_secondary"
+                        android:fontFamily="@font/roboto"
+                        android:visibility="gone"
+                        android:paddingBottom="10dp"
+                        android:paddingHorizontal="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout> <!--список желаемого-->
-
         </LinearLayout>
     </ScrollView>
     </LinearLayout>

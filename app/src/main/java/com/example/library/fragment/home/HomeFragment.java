@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     private static final ArrayList<String> titles = new ArrayList<>();
     private static final ArrayList<String> authors = new ArrayList<>();
     private RecyclerView newBooksList;
-    private LinearLayout LoadingL;
+    private ProgressBar LoadingL;
     private TextView newBooksTextView, allNewsTextView;
     private static String link = "";
 
