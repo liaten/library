@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
                 false,true).execute(
                 new BooksExtendedList(
                         newBooksTextView.getText().toString(),
-                        link + "n&page=1&recsPerPage=5")
+                        link + "n&page=1&recsPerPage=12")
         );
     };
 

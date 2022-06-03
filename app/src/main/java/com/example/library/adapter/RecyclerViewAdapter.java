@@ -74,9 +74,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int coverWidth = covers.get(position).getIntrinsicWidth();
-        int coverHeight = covers.get(position).getIntrinsicHeight();
+        int coverWidth = 0;
+        int coverHeight = 0;
+        try {
+            coverWidth = covers.get(position).getIntrinsicWidth();
+            coverHeight = covers.get(position).getIntrinsicHeight();
+        }
+        catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
         double pixelsWidth = coverWidth * scale + 0.5f;
         double pixelsHeight = coverHeight * scale + 0.5f;
         double coefficient = 0;
@@ -96,7 +108,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String title = setHyphenation(titles.get(position));
         Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
         holder.title.setText(sp);
-        holder.cover.setImageDrawable(covers.get(position));
+        try {
+            holder.cover.setImageDrawable(covers.get(position));
+        }
+        catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
+
         View.OnClickListener bookListener = view -> {
             new FragmentHelper((MainActivity) context,
                     false, true).execute(new BookInfo(
@@ -128,14 +146,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             cover = itemView.findViewById(R.id.cover);
             title = itemView.findViewById(R.id.title);
-            switch (orientation){
-                case "vertical":
-                    layout = itemView.findViewById(R.id.book_vertical_layout);
-                    break;
-                case "horizontal":
-                    layout = itemView.findViewById(R.id.book_horizontal_layout);
-                    break;
-            }
+            layout = itemView.findViewById(R.id.layout);
         }
     }
 }

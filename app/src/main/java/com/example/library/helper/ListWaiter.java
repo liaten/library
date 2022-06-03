@@ -1,8 +1,6 @@
 package com.example.library.helper;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
@@ -78,17 +76,14 @@ public class ListWaiter extends Thread {
             } catch (InterruptedException ignored) {
             }
         }
-        switch (page){
-            case 0:
-                new RecyclerInitializer(activity, ids, covers,
-                        descriptions, titles, authors,
-                        coversIDs, LoadingL, orientation, fragment).execute(recycler);
-                break;
-            default:
-                new RecyclerInitializer(activity, ids, covers,
-                        descriptions, titles, authors,
-                        coversIDs, LoadingL, orientation, fragment, page).execute(recycler);
-                break;
+        if (page == 0) {
+            new RecyclerInitializer(activity, ids, covers,
+                    descriptions, titles, authors,
+                    coversIDs, LoadingL, orientation, fragment).execute(recycler);
+        } else {
+            new RecyclerInitializer(activity, ids, covers,
+                    descriptions, titles, authors,
+                    coversIDs, LoadingL, orientation, fragment, page).execute(recycler);
         }
     }
 }

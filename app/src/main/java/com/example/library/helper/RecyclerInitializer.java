@@ -29,23 +29,25 @@ import java.util.ArrayList;
 public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> implements AsyncResponse {
 
     private static FragmentActivity activity;
+
     private static ArrayList<Integer> ids;
     private static ArrayList<Drawable> covers;
     private static ArrayList<String> descriptions;
     private static ArrayList<String> titles;
     private static ArrayList<String> authors;
     private static ArrayList<String> coversIDs;
+
     private static LinearLayout LoadingL;
     private static int page;
     private AsyncResponse asyncResponse = this;
     private static Fragment fragment;
+    private boolean settings_set = false;
 
     private static String orientation;
 
     private boolean loading = true;
 
-    private int pastVisiblesItems, visibleItemCount, totalItemCount, dy_saved;
-    private LinearLayoutManager mLayoutManager;
+    private int pastVisibleItems, visibleItemCount, totalItemCount;
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
@@ -113,8 +115,6 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
             case "vertical":
                 itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL);
                 itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.divider_books_vertical));
-                mLayoutManager = new LinearLayoutManager(activity);
-                recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.addOnScrollListener(scrollListener);
                 break;
             case "horizontal":
@@ -132,12 +132,11 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             if (dy > 0 ) { //check for scroll down
-                visibleItemCount = mLayoutManager.getChildCount();
-                totalItemCount = mLayoutManager.getItemCount();
-                pastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
-                if (loading && (dy > dy_saved) && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                visibleItemCount = layoutManager.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+                if (loading && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
                     loading = false;
-                    dy_saved = dy;
                     page++;
                     String link = "https://liaten.ru/db/new_books.php?limited=n&page="+page+"&recsPerPage=5";
                     Log.d(TAG, "onScrolled: " + page);
@@ -145,12 +144,12 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                         new BookHelper(asyncResponse).execute(new URL(link));
                     } catch (MalformedURLException ignored) {
                     }
-                    Log.v("...", "Last Item Wow !");
-//                    loading = true;
                 }
             }
         }
     };
+
+
 
     @Override
     public void processFinish(Boolean output) {
@@ -159,25 +158,53 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
-        Log.d(TAG, "returnBooks: " + output);
-        for (Book book : output
-        ) {
-            ImageDownloader d = new ImageDownloader(this);
-            String coverID = String.valueOf(book.getCover());
-            d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
-            String author = book.getAuthor();
-            String title = book.getTitle();
-            int id = book.getID();
-            ids.add(id);
-            descriptions.add(book.getDescription());
-            titles.add(title);
-            authors.add(author);
-            coversIDs.add(coverID);
+        Log.d(TAG, "output_size: " + output.size());
+        if(output.size()==0){
+            LoadingL.setVisibility(View.GONE);
         }
-        LoadingL.setVisibility(View.VISIBLE);
-        new ListWaiter(activity,output, ids, covers,
-                descriptions,titles,authors,coversIDs,
-                LoadingL,recyclerView, "vertical", fragment, page).start();
+        else {
+            for (Book book : output
+            ) {
+                ImageDownloader d = new ImageDownloader(this);
+                String coverID = String.valueOf(book.getCover());
+                d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
+                String author = book.getAuthor();
+                String title = book.getTitle();
+                int id = book.getID();
+                ids.add(id);
+                descriptions.add(book.getDescription());
+                titles.add(title);
+                authors.add(author);
+                coversIDs.add(coverID);
+            }
+            LoadingL.setVisibility(View.VISIBLE);
+
+            class ListUpdater extends Thread{
+                public void run() {
+                    while (ids.size() > covers.size()) {
+                        try {
+//                            Log.d(TAG, "ids.size = " + ids.size() + " covers.size = " + covers.size());
+                            Thread.sleep(1);
+                        } catch (InterruptedException ignored) {
+                        }
+                    }
+                    try {
+                        adapter.notifyItemInserted(covers.size());
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    finally {
+                        LoadingL.setVisibility(View.GONE);
+                        loading = true;
+                    }
+
+                }
+            }
+
+            new ListUpdater().start();
+
+        }
     }
 
     @Override
@@ -193,6 +220,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     @Override
     public void processFinish(Bitmap output) {
         covers.add(new BitmapDrawable(output));
+
     }
 
     @Override

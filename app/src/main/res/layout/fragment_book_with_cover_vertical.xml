@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/book_vertical_layout"
+    android:id="@+id/layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:divider="@drawable/small_divider"
     android:orientation="horizontal"
-    android:showDividers="middle"
     android:paddingVertical="10dp"
     >
 
@@ -39,7 +37,6 @@
         android:layout_weight="1"
         android:fontFamily="@font/roboto"
         android:text="Имя автора\nНазвание книги"
-        android:maxLines="4"
         android:textColor="@color/text_secondary"
         android:textSize="10sp"
         tools:ignore="SmallSp"

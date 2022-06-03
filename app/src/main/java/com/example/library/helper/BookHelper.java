@@ -33,7 +33,7 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
         try{
             JSONObject jsonObject = new JSONObject(getJSONFromURL(urls[0]));
             JSONArray books = jsonObject.getJSONArray("books");
-            Log.d(TAG, "doInBackground: " + books);
+//            Log.d(TAG, "doInBackground: " + books);
             for(int i=0;i<books.length();i++){
                 JSONObject book = books.getJSONObject(i);
                 @SuppressLint("SimpleDateFormat")

@@ -80,10 +80,10 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
 
     private void setBooksRecycler(){
         try {
-            new BookHelper((AsyncResponse) this).execute(new URL(link));
+            new BookHelper(this).execute(new URL(link));
         } catch (MalformedURLException ignored) {
         }
-//        Log.d(TAG, "setBooksRecycler: " + link);
+        Log.d(TAG, "setBooksRecycler: " + link);
     }
 
     private void setHeaderText(){

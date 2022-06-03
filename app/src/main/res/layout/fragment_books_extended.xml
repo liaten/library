@@ -31,17 +31,19 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:background="@color/white"
         >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/books_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:scrollbars="none"
-            android:visibility="gone"
+            android:visibility="visible"
             android:clipToPadding="false"
             android:paddingStart="15dp"
             android:paddingBottom="10dp"
@@ -49,8 +51,7 @@
         <LinearLayout
             android:id="@+id/loading"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingHorizontal="20dp"
             android:background="@color/white"
@@ -60,7 +61,8 @@
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminate="true" />
+                android:indeterminate="true"
+                android:visibility="visible"/>
         </LinearLayout>
     </LinearLayout>
 

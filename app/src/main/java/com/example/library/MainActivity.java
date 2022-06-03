@@ -73,9 +73,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         new CountDownTimer(Long.MAX_VALUE, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                CheckNetwork checkNetwork = new CheckNetwork();
-                checkNetwork.delegate = asyncResponse;
-                checkNetwork.execute(context.getApplicationContext());
+                new CheckNetwork(asyncResponse).execute(context.getApplicationContext());
             }
 
             @Override
@@ -109,8 +107,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         setOnClickListeners();
         checkNetwork(this, this);
         sp = getSharedPreferences("login", MODE_PRIVATE);
-        int enters = getSP().getInt("enters", 0) + 1;
-        getSP().edit().putInt("enters", enters).apply();
+        getSP().edit().putInt("enters",
+                getSP().getInt("enters", 0) + 1
+                ).apply();
         scale = getApplicationContext().getResources().getDisplayMetrics().density;
     }
 

@@ -8,8 +8,12 @@ import android.os.AsyncTask;
 @SuppressWarnings("deprecation")
 public class CheckNetwork extends AsyncTask<Context, Void, Boolean>{
 
-    private static final String TAG = CheckNetwork.class.getSimpleName();
+//    private static final String TAG = CheckNetwork.class.getSimpleName();
     public AsyncResponse delegate = null;
+
+    public CheckNetwork(AsyncResponse delegate){
+        this.delegate = delegate;
+    }
 
     @Override
     protected Boolean doInBackground(Context... contexts) {
