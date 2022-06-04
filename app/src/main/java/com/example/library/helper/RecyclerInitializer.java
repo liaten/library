@@ -190,10 +190,21 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                         } catch (InterruptedException ignored) {
                         }
                     }
-                        adapter.notifyItemInserted(covers.size());
-                        LoadingL.setVisibility(View.GONE);
-                        loading = true;
-
+                    try {
+                        synchronized (this){
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.notifyItemInserted(covers.size());
+                                    LoadingL.setVisibility(View.GONE);
+                                    loading = true;
+                                }
+                            });
+                        }
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
 
