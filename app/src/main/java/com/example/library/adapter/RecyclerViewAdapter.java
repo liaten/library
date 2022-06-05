@@ -114,8 +114,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         catch (IndexOutOfBoundsException e){
             e.printStackTrace();
         }
-
-        View.OnClickListener bookListener = view -> {
+        holder.layout.setOnClickListener(view -> {
             new FragmentHelper((MainActivity) context,
                     false, true).execute(new BookInfo(
                     ids.get(position),
@@ -124,8 +123,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     descriptions.get(position),
                     coversIDs.get(position)
             ));
-        };
-        holder.layout.setOnClickListener(bookListener);
+        });
     }
 
     @Override

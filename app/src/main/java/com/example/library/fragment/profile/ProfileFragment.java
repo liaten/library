@@ -1,5 +1,6 @@
 package com.example.library.fragment.profile;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -8,13 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,44 +81,45 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
 
         topTitle = v.findViewById(R.id.full_name_profile_textview);
 
-        viewAll.put("wishlist_books",v.findViewById(R.id.wishlist_view_all));
-        viewAll.put("reserved_books",v.findViewById(R.id.reserved_books_view_all));
-        viewAll.put("books_on_hands",v.findViewById(R.id.books_on_hands_view_all));
+        viewAll.put(lists[0],v.findViewById(R.id.wishlist_view_all));
+        viewAll.put(lists[1],v.findViewById(R.id.reserved_books_view_all));
+        viewAll.put(lists[2],v.findViewById(R.id.books_on_hands_view_all));
 
-        header.put("wishlist_books",v.findViewById(R.id.wishlist_header));
-        header.put("reserved_books",v.findViewById(R.id.reserved_header));
-        header.put("books_on_hands",v.findViewById(R.id.books_on_hands_header));
+        header.put(lists[0],v.findViewById(R.id.wishlist_header));
+        header.put(lists[1],v.findViewById(R.id.reserved_header));
+        header.put(lists[2],v.findViewById(R.id.books_on_hands_header));
 
-        loading.put("wishlist_books",v.findViewById(R.id.loading_wishlist));
-        loading.put("reserved_books",v.findViewById(R.id.loading_booked));
-        loading.put("books_on_hands",v.findViewById(R.id.loading_on_hands));
+        loading.put(lists[0],v.findViewById(R.id.wishlist_loading));
+        loading.put(lists[1],v.findViewById(R.id.reserved_books_loading));
+        loading.put(lists[2],v.findViewById(R.id.books_on_hands_loading));
 
-        recycler.put("wishlist_books",v.findViewById(R.id.wishlist_recycler));
-        recycler.put("reserved_books",v.findViewById(R.id.booked_recycler));
-        recycler.put("books_on_hands",v.findViewById(R.id.on_hands_recycler));
+        recycler.put(lists[0],v.findViewById(R.id.wishlist_recycler));
+        recycler.put(lists[1],v.findViewById(R.id.reserved_books_recycler));
+        recycler.put(lists[2],v.findViewById(R.id.books_on_hands_recycler));
 
-        alert.put("wishlist_books",v.findViewById(R.id.wishlist_alert));
-        alert.put("reserved_books",v.findViewById(R.id.booked_alert));
-        alert.put("books_on_hands",v.findViewById(R.id.on_hands_alert));
+        alert.put(lists[0],v.findViewById(R.id.wishlist_alert));
+        alert.put(lists[1],v.findViewById(R.id.reserved_books_alert));
+        alert.put(lists[2],v.findViewById(R.id.books_on_hands_alert));
     }
 
+    @SuppressLint("SetTextI18n")
     private void setTopTitle(){
-        String name = MainActivity.getSP().getString("name", "Гость");
-        String surname = MainActivity.getSP().getString("surname", "");
-        topTitle.setText(name + " " + surname);
+        topTitle.setText(MainActivity.getSP().getString("name", "Гость") +
+                " " +
+                MainActivity.getSP().getString("surname", ""));
     }
 
     private void setOnClickListeners() {
-        viewAll.get("wishlist_books").setOnClickListener(watchAllWishlistListener);
-        viewAll.get("reserved_books").setOnClickListener(watchAllReservedListener);
-        viewAll.get("books_on_hands").setOnClickListener(watchAllOnHandsListener);
+        viewAll.get(lists[0]).setOnClickListener(watchAllWishlistListener);
+        viewAll.get(lists[1]).setOnClickListener(watchAllReservedListener);
+        viewAll.get(lists[2]).setOnClickListener(watchAllOnHandsListener);
     }
 
     View.OnClickListener watchAllReservedListener = view -> {
         new FragmentHelper((MainActivity) requireActivity(),
                 false,true).execute(
                 new BooksExtendedList(
-                        header.get("reserved_books").getText().toString(), "reserved"
+                        header.get(lists[1]).getText().toString(), "reserved"
                 ));
     };
 
@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         new FragmentHelper((MainActivity) requireActivity(),
                 false,true).execute(
                 new BooksExtendedList(
-                        header.get("wishlist_books").getText().toString(), "reserved"
+                        header.get(lists[0]).getText().toString(), "reserved"
                 ));
     };
 
@@ -135,11 +135,11 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         new FragmentHelper((MainActivity) requireActivity(),
                 false,true).execute(
                 new BooksExtendedList(
-                        header.get("books_on_hands").getText().toString(), "reserved"
+                        header.get(lists[2]).getText().toString(), "reserved"
                 ));
     };
 
-    private void getBookListsByUser(String[] tables, String id_user, String limited) {
+    private void getBookListsByUser(String[] tables, String id_user) {
         for (String table : tables) {
             try {
                 id.put(table,new ArrayList<>());
@@ -151,7 +151,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 String link = "https://liaten.ru/db/books_from_booklists_by_user.php" +
                         "?table=" + table +
                         "&id_user=" + id_user +
-                        "&limited=" + limited;
+                        "&limited=y";
                 new BookHelperExtended(this, table).execute(new URL(link));
             } catch (MalformedURLException ignored) {
             }
@@ -160,7 +160,6 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
 
     private void updateLists() {
         String userid = MainActivity.getSP().getString("userid", "");
-        Log.d(TAG, "getUserIDFromDB: " + userid);
         if (userid.equals("")) {
             setAllListsEmpty(lists);
         } else {
@@ -186,10 +185,9 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         coverID.get(table).clear();
         for (Book book : output
         ) {
-            ImageDownloader d = new ImageDownloader(this, table);
             String coverID_s = String.valueOf(book.getCover());
-            d.execute("https://liaten.ru/libpics_small/" + coverID_s + ".jpg");
-
+            new ImageDownloader(this, table).execute
+                    ("https://liaten.ru/libpics_small/" + coverID_s + ".jpg");
             id.get(table).add(book.getID());
             description.get(table).add(book.getDescription());
             title.get(table).add(book.getTitle());
@@ -244,13 +242,9 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     public void returnJSONObject(JSONObject jsonObject) {
         Log.d(TAG, "returnJSONObject: " + jsonObject);
         try {
-            String type = jsonObject.getString("type");
             if (jsonObject.getBoolean("success")) {
-                switch (type) {
-                    case "id":
-                        String user_id = jsonObject.getString("id");
-                        getBookListsByUser(lists, user_id, "y");
-                        break;
+                if (jsonObject.getString("type").equals("id")) {
+                    getBookListsByUser(lists, jsonObject.getString("id"));
                 }
             }
         } catch (JSONException ignored) {

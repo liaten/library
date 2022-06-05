@@ -124,7 +124,7 @@
                     android:visibility="visible"
                     >
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/on_hands_recycler"
+                        android:id="@+id/books_on_hands_recycler"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -139,7 +139,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         />
                     <ProgressBar
-                        android:id="@+id/loading_on_hands"
+                        android:id="@+id/books_on_hands_loading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:indeterminate="false"
@@ -149,7 +149,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         />
                     <TextView
-                        android:id="@+id/on_hands_alert"
+                        android:id="@+id/books_on_hands_alert"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
@@ -223,7 +223,7 @@
                     android:visibility="visible"
                     >
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/booked_recycler"
+                        android:id="@+id/reserved_books_recycler"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -238,7 +238,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         />
                     <ProgressBar
-                        android:id="@+id/loading_booked"
+                        android:id="@+id/reserved_books_loading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:indeterminate="false"
@@ -248,7 +248,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         />
                     <TextView
-                        android:id="@+id/booked_alert"
+                        android:id="@+id/reserved_books_alert"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="В настоящее время ни одной книги не забронировано"
@@ -336,7 +336,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         />
                     <ProgressBar
-                        android:id="@+id/loading_wishlist"
+                        android:id="@+id/wishlist_loading"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:indeterminate="false"

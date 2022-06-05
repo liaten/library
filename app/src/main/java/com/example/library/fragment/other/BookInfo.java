@@ -142,8 +142,8 @@ public class BookInfo extends Fragment implements AsyncResponse {
     }
 
     private void downloadBookCover(){
-        ImageDownloader d = new ImageDownloader(this);
-        d.execute("https://liaten.ru/libpics_medium/" + coverID + ".jpg");
+        new ImageDownloader(this).execute
+                ("https://liaten.ru/libpics_medium/" + coverID + ".jpg");
     }
 
     private void createPostRequestBookUser(String table, String method, String id_user, String id_book) {
@@ -186,7 +186,6 @@ public class BookInfo extends Fragment implements AsyncResponse {
 
     @Override
     public void returnTable(String table) {
-
     }
 
     @SuppressWarnings("deprecation")
@@ -211,7 +210,6 @@ public class BookInfo extends Fragment implements AsyncResponse {
 
     @Override
     public void processFinish(Bitmap output, String table) {
-
     }
 
     @Override

@@ -34,8 +34,7 @@ public class BookHelperExtended extends AsyncTask<URL, Void, ArrayList<Book>> {
         ArrayList<Book> booksList = new ArrayList<>();
         try{
             JSONObject jsonObject = new JSONObject(getJSONFromURL(urls[0]));
-            int success = jsonObject.getInt("success");
-            switch (success){
+            switch (jsonObject.getInt("success")){
                 case 1:
                     Log.d(TAG, "doInBackground: " + jsonObject);
                     JSONArray books = jsonObject.getJSONArray("books");
@@ -71,6 +70,5 @@ public class BookHelperExtended extends AsyncTask<URL, Void, ArrayList<Book>> {
         else {
             delegate.returnTable(active_table);
         }
-
     }
 }

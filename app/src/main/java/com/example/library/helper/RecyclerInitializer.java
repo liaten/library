@@ -30,8 +30,6 @@ import java.util.ArrayList;
 
 public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> implements AsyncResponse {
 
-    private static FragmentActivity activity;
-
     private static ArrayList<Integer> ids;
     private static ArrayList<Drawable> covers;
     private static ArrayList<String> descriptions;
@@ -39,30 +37,25 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     private static ArrayList<String> authors;
     private static ArrayList<String> coversIDs;
 
+    private static FragmentActivity activity;
     private static ProgressBar LoadingL;
     private static int page;
-    private AsyncResponse asyncResponse = this;
-    private static Fragment fragment;
-    private boolean settings_set = false;
-
     private static String orientation;
+    private static final String TAG = "RecyclerInitializer";
 
+    private AsyncResponse asyncResponse = this;
     private boolean loading = true;
-
     private int pastVisibleItems, visibleItemCount, totalItemCount;
-
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private RecyclerViewAdapter adapter;
     private DividerItemDecoration itemDecoration;
 
-    private static final String TAG = "RecyclerInitializer";
-
     public RecyclerInitializer(FragmentActivity activity, ArrayList<Integer> ids,
                                ArrayList<Drawable> covers,
                                ArrayList<String> descriptions, ArrayList<String> titles,
                                ArrayList<String> authors, ArrayList<String> coversIDs,
-                               ProgressBar LoadingL, String orientation, Fragment fragment) {
+                               ProgressBar LoadingL, String orientation) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
@@ -72,25 +65,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
         RecyclerInitializer.coversIDs = coversIDs;
         RecyclerInitializer.LoadingL = LoadingL;
         RecyclerInitializer.orientation = orientation;
-        RecyclerInitializer.fragment = fragment;
         RecyclerInitializer.page = 1;
-    }
-    public RecyclerInitializer(FragmentActivity activity, ArrayList<Integer> ids,
-                               ArrayList<Drawable> covers,
-                               ArrayList<String> descriptions, ArrayList<String> titles,
-                               ArrayList<String> authors, ArrayList<String> coversIDs,
-                               ProgressBar LoadingL, String orientation, Fragment fragment, int page) {
-        RecyclerInitializer.activity = activity;
-        RecyclerInitializer.ids = ids;
-        RecyclerInitializer.covers = covers;
-        RecyclerInitializer.descriptions = descriptions;
-        RecyclerInitializer.titles = titles;
-        RecyclerInitializer.authors = authors;
-        RecyclerInitializer.coversIDs = coversIDs;
-        RecyclerInitializer.LoadingL = LoadingL;
-        RecyclerInitializer.orientation = orientation;
-        RecyclerInitializer.fragment = fragment;
-        RecyclerInitializer.page = page;
     }
 
     @Override
@@ -124,9 +99,18 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                 itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.empty_divider_horizontal));
                 break;
         }
-        recyclerView.addItemDecoration(itemDecoration);
-        LoadingL.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        try {
+            synchronized (activity){
+                activity.runOnUiThread(() -> {
+                    recyclerView.addItemDecoration(itemDecoration);
+                    LoadingL.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                });
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
@@ -141,7 +125,6 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                     loading = false;
                     page++;
                     String link = "https://liaten.ru/db/new_books.php?limited=n&page="+page+"&recsPerPage=5";
-                    Log.d(TAG, "onScrolled: " + page);
                     try {
                         new BookHelper(asyncResponse).execute(new URL(link));
                     } catch (MalformedURLException ignored) {
@@ -160,7 +143,6 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
-        Log.d(TAG, "output_size: " + output.size());
         if(output.size()==0){
             LoadingL.setVisibility(View.GONE);
         }
@@ -181,7 +163,8 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
             }
             LoadingL.setVisibility(View.VISIBLE);
 
-            class ListUpdater extends Thread{
+            new Thread(new Runnable() {
+                @Override
                 public void run() {
                     while (ids.size() > covers.size()) {
                         try {
@@ -192,50 +175,38 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                     }
                     try {
                         synchronized (this){
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.notifyItemInserted(covers.size());
-                                    LoadingL.setVisibility(View.GONE);
-                                    loading = true;
-                                }
+                            activity.runOnUiThread(() -> {
+                                adapter.notifyItemInserted(covers.size());
+                                LoadingL.setVisibility(View.GONE);
+                                loading = true;
                             });
                         }
                     }
-                    catch (Exception e){
-                        e.printStackTrace();
+                    catch (Exception ignored){
                     }
                 }
-            }
-
-            new ListUpdater().start();
-
+            }).start();
         }
     }
 
     @Override
     public void returnBooks(ArrayList<Book> output, String table) {
-
     }
 
     @Override
     public void returnTable(String table) {
-
     }
 
     @Override
     public void processFinish(Bitmap output) {
         covers.add(new BitmapDrawable(output));
-
     }
 
     @Override
     public void processFinish(Bitmap output, String table) {
-
     }
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
-
     }
 }
