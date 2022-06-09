@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.entity.Event;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.GetRequestFromDatabaseByUser;
 
@@ -150,6 +151,11 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     @Override
     public void returnBooks(ArrayList<Book> output) {
 //
+    }
+
+    @Override
+    public void returnEvents(ArrayList<Event> output) {
+
     }
 
     @Override

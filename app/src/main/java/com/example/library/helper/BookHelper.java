@@ -36,19 +36,16 @@ public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
 //            Log.d(TAG, "doInBackground: " + books);
             for(int i=0;i<books.length();i++){
                 JSONObject book = books.getJSONObject(i);
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 booksList.add(new Book(
                         book.getInt("id"),
                         book.getString("title"),
                         book.getString("author"),
                         book.getInt("cover"),
                         book.getString("theme"),
-                        sdf.parse(book.getString("date")),
                         book.getString("description")
                 ));
             }
-        } catch (JSONException | ParseException ignored) {
+        } catch (JSONException ignored) {
         }
         return booksList;
     }

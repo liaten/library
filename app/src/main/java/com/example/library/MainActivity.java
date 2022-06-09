@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.library.entity.Book;
+import com.example.library.entity.Event;
 import com.example.library.fragment.events.EventsFragment;
 import com.example.library.fragment.home.HomeFragment;
 import com.example.library.fragment.library.LibraryFragment;
@@ -134,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
+    }
+
+    @Override
+    public void returnEvents(ArrayList<Event> output) {
+
     }
 
     @Override

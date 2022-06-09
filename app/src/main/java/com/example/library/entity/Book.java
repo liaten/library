@@ -44,14 +44,6 @@ public class Book {
         this.theme = theme;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -60,22 +52,16 @@ public class Book {
         this.description = description;
     }
 
-    private int ID;
-    private String title;
-    private int cover;
-    private String author;
-    private String theme;
-    private Date date;
-    private String description;
+    private int ID, cover;
+    private String title, author, theme, description;
 
-    public Book(int ID, String title, String author, int cover, String theme, Date date, String description){
+    public Book(int ID, String title, String author, int cover, String theme, String description){
 
         setID(ID);
         setTitle(title);
         setCover(cover);
         setAuthor(author);
         setTheme(theme);
-        setDate(date);
         setDescription(description);
     }
 }

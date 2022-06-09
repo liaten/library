@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.entity.Event;
 import com.example.library.fragment.other.BooksExtendedList;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelperExtended;
@@ -36,6 +37,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ProfileFragment extends Fragment implements AsyncResponse {
 
@@ -58,6 +61,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     };
 
     private TextView topTitle;
+    private ProfileFragment profileFragment = this;
 
     private static final String TAG = "ProfileFragment";
 
@@ -139,9 +143,8 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 ));
     };
 
-    private void getBookListsByUser(String[] tables, String id_user) {
+    private void getBookListsByUser(String[] tables, String id_user) throws MalformedURLException {
         for (String table : tables) {
-            try {
                 id.put(table,new ArrayList<>());
                 cover.put(table,new ArrayList<>());
                 coverID.put(table,new ArrayList<>());
@@ -152,9 +155,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                         "?table=" + table +
                         "&id_user=" + id_user +
                         "&limited=y";
-                new BookHelperExtended(this, table).execute(new URL(link));
-            } catch (MalformedURLException ignored) {
-            }
+                new BookHelperExtended(profileFragment, table).execute(new URL(link));
         }
     }
 
@@ -173,6 +174,11 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
+    }
+
+    @Override
+    public void returnEvents(ArrayList<Event> output) {
+
     }
 
     @Override
@@ -205,7 +211,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                 loading.get(table),
                 recycler.get(table),
                 "horizontal",
-                this
+                null
         ).start();
     }
 
@@ -247,7 +253,8 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
                     getBookListsByUser(lists, jsonObject.getString("id"));
                 }
             }
-        } catch (JSONException ignored) {
+        } catch (JSONException | MalformedURLException e) {
+            e.printStackTrace();
         }
     }
 }

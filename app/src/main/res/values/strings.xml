@@ -82,4 +82,6 @@
     <string name="login_stats">Логин:</string>
     <string name="email_stats">Email:</string>
     <string name="logout">Выйти из аккаунта</string>
+    <string name="calendar_shown">Отображено V</string>
+    <string name="calendar_hidden">Скрыто ^</string>
 </resources>

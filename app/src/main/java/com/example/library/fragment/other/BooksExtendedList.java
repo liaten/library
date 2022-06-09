@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.entity.Event;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.ImageDownloader;
@@ -121,7 +122,12 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
         }
         new ListWaiter(requireActivity(),output, ids, covers,
                 descriptions,titles,authors,coversIDs,
-                LoadingL,booksList, "vertical", this).start();
+                LoadingL,booksList, "vertical", link).start();
+    }
+
+    @Override
+    public void returnEvents(ArrayList<Event> output) {
+
     }
 
     @Override

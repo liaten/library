@@ -48,7 +48,6 @@ public class BookHelperExtended extends AsyncTask<URL, Void, ArrayList<Book>> {
                                 book.getString("author"),
                                 book.getInt("cover"),
                                 book.getString("theme"),
-                                sdf.parse(book.getString("date")),
                                 book.getString("description")
                         ));
                     }
@@ -56,7 +55,7 @@ public class BookHelperExtended extends AsyncTask<URL, Void, ArrayList<Book>> {
                 case 0:
                     return null;
             }
-        } catch (JSONException | ParseException ignored) {
+        } catch (JSONException ignored) {
         }
         return booksList;
     }

@@ -21,12 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.R;
 import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.entity.Book;
+import com.example.library.entity.Event;
 
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> implements AsyncResponse {
 
@@ -41,6 +43,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     private static ProgressBar LoadingL;
     private static int page;
     private static String orientation;
+    private static String link;
     private static final String TAG = "RecyclerInitializer";
 
     private AsyncResponse asyncResponse = this;
@@ -55,7 +58,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                                ArrayList<Drawable> covers,
                                ArrayList<String> descriptions, ArrayList<String> titles,
                                ArrayList<String> authors, ArrayList<String> coversIDs,
-                               ProgressBar LoadingL, String orientation) {
+                               ProgressBar LoadingL, String orientation, String link) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
@@ -66,6 +69,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
         RecyclerInitializer.LoadingL = LoadingL;
         RecyclerInitializer.orientation = orientation;
         RecyclerInitializer.page = 1;
+        RecyclerInitializer.link = link;
     }
 
     @Override
@@ -99,18 +103,9 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                 itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.empty_divider_horizontal));
                 break;
         }
-        try {
-            synchronized (activity){
-                activity.runOnUiThread(() -> {
-                    recyclerView.addItemDecoration(itemDecoration);
-                    LoadingL.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                });
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        recyclerView.addItemDecoration(itemDecoration);
+        LoadingL.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
@@ -124,7 +119,8 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                 if (loading && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
                     loading = false;
                     page++;
-                    String link = "https://liaten.ru/db/new_books.php?limited=n&page="+page+"&recsPerPage=5";
+                    link = Pattern.compile("[\\d]+$", Pattern.CASE_INSENSITIVE).matcher(link)
+                            .replaceAll("") + page;
                     try {
                         new BookHelper(asyncResponse).execute(new URL(link));
                     } catch (MalformedURLException ignored) {
@@ -187,6 +183,11 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                 }
             }).start();
         }
+    }
+
+    @Override
+    public void returnEvents(ArrayList<Event> output) {
+
     }
 
     @Override

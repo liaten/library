@@ -41,6 +41,7 @@
 
         >
         <EditText
+            android:id="@+id/book_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -53,6 +54,7 @@
             android:autofillHints="book name"
             android:inputType="text" />
         <EditText
+            android:id="@+id/author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"
@@ -65,6 +67,7 @@
             android:autofillHints="name"
             android:inputType="textPersonName" />
         <EditText
+            android:id="@+id/theme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_search_edit_text"

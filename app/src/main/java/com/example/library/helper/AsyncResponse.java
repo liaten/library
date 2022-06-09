@@ -3,6 +3,7 @@ package com.example.library.helper;
 import android.graphics.Bitmap;
 
 import com.example.library.entity.Book;
+import com.example.library.entity.Event;
 
 import org.json.JSONObject;
 
@@ -12,6 +13,8 @@ public interface AsyncResponse {
     void processFinish(Boolean output);
 
     void returnBooks(ArrayList<Book> output);
+
+    void returnEvents(ArrayList<Event> output);
 
     void returnBooks(ArrayList<Book> output, String table);
 

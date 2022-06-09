@@ -25,14 +25,14 @@ public class ListWaiter extends Thread {
     private ProgressBar LoadingL;
     private RecyclerView recycler;
     private String orientation;
-    private Fragment fragment;
+    private String link;
     private static final String TAG = "ListWaiter";
 
     public ListWaiter(FragmentActivity activity, ArrayList<Book> output, ArrayList<Integer> ids,
                       ArrayList<Drawable> covers,
                       ArrayList<String> descriptions, ArrayList<String> titles,
                       ArrayList<String> authors, ArrayList<String> coversIDs, ProgressBar LoadingL,
-                      RecyclerView recycler, String orientation, Fragment fragment){
+                      RecyclerView recycler, String orientation, String link){
 
         this.output = output;
         this.activity = activity;
@@ -45,7 +45,7 @@ public class ListWaiter extends Thread {
         this.LoadingL = LoadingL;
         this.recycler = recycler;
         this.orientation = orientation;
-        this.fragment = fragment;
+        this.link = link;
     }
 
     public void run() {
@@ -58,6 +58,6 @@ public class ListWaiter extends Thread {
         }
         new RecyclerInitializer(activity, ids, covers,
                 descriptions, titles, authors,
-                coversIDs, LoadingL, orientation).execute(recycler);
+                coversIDs, LoadingL, orientation, link).execute(recycler);
     }
 }

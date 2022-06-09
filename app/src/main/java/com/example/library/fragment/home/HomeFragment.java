@@ -1,6 +1,5 @@
 package com.example.library.fragment.home;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -8,20 +7,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.entity.Event;
 import com.example.library.fragment.other.BooksExtendedList;
 import com.example.library.helper.AsyncResponse;
 import com.example.library.helper.BookHelper;
@@ -55,7 +52,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
                 false,true).execute(
                 new BooksExtendedList(
                         newBooksTextView.getText().toString(),
-                        link + "n&page=1&recsPerPage=12")
+                        link + "n&recsPerPage=12&page=1")
         );
     };
 
@@ -127,7 +124,12 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         }
         new ListWaiter(requireActivity(),output, ids, covers,
                 descriptions,titles,authors,coversIDs,
-                LoadingL,newBooksList, "horizontal", this).start();
+                LoadingL,newBooksList, "horizontal", null).start();
+    }
+
+    @Override
+    public void returnEvents(ArrayList<Event> output) {
+
     }
 
     @Override
