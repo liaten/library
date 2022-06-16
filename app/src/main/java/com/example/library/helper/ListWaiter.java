@@ -51,7 +51,6 @@ public class ListWaiter extends Thread {
     public void run() {
         while (output.size() > covers.size()) {
             try {
-//                Log.d(TAG, "output.size = " + output.size() + " covers.size = " + covers.size());
                 Thread.sleep(1);
             } catch (InterruptedException ignored) {
             }

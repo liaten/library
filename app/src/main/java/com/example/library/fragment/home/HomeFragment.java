@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void processFinish(Bitmap output) {
         covers.add(new BitmapDrawable(output));
