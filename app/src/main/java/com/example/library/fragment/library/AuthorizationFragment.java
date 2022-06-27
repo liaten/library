@@ -2,7 +2,6 @@ package com.example.library.fragment.library;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
@@ -37,7 +34,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     private TextView AuthorizedTextView;
     private Button ApplyButton, LogoutButton;
     private View view;
-    private String user, password, loginFromView, passwordFromView, name, surname, email;
+    private String user, password, login_app, password_app, name, surname, email;
     private static final String USERID_PHP_DB = "userid";
     private static final String PASSWORD_PHP_DB = "password";
     private static final String EMAIL_PHP_DB = "email";
@@ -76,25 +73,15 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
     }
 
     private final View.OnClickListener applyButtonListener = view -> {
-        loginFromView = LoginEditText.getText().toString().trim();
-        passwordFromView = PasswordEditText.getText().toString().trim();
-        if(loginFromView.equals("") || passwordFromView.equals("")){
+        login_app = LoginEditText.getText().toString().trim();
+        password_app = PasswordEditText.getText().toString().trim();
+        if(login_app.equals("") || password_app.equals("")){
             Toast.makeText(requireActivity(),
                     "Данные не введены",
                     Toast.LENGTH_SHORT).show();
         }
         else {
-            Pattern emailPattern = Pattern.compile("@",Pattern.CASE_INSENSITIVE);
-            Matcher emailMatcher = emailPattern.matcher(loginFromView);
-            boolean isEmail = emailMatcher.find();
-            if(isEmail){
-                GetEmailFromDB(loginFromView);
-            }
-            else {
-                GetUserFromDB(loginFromView);
-            }
-            Log.d(TAG, "loginFromView: " + loginFromView);
-//            GetUserFromDB(loginFromView);
+            GetUserFromDB(login_app);
         }
     };
 
@@ -131,7 +118,9 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
             AuthorizedLayout.setVisibility(View.GONE);
             LoginActive.setVisibility(View.VISIBLE);
             LoginInactive.setVisibility(View.GONE);
+
         }
+
     }
 
     private void GetUserFromDB(String user) {
@@ -156,18 +145,22 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void processFinish(Boolean output) {
+        //
     }
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
+//
     }
 
     @Override
     public void returnEvents(ArrayList<Event> output) {
+
     }
 
     @Override
     public void returnBooks(ArrayList<Book> output, String table) {
+
     }
 
     @Override
@@ -177,6 +170,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void processFinish(Bitmap output) {
+//
     }
 
     @Override
@@ -186,7 +180,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     @Override
     public void returnJSONObject(JSONObject jsonObject) {
-        Log.d(TAG, "returnJSONObject: " + jsonObject);
+//        Log.d(TAG, "returnJSONObject: " + jsonObject);
         try {
             if (jsonObject.getBoolean("success")) {
                 String type = jsonObject.getString("type");
@@ -199,19 +193,21 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                         else {
                             MainActivity.getSP().edit().putString("userid", user).apply();
                         }
+
                         break;
                     case PASSWORD_PHP_DB:
                         password = jsonObject.getString(PASSWORD_PHP_DB);
                         if(user != null){
-                            if(user.equals(loginFromView) && password.equals(passwordFromView)){
+                            if(user.equals(login_app) && password.equals(password_app)){
                                 int auths_num = MainActivity.getSP().getInt("auths_num", 0) + 1;
                                 MainActivity.getSP().edit().putInt("auths_num", auths_num).apply();
+
                                 MainActivity.getSP().edit().putBoolean("logged",true).apply();
-                                MainActivity.getSP().edit().putString("userid", loginFromView).apply();
+                                MainActivity.getSP().edit().putString("userid", login_app).apply();
                                 MainActivity.getSP().edit().putString("password", password).apply();
-                                GetNameFromDB(loginFromView);
-                                GetSurnameFromDB(loginFromView);
-                                GetEmailFromDBByUserID(loginFromView);
+                                GetNameFromDB(login_app);
+                                GetSurnameFromDB(login_app);
+                                GetEmailFromDBByUserID(login_app);
                                 Toast.makeText(requireActivity(),
                                         "Успешный вход",
                                         Toast.LENGTH_SHORT).show();
@@ -223,15 +219,14 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                             }
                         }
                         else {
-                            if(email.equals(loginFromView) && password.equals(passwordFromView)){
+                            if(email.equals(login_app) && password.equals(password_app)){
                                 int auths_num = MainActivity.getSP().getInt("auths_num", 0) + 1;
                                 MainActivity.getSP().edit().putInt("auths_num", auths_num).apply();
                                 MainActivity.getSP().edit().putBoolean("logged",true).apply();
-                                MainActivity.getSP().edit().putString("email", loginFromView).apply();
+                                MainActivity.getSP().edit().putString("email", login_app).apply();
                                 MainActivity.getSP().edit().putString("password", password).apply();
-                                GetNameFromDBByEmail(loginFromView);
-                                GetSurnameFromDBByEmail(loginFromView);
-                                GetUserFromDBByEmail(email);
+                                GetNameFromDBByEmail(login_app);
+                                GetSurnameFromDBByEmail(login_app);
                                 Toast.makeText(requireActivity(),
                                         "Успешный вход",
                                         Toast.LENGTH_SHORT).show();
@@ -259,7 +254,7 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
                             GetPasswordByEmailFromDB(email);
                         }
                         else {
-                            MainActivity.getSP().edit().putString("email", loginFromView).apply();
+                            MainActivity.getSP().edit().putString("email", login_app).apply();
                         }
 
                         break;
@@ -275,10 +270,6 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
             }
         } catch (JSONException ignored) {
         }
-    }
-
-    private void GetUserFromDBByEmail(String email) {
-        new GetRequestFromDatabaseByUser(this).execute(USERID_PHP_DB,EMAIL_PHP_DB,email);
     }
 
     private void GetSurnameFromDB(String userid) {
