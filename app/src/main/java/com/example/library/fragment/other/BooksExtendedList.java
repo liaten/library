@@ -9,24 +9,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.entity.Event;
-import com.example.library.helper.AsyncResponse;
+import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
-import com.example.library.helper.RecyclerInitializer;
 
 import org.json.JSONObject;
 

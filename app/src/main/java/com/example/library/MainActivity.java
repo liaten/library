@@ -20,9 +20,10 @@ import com.example.library.fragment.home.HomeFragment;
 import com.example.library.fragment.library.LibraryFragment;
 import com.example.library.fragment.other.NoConnectionFragment;
 import com.example.library.fragment.search.SearchFragment;
-import com.example.library.helper.AsyncResponse;
+import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.CheckNetwork;
 import com.example.library.helper.FragmentHelper;
+import com.example.library.helper.response.NetworkResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONObject;
@@ -30,7 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse {
+public class MainActivity extends AppCompatActivity implements NetworkResponse {
 
     private static BottomNavigationView bottomNavigationView;
     public static boolean isNetworkEnabled = false;
@@ -44,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     @SuppressLint("NonConstantResourceId")
     private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener
             = item -> {
-        switch (item.getItemId()) {
+        int selectedItemID = item.getItemId();
+        switch (selectedItemID) {
             case R.id.nav_home:
                 new FragmentHelper(this,
                         true, true).execute(new HomeFragment());
@@ -70,18 +72,16 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         return bottomNavigationView;
     }
 
-    public static void checkNetwork(AsyncResponse asyncResponse, Context context) {
+    public static void checkNetwork(NetworkResponse networkResponse, Context context) {
         new CountDownTimer(Long.MAX_VALUE, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                new CheckNetwork(asyncResponse).execute(context.getApplicationContext());
+                new CheckNetwork(networkResponse).execute(context.getApplicationContext());
             }
-
             @Override
             public void onFinish() {
             }
         }.start();
-
     }
 
     private void setViews() {
@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(Boolean output) {
-        if (output) {
+    public void NetworkCheckFinish(Boolean status) {
+        if (status) {
             if (!isNetworkEnabled) {
                 isNetworkEnabled = true;
                 new FragmentHelper(this, true, true)
@@ -131,34 +131,5 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
             new FragmentHelper(this, true, false)
                     .execute(new NoConnectionFragment());
         }
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output) {
-    }
-
-    @Override
-    public void returnEvents(ArrayList<Event> output) {
-
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output, String table) {
-    }
-
-    @Override
-    public void returnTable(String table) {
-    }
-
-    @Override
-    public void processFinish(Bitmap output) {
-    }
-
-    @Override
-    public void processFinish(Bitmap output, String table) {
-    }
-
-    @Override
-    public void returnJSONObject(JSONObject jsonObject) {
     }
 }

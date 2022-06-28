@@ -127,14 +127,19 @@ public class DateHelper extends AsyncTask<URL, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Fragment session_fragment = FragmentHelper.getSelectedTopFragment();
-        View view = session_fragment.requireView();
-        DayOfDate = view.findViewById(R.id.date_day);
-        DayOfWeek = view.findViewById(R.id.day_of_the_week);
-        MonthAndYear = view.findViewById(R.id.month_year);
-        if (!isDataUpdated) {
-            DayOfWeek.setVisibility(View.INVISIBLE);
-            DayOfDate.setVisibility(View.INVISIBLE);
-            MonthAndYear.setVisibility(View.INVISIBLE);
+        try{
+            View view = session_fragment.requireView();
+            DayOfDate = view.findViewById(R.id.date_day);
+            DayOfWeek = view.findViewById(R.id.day_of_the_week);
+            MonthAndYear = view.findViewById(R.id.month_year);
+            if (!isDataUpdated) {
+                DayOfWeek.setVisibility(View.INVISIBLE);
+                DayOfDate.setVisibility(View.INVISIBLE);
+                MonthAndYear.setVisibility(View.INVISIBLE);
+            }
+        }
+        catch (Exception ex){
+//            ex.printStackTrace();
         }
     }
 

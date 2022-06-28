@@ -5,37 +5,28 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
+import com.example.library.helper.response.AsyncResponse;
+import com.example.library.helper.response.NetworkResponse;
+
 public class CheckNetwork extends AsyncTask<Context, Void, Boolean>{
 
 //    private static final String TAG = CheckNetwork.class.getSimpleName();
-    public AsyncResponse delegate = null;
+    public NetworkResponse delegate;
 
-    public CheckNetwork(AsyncResponse delegate){
+    public CheckNetwork(NetworkResponse delegate){
         this.delegate = delegate;
     }
 
     @Override
     protected Boolean doInBackground(Context... contexts) {
-        Context context = contexts[0];
         NetworkInfo info = ((ConnectivityManager)
-                context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-
-        if (info == null) {
-//            Log.d(TAG, "no internet connection");
-            return false;
-        } else {
-            if (info.isConnected()) {
-//                Log.d(TAG, " internet connection available...");
-            } else {
-//                Log.d(TAG, " internet connection");
-            }
-            return true;
-        }
+                contexts[0].getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return info != null && info.isConnected();
     }
 
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
-        delegate.processFinish(aBoolean);
+    protected void onPostExecute(Boolean networkState) {
+        super.onPostExecute(networkState);
+        delegate.NetworkCheckFinish(networkState);
     }
 }

@@ -4,15 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +18,7 @@ import com.example.library.R;
 import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.entity.Book;
 import com.example.library.entity.Event;
+import com.example.library.helper.response.AsyncResponse;
 
 import org.json.JSONObject;
 
@@ -42,7 +39,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     private static FragmentActivity activity;
     private static ProgressBar LoadingL;
     private static int page;
-    private static String orientation;
+    private static String scroll_direction;
     private static String link;
     private static final String TAG = "RecyclerInitializer";
 
@@ -58,7 +55,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                                ArrayList<Drawable> covers,
                                ArrayList<String> descriptions, ArrayList<String> titles,
                                ArrayList<String> authors, ArrayList<String> coversIDs,
-                               ProgressBar LoadingL, String orientation, String link) {
+                               ProgressBar LoadingL, String scroll_direction, String link) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
@@ -67,7 +64,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
         RecyclerInitializer.authors = authors;
         RecyclerInitializer.coversIDs = coversIDs;
         RecyclerInitializer.LoadingL = LoadingL;
-        RecyclerInitializer.orientation = orientation;
+        RecyclerInitializer.scroll_direction = scroll_direction;
         RecyclerInitializer.page = 1;
         RecyclerInitializer.link = link;
     }
@@ -75,7 +72,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     @Override
     protected Void doInBackground(RecyclerView... recyclerViews) {
         recyclerView = recyclerViews[0];
-        switch (orientation){
+        switch (scroll_direction){
             case "vertical":
                 layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false);
                 break;
@@ -90,9 +87,9 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     protected void onPostExecute(Void unused) {
         super.onPostExecute(unused);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(activity, ids, covers,descriptions, titles, authors, coversIDs, orientation);
+        adapter = new RecyclerViewAdapter(activity, ids, covers,descriptions, titles, authors, coversIDs, scroll_direction);
         recyclerView.setAdapter(adapter);
-        switch (orientation){
+        switch (scroll_direction){
             case "vertical":
                 itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL);
                 itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.divider_books_vertical));

@@ -2,19 +2,16 @@ package com.example.library.helper;
 
 import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.library.entity.Book;
+import com.example.library.helper.response.AsyncResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {

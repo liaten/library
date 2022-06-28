@@ -1,11 +1,8 @@
 package com.example.library.helper;
 
 import android.graphics.drawable.Drawable;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +21,7 @@ public class ListWaiter extends Thread {
     private ArrayList<String> authors;
     private ProgressBar LoadingL;
     private RecyclerView recycler;
-    private String orientation;
+    private String scroll_direction;
     private String link;
     private static final String TAG = "ListWaiter";
 
@@ -32,7 +29,7 @@ public class ListWaiter extends Thread {
                       ArrayList<Drawable> covers,
                       ArrayList<String> descriptions, ArrayList<String> titles,
                       ArrayList<String> authors, ArrayList<String> coversIDs, ProgressBar LoadingL,
-                      RecyclerView recycler, String orientation, String link){
+                      RecyclerView recycler, String scroll_direction, String link){
 
         this.output = output;
         this.activity = activity;
@@ -44,7 +41,7 @@ public class ListWaiter extends Thread {
         this.coversIDs = coversIDs;
         this.LoadingL = LoadingL;
         this.recycler = recycler;
-        this.orientation = orientation;
+        this.scroll_direction = scroll_direction;
         this.link = link;
     }
 
@@ -57,6 +54,6 @@ public class ListWaiter extends Thread {
         }
         new RecyclerInitializer(activity, ids, covers,
                 descriptions, titles, authors,
-                coversIDs, LoadingL, orientation, link).execute(recycler);
+                coversIDs, LoadingL, scroll_direction, link).execute(recycler);
     }
 }

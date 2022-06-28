@@ -36,7 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final ArrayList<Integer> ids;
 
     private final Context context;
-    private static String orientation;
+    private static String scroll_direction;
 
     private final String hyphen_regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
     private final Pattern hyphenPattern = Pattern.compile(hyphen_regex, Pattern.CASE_INSENSITIVE);
@@ -44,7 +44,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(Context context, ArrayList<Integer> ids,
                                ArrayList<Drawable> covers, ArrayList<String> descriptions,
                                ArrayList<String> titles, ArrayList<String> authors,
-                               ArrayList<String> coversIDs, String orientation
+                               ArrayList<String> coversIDs, String scroll_direction
     ) {
         this.context = context;
         this.ids = ids;
@@ -53,13 +53,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.titles = titles;
         this.authors = authors;
         this.coversIDs = coversIDs;
-        RecyclerViewAdapter.orientation = orientation;
+        RecyclerViewAdapter.scroll_direction = scroll_direction;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (orientation){
+        switch (scroll_direction){
             case "vertical":
                 return new ViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_book_with_cover_vertical,parent,false)
@@ -92,7 +92,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         double pixelsWidth = coverWidth * scale + 0.5f;
         double pixelsHeight = coverHeight * scale + 0.5f;
         double coefficient = 0;
-        switch (orientation){
+        switch (scroll_direction){
             case "horizontal":
                 coefficient = pixelsHeight / 400;
                 break;
