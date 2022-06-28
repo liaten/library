@@ -18,21 +18,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
-import com.example.library.entity.Event;
 import com.example.library.fragment.other.BooksExtendedList;
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
-
-import org.json.JSONObject;
+import com.example.library.helper.response.BookResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements AsyncResponse {
+public class HomeFragment extends Fragment implements BookResponse {
 
     private static final ArrayList<Drawable> covers = new ArrayList<>();
     private static final ArrayList<Integer> ids = new ArrayList<>();
@@ -87,18 +84,14 @@ public class HomeFragment extends Fragment implements AsyncResponse {
             link = "https://liaten.ru/db/new_books.php?limited=";
             switch (limited){
                 case "y":
-                    new BookHelper((AsyncResponse) fragment).execute(new URL(link + "y"));
+                    new BookHelper((BookResponse) fragment).execute(new URL(link + "y"));
                     break;
                 case "n":
-                    new BookHelper((AsyncResponse) fragment).execute(new URL(link + "n"));
+                    new BookHelper((BookResponse) fragment).execute(new URL(link + "n"));
                     break;
             }
         } catch (MalformedURLException ignored) {
         }
-    }
-
-    @Override
-    public void processFinish(Boolean output) {
     }
 
     @Override
@@ -112,8 +105,7 @@ public class HomeFragment extends Fragment implements AsyncResponse {
         for (Book book : output
         ) {
             String coverID = String.valueOf(book.getCover());
-            ImageDownloader d = new ImageDownloader(this);
-            d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
+            new ImageDownloader(this).execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
             ids.add(book.getID());
@@ -128,33 +120,22 @@ public class HomeFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void returnEvents(ArrayList<Event> output) {
-
-    }
-
-    @Override
     public void returnBooks(ArrayList<Book> output, String table) {
 
     }
 
     @Override
-    public void returnTable(String table) {
-
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void processFinish(Bitmap output) {
-        covers.add(new BitmapDrawable(output));
+    public void returnBookCover(Bitmap cover) {
+        covers.add(new BitmapDrawable(cover));
     }
 
     @Override
-    public void processFinish(Bitmap output, String table) {
+    public void returnBookCover(Bitmap output, String table) {
 
     }
 
     @Override
-    public void returnJSONObject(JSONObject jsonObject) {
+    public void returnTable(String active_table) {
 
     }
 }

@@ -7,7 +7,6 @@ import static com.example.library.helper.DateHelper.getYear;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,19 +33,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.entity.Book;
-import com.example.library.entity.Event;
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.CreateUser;
 import com.example.library.helper.DateHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.SearchEmailByEmailFromDB;
+import com.example.library.helper.response.JSONResponse;
 import com.example.library.mail.JavaMailAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -54,7 +50,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegistrationFragment extends Fragment implements AsyncResponse {
+public class RegistrationFragment extends Fragment implements JSONResponse {
 
     @Nullable
     protected DatePickerDialog datePickerDialog;
@@ -348,41 +344,6 @@ public class RegistrationFragment extends Fragment implements AsyncResponse {
             javaMailAPI = new JavaMailAPI(email, mSubject, mMessage);
             javaMailAPI.execute();
         }
-    }
-
-    @Override
-    public void processFinish(Boolean output) {
-
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output) {
-
-    }
-
-    @Override
-    public void returnEvents(ArrayList<Event> output) {
-
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output, String table) {
-
-    }
-
-    @Override
-    public void returnTable(String table) {
-
-    }
-
-    @Override
-    public void processFinish(Bitmap output) {
-
-    }
-
-    @Override
-    public void processFinish(Bitmap output, String table) {
-
     }
 
     @Override

@@ -4,7 +4,7 @@ import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 
 import android.os.AsyncTask;
 
-import com.example.library.helper.response.AsyncResponse;
+import com.example.library.helper.response.JSONResponse;
 
 import org.json.JSONObject;
 
@@ -12,9 +12,9 @@ import java.net.URL;
 
 public class PostRequestBookUser extends AsyncTask<String, Void, JSONObject> {
 
-    public AsyncResponse delegate;
+    public JSONResponse delegate;
 
-    public PostRequestBookUser(AsyncResponse delegate) {
+    public PostRequestBookUser(JSONResponse delegate) {
         this.delegate = delegate;
     }
 

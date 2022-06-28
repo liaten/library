@@ -36,7 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final ArrayList<Integer> ids;
 
     private final Context context;
-    private static String scroll_direction;
+    private final String scroll_direction;
 
     private final String hyphen_regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
     private final Pattern hyphenPattern = Pattern.compile(hyphen_regex, Pattern.CASE_INSENSITIVE);
@@ -53,7 +53,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.titles = titles;
         this.authors = authors;
         this.coversIDs = coversIDs;
-        RecyclerViewAdapter.scroll_direction = scroll_direction;
+        this.scroll_direction = scroll_direction;
     }
 
     @NonNull
@@ -94,10 +94,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         double coefficient = 0;
         switch (scroll_direction){
             case "horizontal":
-                coefficient = pixelsHeight / 400;
+                coefficient = pixelsHeight / 340;
                 break;
             case "vertical":
-                coefficient = pixelsHeight / 250;
+                coefficient = pixelsHeight / 280;
                 break;
         }
         pixelsWidth /= coefficient;
@@ -108,12 +108,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String title = setHyphenation(titles.get(position));
         Spanned sp = Html.fromHtml(author + "<br><b>" + title + "</b>");
         holder.title.setText(sp);
-        try {
-            holder.cover.setImageDrawable(covers.get(position));
-        }
-        catch (IndexOutOfBoundsException e){
-            e.printStackTrace();
-        }
+        holder.cover.setImageDrawable(covers.get(position));
         holder.layout.setOnClickListener(view -> {
             new FragmentHelper((MainActivity) context,
                     false, true).execute(new BookInfo(

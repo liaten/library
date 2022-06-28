@@ -1,7 +1,5 @@
 package com.example.library.entity;
 
-import java.util.Date;
-
 public class Book {
 
     public int getID() {

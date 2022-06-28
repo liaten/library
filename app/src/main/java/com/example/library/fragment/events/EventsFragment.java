@@ -1,6 +1,5 @@
 package com.example.library.fragment.events;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.entity.Event;
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.DateHelper;
 import com.example.library.helper.EventHelper;
+import com.example.library.helper.response.AsyncResponse;
 
 import org.json.JSONObject;
 
@@ -110,45 +109,15 @@ public class EventsFragment extends Fragment implements AsyncResponse {
     private void getEvents(){
         String link = "https://liaten.ru/db/events.php?page=1&recsPerPage=12";
         try {
-            new EventHelper((AsyncResponse) this).execute(new URL(link));
+            new EventHelper(this).execute(new URL(link));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void processFinish(Boolean output) {
-
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output) {
-
-    }
-
-    @Override
     public void returnEvents(ArrayList<Event> output) {
         Log.d(TAG, "returnEvents: " + output);
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output, String table) {
-
-    }
-
-    @Override
-    public void returnTable(String table) {
-
-    }
-
-    @Override
-    public void processFinish(Bitmap output) {
-
-    }
-
-    @Override
-    public void processFinish(Bitmap output, String table) {
-
     }
 
     @Override

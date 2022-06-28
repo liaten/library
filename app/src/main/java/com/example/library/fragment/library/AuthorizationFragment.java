@@ -1,6 +1,5 @@
 package com.example.library.fragment.library;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,19 +17,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.entity.Book;
-import com.example.library.entity.Event;
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.GetRequestFromDatabaseByUser;
+import com.example.library.helper.response.JSONResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AuthorizationFragment extends Fragment implements AsyncResponse {
+public class AuthorizationFragment extends Fragment implements JSONResponse {
 
     private EditText LoginEditText, PasswordEditText;
     private LinearLayout AuthorizedLayout, LoginActive, LoginInactive;
@@ -152,36 +148,6 @@ public class AuthorizationFragment extends Fragment implements AsyncResponse {
 
     private void GetPasswordByEmailFromDB(String email){
         new GetRequestFromDatabaseByUser(this).execute(PASSWORD_PHP_DB,EMAIL_PHP_DB, email);
-    }
-
-    @Override
-    public void processFinish(Boolean output) {
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output) {
-    }
-
-    @Override
-    public void returnEvents(ArrayList<Event> output) {
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output, String table) {
-    }
-
-    @Override
-    public void returnTable(String table) {
-
-    }
-
-    @Override
-    public void processFinish(Bitmap output) {
-    }
-
-    @Override
-    public void processFinish(Bitmap output, String table) {
-
     }
 
     @Override

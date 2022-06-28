@@ -3,7 +3,6 @@ package com.example.library;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -13,23 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.example.library.entity.Book;
-import com.example.library.entity.Event;
 import com.example.library.fragment.events.EventsFragment;
 import com.example.library.fragment.home.HomeFragment;
 import com.example.library.fragment.library.LibraryFragment;
 import com.example.library.fragment.other.NoConnectionFragment;
 import com.example.library.fragment.search.SearchFragment;
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.CheckNetwork;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.response.NetworkResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 
 public class MainActivity extends AppCompatActivity implements NetworkResponse {
 

@@ -20,14 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
-import com.example.library.entity.Event;
 import com.example.library.fragment.other.BooksExtendedList;
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.BookHelperExtended;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.GetRequestFromDatabaseByUser;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
+import com.example.library.helper.response.BookResponse;
+import com.example.library.helper.response.JSONResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfileFragment extends Fragment implements AsyncResponse {
+public class ProfileFragment extends Fragment implements BookResponse, JSONResponse {
 
     private static final Map<String,ArrayList<Integer>> id = new HashMap<>();
     private static final Map<String,ArrayList<Drawable>> cover = new HashMap<>();
@@ -167,16 +167,7 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(Boolean output) {
-    }
-
-    @Override
     public void returnBooks(ArrayList<Book> output) {
-    }
-
-    @Override
-    public void returnEvents(ArrayList<Event> output) {
-
     }
 
     @Override
@@ -213,6 +204,16 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
         ).start();
     }
 
+    @Override
+    public void returnBookCover(Bitmap cover) {
+
+    }
+
+    @Override
+    public void returnBookCover(Bitmap output, String table) {
+        cover.get(table).add(new BitmapDrawable(output));
+    }
+
     // Если возвращает таблицу, то значит она пустая!
     @Override
     public void returnTable(String table) {
@@ -231,15 +232,6 @@ public class ProfileFragment extends Fragment implements AsyncResponse {
             recycler.get(table).setVisibility(View.GONE);
             alert.get(table).setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void processFinish(Bitmap output) {
-    }
-
-    @Override
-    public void processFinish(Bitmap output, String table) {
-        cover.get(table).add(new BitmapDrawable(output));
     }
 
     @Override

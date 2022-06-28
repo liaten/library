@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.library.entity.Book;
-import com.example.library.helper.response.AsyncResponse;
+import com.example.library.helper.response.BookResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,12 +19,12 @@ import java.util.ArrayList;
 
 public class BookHelperExtended extends AsyncTask<URL, Void, ArrayList<Book>> {
 
-    public AsyncResponse delegate;
+    public BookResponse delegate;
     private String active_table;
     private static final String TAG = "BookHelperExtended";
 
 
-    public BookHelperExtended(AsyncResponse delegate, String active_table){
+    public BookHelperExtended(BookResponse delegate, String active_table){
         this.delegate = delegate;
         this.active_table = active_table;
     }

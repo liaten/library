@@ -4,7 +4,7 @@ import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 
 import android.os.AsyncTask;
 
-import com.example.library.helper.response.AsyncResponse;
+import com.example.library.helper.response.JSONResponse;
 
 import org.json.JSONObject;
 
@@ -12,9 +12,9 @@ import java.net.URL;
 
 public class GetRequestFromDatabaseByUser extends AsyncTask<String, Void, JSONObject> {
 
-    public AsyncResponse delegate;
+    public JSONResponse delegate;
 //    private static final String TAG = "Username";
-    public GetRequestFromDatabaseByUser(AsyncResponse delegate){
+    public GetRequestFromDatabaseByUser(JSONResponse delegate){
         this.delegate = delegate;
     }
     @Override

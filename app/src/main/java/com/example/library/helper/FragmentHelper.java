@@ -1,7 +1,6 @@
 package com.example.library.helper;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -10,8 +9,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.fragment.other.TopFragment;
 import com.example.library.fragment.home.HomeFragment;
+import com.example.library.fragment.other.TopFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class FragmentHelper extends AsyncTask<Fragment, Void, Void> {

@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.response.NetworkResponse;
 
 public class CheckNetwork extends AsyncTask<Context, Void, Boolean>{

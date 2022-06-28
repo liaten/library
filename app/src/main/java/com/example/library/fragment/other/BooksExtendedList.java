@@ -19,19 +19,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.R;
 import com.example.library.entity.Book;
-import com.example.library.entity.Event;
-import com.example.library.helper.response.AsyncResponse;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
-
-import org.json.JSONObject;
+import com.example.library.helper.response.BookResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class BooksExtendedList extends Fragment implements AsyncResponse {
+public class BooksExtendedList extends Fragment implements BookResponse {
 
     private String headerText, link;
     private TextView headerTextView;
@@ -91,11 +88,6 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void processFinish(Boolean output) {
-
-    }
-
-    @Override
     public void returnBooks(ArrayList<Book> output) {
         ids.clear();
         covers.clear();
@@ -123,32 +115,22 @@ public class BooksExtendedList extends Fragment implements AsyncResponse {
     }
 
     @Override
-    public void returnEvents(ArrayList<Event> output) {
-
-    }
-
-    @Override
     public void returnBooks(ArrayList<Book> output, String table) {
 
     }
 
     @Override
-    public void returnTable(String table) {
+    public void returnBookCover(Bitmap cover) {
+        covers.add(new BitmapDrawable(cover));
+    }
+
+    @Override
+    public void returnBookCover(Bitmap output, String table) {
 
     }
 
     @Override
-    public void processFinish(Bitmap output) {
-        covers.add(new BitmapDrawable(output));
-    }
-
-    @Override
-    public void processFinish(Bitmap output, String table) {
-
-    }
-
-    @Override
-    public void returnJSONObject(JSONObject jsonObject) {
+    public void returnTable(String active_table) {
 
     }
 }

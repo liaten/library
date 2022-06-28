@@ -5,7 +5,7 @@ import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 import android.os.AsyncTask;
 
 import com.example.library.entity.Book;
-import com.example.library.helper.response.AsyncResponse;
+import com.example.library.helper.response.BookResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,11 +16,11 @@ import java.util.ArrayList;
 
 public class BookHelper extends AsyncTask<URL, Void, ArrayList<Book>> {
 
-    public AsyncResponse delegate;
+    public BookResponse delegate;
 
     private static final String TAG = "BookHelper";
 
-    public BookHelper(AsyncResponse delegate){
+    public BookHelper(BookResponse delegate){
         this.delegate = delegate;
     }
 

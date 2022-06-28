@@ -17,17 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.R;
 import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.entity.Book;
-import com.example.library.entity.Event;
-import com.example.library.helper.response.AsyncResponse;
-
-import org.json.JSONObject;
+import com.example.library.helper.response.BookResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> implements AsyncResponse {
+public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> implements BookResponse {
 
     private static ArrayList<Integer> ids;
     private static ArrayList<Drawable> covers;
@@ -43,7 +40,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     private static String link;
     private static final String TAG = "RecyclerInitializer";
 
-    private AsyncResponse asyncResponse = this;
+    private BookResponse asyncResponse = this;
     private boolean loading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount;
     private RecyclerView recyclerView;
@@ -129,10 +126,6 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
 
 
 
-    @Override
-    public void processFinish(Boolean output) {
-
-    }
 
     @Override
     public void returnBooks(ArrayList<Book> output) {
@@ -183,28 +176,21 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     }
 
     @Override
-    public void returnEvents(ArrayList<Event> output) {
-
-    }
-
-    @Override
     public void returnBooks(ArrayList<Book> output, String table) {
     }
 
     @Override
-    public void returnTable(String table) {
+    public void returnBookCover(Bitmap cover) {
+        covers.add(new BitmapDrawable(cover));
     }
 
     @Override
-    public void processFinish(Bitmap output) {
-        covers.add(new BitmapDrawable(output));
+    public void returnBookCover(Bitmap output, String table) {
+
     }
 
     @Override
-    public void processFinish(Bitmap output, String table) {
-    }
+    public void returnTable(String active_table) {
 
-    @Override
-    public void returnJSONObject(JSONObject jsonObject) {
     }
 }
