@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.R;
 import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.entity.Book;
+import com.example.library.entity.ScrollDirection;
 import com.example.library.helper.response.BookResponse;
 
 import java.net.MalformedURLException;
@@ -36,7 +37,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     private static FragmentActivity activity;
     private static ProgressBar LoadingL;
     private static int page;
-    private static String scroll_direction;
+    private static ScrollDirection scroll_direction;
     private static String link;
     private static final String TAG = "RecyclerInitializer";
 
@@ -52,7 +53,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
                                ArrayList<Drawable> covers,
                                ArrayList<String> descriptions, ArrayList<String> titles,
                                ArrayList<String> authors, ArrayList<String> coversIDs,
-                               ProgressBar LoadingL, String scroll_direction, String link) {
+                               ProgressBar LoadingL, ScrollDirection scroll_direction, String link) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
@@ -70,10 +71,10 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     protected Void doInBackground(RecyclerView... recyclerViews) {
         recyclerView = recyclerViews[0];
         switch (scroll_direction){
-            case "vertical":
+            case vertical:
                 layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false);
                 break;
-            case "horizontal":
+            case horizontal:
                 layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL,false);
                 break;
         }
@@ -87,12 +88,12 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
         adapter = new RecyclerViewAdapter(activity, ids, covers,descriptions, titles, authors, coversIDs, scroll_direction);
         recyclerView.setAdapter(adapter);
         switch (scroll_direction){
-            case "vertical":
+            case vertical:
                 itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL);
                 itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.divider_books_vertical));
                 recyclerView.addOnScrollListener(scrollListener);
                 break;
-            case "horizontal":
+            case horizontal:
                 itemDecoration = new DividerItemDecoration(activity, DividerItemDecoration.HORIZONTAL);
                 itemDecoration.setDrawable(ContextCompat.getDrawable(activity, R.drawable.empty_divider_horizontal));
                 break;

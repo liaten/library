@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.entity.ScrollDirection;
 import com.example.library.fragment.other.BooksExtendedList;
 import com.example.library.helper.BookHelperExtended;
 import com.example.library.helper.FragmentHelper;
@@ -199,7 +200,7 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
                 coverID.get(table),
                 loading.get(table),
                 recycler.get(table),
-                "horizontal",
+                ScrollDirection.horizontal,
                 null
         ).start();
     }

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.entity.Book;
+import com.example.library.entity.ScrollDirection;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class ListWaiter extends Thread {
     private ArrayList<String> authors;
     private ProgressBar LoadingL;
     private RecyclerView recycler;
-    private String scroll_direction;
+    private ScrollDirection scroll_direction;
     private String link;
     private static final String TAG = "ListWaiter";
 
@@ -29,7 +30,7 @@ public class ListWaiter extends Thread {
                       ArrayList<Drawable> covers,
                       ArrayList<String> descriptions, ArrayList<String> titles,
                       ArrayList<String> authors, ArrayList<String> coversIDs, ProgressBar LoadingL,
-                      RecyclerView recycler, String scroll_direction, String link){
+                      RecyclerView recycler, ScrollDirection scroll_direction, String link){
 
         this.output = output;
         this.activity = activity;

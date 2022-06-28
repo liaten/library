@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.entity.ScrollDirection;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
@@ -111,7 +112,7 @@ public class BooksExtendedList extends Fragment implements BookResponse {
         }
         new ListWaiter(requireActivity(),output, ids, covers,
                 descriptions,titles,authors,coversIDs,
-                LoadingL,booksList, "vertical", link).start();
+                LoadingL,booksList, ScrollDirection.vertical, link).start();
     }
 
     @Override

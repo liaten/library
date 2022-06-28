@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
+import com.example.library.entity.ScrollDirection;
 import com.example.library.fragment.other.BooksExtendedList;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
@@ -116,7 +117,7 @@ public class HomeFragment extends Fragment implements BookResponse {
         }
         new ListWaiter(requireActivity(),output, ids, covers,
                 descriptions,titles,authors,coversIDs,
-                LoadingL,newBooksList, "horizontal", null).start();
+                LoadingL,newBooksList, ScrollDirection.horizontal, null).start();
     }
 
     @Override

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
+import com.example.library.entity.ScrollDirection;
 import com.example.library.fragment.other.BookInfo;
 import com.example.library.helper.FragmentHelper;
 
@@ -36,7 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final ArrayList<Integer> ids;
 
     private final Context context;
-    private final String scroll_direction;
+    private final ScrollDirection scroll_direction;
 
     private final String hyphen_regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
     private final Pattern hyphenPattern = Pattern.compile(hyphen_regex, Pattern.CASE_INSENSITIVE);
@@ -44,7 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(Context context, ArrayList<Integer> ids,
                                ArrayList<Drawable> covers, ArrayList<String> descriptions,
                                ArrayList<String> titles, ArrayList<String> authors,
-                               ArrayList<String> coversIDs, String scroll_direction
+                               ArrayList<String> coversIDs, ScrollDirection scroll_direction
     ) {
         this.context = context;
         this.ids = ids;
@@ -60,11 +61,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (scroll_direction){
-            case "vertical":
+            case vertical:
                 return new ViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_book_with_cover_vertical,parent,false)
                 );
-            case "horizontal":
+            case horizontal:
                 return new ViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_book_with_cover_horizontal,parent,false)
                 );
@@ -93,10 +94,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         double pixelsHeight = coverHeight * scale + 0.5f;
         double coefficient = 0;
         switch (scroll_direction){
-            case "horizontal":
+            case horizontal:
                 coefficient = pixelsHeight / 340;
                 break;
-            case "vertical":
+            case vertical:
                 coefficient = pixelsHeight / 280;
                 break;
         }
