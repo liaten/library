@@ -24,13 +24,14 @@ import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
+import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements BookResponse {
+public class HomeFragment extends Fragment implements BookResponse, ImageResponse {
 
     private static final ArrayList<Drawable> covers = new ArrayList<>();
     private static final ArrayList<Integer> ids = new ArrayList<>();
@@ -105,7 +106,7 @@ public class HomeFragment extends Fragment implements BookResponse {
         coversIDs.clear();
         for (Book book : output
         ) {
-            String coverID = String.valueOf(book.getCover());
+            String coverID = String.valueOf(book.getCoverID());
             new ImageDownloader(this).execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
@@ -126,12 +127,12 @@ public class HomeFragment extends Fragment implements BookResponse {
     }
 
     @Override
-    public void returnBookCover(Bitmap cover) {
+    public void returnImage(Bitmap cover) {
         covers.add(new BitmapDrawable(cover));
     }
 
     @Override
-    public void returnBookCover(Bitmap output, String table) {
+    public void returnImage(Bitmap output, String table) {
 
     }
 

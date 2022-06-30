@@ -9,14 +9,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.library.helper.response.BookResponse;
+import com.example.library.helper.response.ImageResponse;
 
 import java.io.InputStream;
 
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
     @SuppressLint("StaticFieldLeak")
     private ImageView bmImage = null;
-    private BookResponse delegate = null;
+    private ImageResponse delegate = null;
     private String table = null;
 
     @SuppressWarnings("deprecation")
@@ -24,11 +24,11 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
         this.bmImage = bmImage;
     }
 
-    public ImageDownloader(BookResponse delegate) {
+    public ImageDownloader(ImageResponse delegate) {
         this.delegate = delegate;
     }
 
-    public ImageDownloader(BookResponse delegate, String table) {
+    public ImageDownloader(ImageResponse delegate, String table) {
         this.delegate = delegate;
         this.table = table;
     }
@@ -45,15 +45,15 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
         return image;
     }
 
-    protected void onPostExecute(@Nullable Bitmap cover) {
+    protected void onPostExecute(@Nullable Bitmap image) {
         if(bmImage!=null){
-            bmImage.setImageBitmap(cover);
+            bmImage.setImageBitmap(image);
         }
         else {
             if (table == null) {
-                delegate.returnBookCover(cover);
+                delegate.returnImage(image);
             } else {
-                delegate.returnBookCover(cover, table);
+                delegate.returnImage(image, table);
             }
         }
     }

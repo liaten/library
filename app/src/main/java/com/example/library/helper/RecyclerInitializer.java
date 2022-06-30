@@ -18,6 +18,7 @@ import com.example.library.R;
 import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.entity.Book;
 import com.example.library.entity.ScrollDirection;
+import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 
 import java.net.MalformedURLException;
@@ -25,7 +26,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> implements BookResponse {
+public class RecyclerInitializer
+        extends AsyncTask<RecyclerView, Void, Void>
+        implements BookResponse, ImageResponse {
 
     private static ArrayList<Integer> ids;
     private static ArrayList<Drawable> covers;
@@ -137,7 +140,7 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
             for (Book book : output
             ) {
                 ImageDownloader d = new ImageDownloader(this);
-                String coverID = String.valueOf(book.getCover());
+                String coverID = String.valueOf(book.getCoverID());
                 d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
                 String author = book.getAuthor();
                 String title = book.getTitle();
@@ -181,12 +184,12 @@ public class RecyclerInitializer extends AsyncTask<RecyclerView, Void, Void> imp
     }
 
     @Override
-    public void returnBookCover(Bitmap cover) {
+    public void returnImage(Bitmap cover) {
         covers.add(new BitmapDrawable(cover));
     }
 
     @Override
-    public void returnBookCover(Bitmap output, String table) {
+    public void returnImage(Bitmap output, String table) {
 
     }
 

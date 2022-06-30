@@ -23,13 +23,14 @@ import com.example.library.entity.ScrollDirection;
 import com.example.library.helper.BookHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
+import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class BooksExtendedList extends Fragment implements BookResponse {
+public class BooksExtendedList extends Fragment implements BookResponse, ImageResponse {
 
     private String headerText, link;
     private TextView headerTextView;
@@ -99,7 +100,7 @@ public class BooksExtendedList extends Fragment implements BookResponse {
         for (Book book : output
         ) {
             ImageDownloader d = new ImageDownloader(this);
-            String coverID = String.valueOf(book.getCover());
+            String coverID = String.valueOf(book.getCoverID());
             d.execute("https://liaten.ru/libpics_small/" + coverID + ".jpg");
             String author = book.getAuthor();
             String title = book.getTitle();
@@ -121,12 +122,12 @@ public class BooksExtendedList extends Fragment implements BookResponse {
     }
 
     @Override
-    public void returnBookCover(Bitmap cover) {
+    public void returnImage(Bitmap cover) {
         covers.add(new BitmapDrawable(cover));
     }
 
     @Override
-    public void returnBookCover(Bitmap output, String table) {
+    public void returnImage(Bitmap output, String table) {
 
     }
 

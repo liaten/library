@@ -18,12 +18,12 @@ public class Book {
         this.title = title;
     }
 
-    public int getCover() {
-        return cover;
+    public int getCoverID() {
+        return coverID;
     }
 
-    public void setCover(int cover) {
-        this.cover = cover;
+    public void setCoverID(int coverID) {
+        this.coverID = coverID;
     }
 
     public String getAuthor() {
@@ -50,14 +50,13 @@ public class Book {
         this.description = description;
     }
 
-    private int ID, cover;
+    private int ID, coverID;
     private String title, author, theme, description;
 
-    public Book(int ID, String title, String author, int cover, String theme, String description){
-
+    public Book(int ID, String title, String author, int coverID, String theme, String description){
         setID(ID);
         setTitle(title);
-        setCover(cover);
+        setCoverID(coverID);
         setAuthor(author);
         setTheme(theme);
         setDescription(description);

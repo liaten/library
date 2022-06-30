@@ -27,6 +27,7 @@ import com.example.library.entity.Book;
 import com.example.library.helper.GetRequestFromDatabaseByUser;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.PostRequestBookUser;
+import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 import com.example.library.helper.response.JSONResponse;
 
@@ -37,7 +38,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BookInfo extends Fragment implements BookResponse, JSONResponse {
+public class BookInfo extends Fragment implements BookResponse, JSONResponse, ImageResponse {
 
     private final String title, author, description, coverID;
     private String user_id = "";
@@ -181,7 +182,7 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse {
     }
 
     @Override
-    public void returnBookCover(Bitmap cover) {
+    public void returnImage(Bitmap cover) {
         Drawable image = new BitmapDrawable(cover);
         int coverWidth = image.getIntrinsicWidth();
         int coverHeight = image.getIntrinsicHeight();
@@ -200,7 +201,7 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse {
     }
 
     @Override
-    public void returnBookCover(Bitmap output, String table) {
+    public void returnImage(Bitmap output, String table) {
 
     }
 

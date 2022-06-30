@@ -27,6 +27,7 @@ import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.GetRequestFromDatabaseByUser;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
+import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 import com.example.library.helper.response.JSONResponse;
 
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfileFragment extends Fragment implements BookResponse, JSONResponse {
+public class ProfileFragment extends Fragment implements BookResponse, JSONResponse, ImageResponse {
 
     private static final Map<String,ArrayList<Integer>> id = new HashMap<>();
     private static final Map<String,ArrayList<Drawable>> cover = new HashMap<>();
@@ -181,7 +182,7 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
         coverID.get(table).clear();
         for (Book book : output
         ) {
-            String coverID_s = String.valueOf(book.getCover());
+            String coverID_s = String.valueOf(book.getCoverID());
             new ImageDownloader(this, table).execute
                     ("https://liaten.ru/libpics_small/" + coverID_s + ".jpg");
             id.get(table).add(book.getID());
@@ -206,12 +207,12 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
     }
 
     @Override
-    public void returnBookCover(Bitmap cover) {
+    public void returnImage(Bitmap cover) {
 
     }
 
     @Override
-    public void returnBookCover(Bitmap output, String table) {
+    public void returnImage(Bitmap output, String table) {
         cover.get(table).add(new BitmapDrawable(output));
     }
 
