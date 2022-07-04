@@ -32,7 +32,6 @@ public class RecyclerInitializer
 
     private static ArrayList<Integer> ids;
     private static ArrayList<Drawable> covers;
-    private static ArrayList<String> descriptions;
     private static ArrayList<String> titles;
     private static ArrayList<String> authors;
     private static ArrayList<String> coversIDs;
@@ -53,14 +52,12 @@ public class RecyclerInitializer
     private DividerItemDecoration itemDecoration;
 
     public RecyclerInitializer(FragmentActivity activity, ArrayList<Integer> ids,
-                               ArrayList<Drawable> covers,
-                               ArrayList<String> descriptions, ArrayList<String> titles,
+                               ArrayList<Drawable> covers, ArrayList<String> titles,
                                ArrayList<String> authors, ArrayList<String> coversIDs,
                                ProgressBar LoadingL, ScrollDirection scroll_direction, String link) {
         RecyclerInitializer.activity = activity;
         RecyclerInitializer.ids = ids;
         RecyclerInitializer.covers = covers;
-        RecyclerInitializer.descriptions = descriptions;
         RecyclerInitializer.titles = titles;
         RecyclerInitializer.authors = authors;
         RecyclerInitializer.coversIDs = coversIDs;
@@ -88,7 +85,7 @@ public class RecyclerInitializer
     protected void onPostExecute(Void unused) {
         super.onPostExecute(unused);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerViewAdapter(activity, ids, covers,descriptions, titles, authors, coversIDs, scroll_direction);
+        adapter = new RecyclerViewAdapter(activity, ids, covers, titles, authors, coversIDs, scroll_direction);
         recyclerView.setAdapter(adapter);
         switch (scroll_direction){
             case vertical:
@@ -146,7 +143,7 @@ public class RecyclerInitializer
                 String title = book.getTitle();
                 int id = book.getID();
                 ids.add(id);
-                descriptions.add(book.getDescription());
+//                descriptions.add(book.getDescription());
                 titles.add(title);
                 authors.add(author);
                 coversIDs.add(coverID);

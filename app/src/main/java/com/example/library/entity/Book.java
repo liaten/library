@@ -34,31 +34,13 @@ public class Book {
         this.author = author;
     }
 
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     private int ID, coverID;
-    private String title, author, theme, description;
+    private String title, author;
 
-    public Book(int ID, String title, String author, int coverID, String theme, String description){
+    public Book(int ID, String title, String author, int coverID){
         setID(ID);
         setTitle(title);
         setCoverID(coverID);
         setAuthor(author);
-        setTheme(theme);
-        setDescription(description);
     }
 }

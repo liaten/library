@@ -10,11 +10,11 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
-public class PostRequestBookUser extends AsyncTask<String, Void, JSONObject> {
+public class BookStatusChangerByUser extends AsyncTask<String, Void, JSONObject> {
 
     public JSONResponse delegate;
 
-    public PostRequestBookUser(JSONResponse delegate) {
+    public BookStatusChangerByUser(JSONResponse delegate) {
         this.delegate = delegate;
     }
 
@@ -30,8 +30,7 @@ public class PostRequestBookUser extends AsyncTask<String, Void, JSONObject> {
                     "&method=" + method +
                     "&id_user=" + id_user +
                     "&id_book=" + id_book;
-            URL url = new URL(link);
-            return new JSONObject(getJSONFromURL(url));
+            return new JSONObject(getJSONFromURL(new URL(link)));
         } catch (Exception e) {
             return new JSONObject();
         }

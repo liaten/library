@@ -26,17 +26,22 @@ public class ListWaiter extends Thread {
     private String link;
     private static final String TAG = "ListWaiter";
 
-    public ListWaiter(FragmentActivity activity, ArrayList<Book> output, ArrayList<Integer> ids,
+    public ListWaiter(FragmentActivity activity,
+                      ArrayList<Book> output,
+                      ArrayList<Integer> ids,
                       ArrayList<Drawable> covers,
-                      ArrayList<String> descriptions, ArrayList<String> titles,
-                      ArrayList<String> authors, ArrayList<String> coversIDs, ProgressBar LoadingL,
-                      RecyclerView recycler, ScrollDirection scroll_direction, String link){
+                      ArrayList<String> titles,
+                      ArrayList<String> authors,
+                      ArrayList<String> coversIDs,
+                      ProgressBar LoadingL,
+                      RecyclerView recycler,
+                      ScrollDirection scroll_direction,
+                      String link){
 
         this.output = output;
         this.activity = activity;
         this.ids = ids;
         this.covers = covers;
-        this.descriptions = descriptions;
         this.titles = titles;
         this.authors = authors;
         this.coversIDs = coversIDs;
@@ -53,8 +58,7 @@ public class ListWaiter extends Thread {
             } catch (InterruptedException ignored) {
             }
         }
-        new RecyclerInitializer(activity, ids, covers,
-                descriptions, titles, authors,
+        new RecyclerInitializer(activity, ids, covers, titles, authors,
                 coversIDs, LoadingL, scroll_direction, link).execute(recycler);
     }
 }

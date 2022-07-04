@@ -111,13 +111,12 @@ public class HomeFragment extends Fragment implements BookResponse, ImageRespons
             String author = book.getAuthor();
             String title = book.getTitle();
             ids.add(book.getID());
-            descriptions.add(book.getDescription());
             titles.add(title);
             authors.add(author);
             coversIDs.add(coverID);
         }
         new ListWaiter(requireActivity(),output, ids, covers,
-                descriptions,titles,authors,coversIDs,
+                titles,authors,coversIDs,
                 LoadingL,newBooksList, ScrollDirection.horizontal, null).start();
     }
 

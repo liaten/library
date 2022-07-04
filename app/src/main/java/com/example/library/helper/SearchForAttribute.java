@@ -10,11 +10,11 @@ import org.json.JSONObject;
 
 import java.net.URL;
 
-public class GetRequestFromDatabaseByUser extends AsyncTask<String, Void, JSONObject> {
+public class SearchForAttribute extends AsyncTask<String, Void, JSONObject> {
 
     public JSONResponse delegate;
 //    private static final String TAG = "Username";
-    public GetRequestFromDatabaseByUser(JSONResponse delegate){
+    public SearchForAttribute(JSONResponse delegate){
         this.delegate = delegate;
     }
     @Override
@@ -23,8 +23,12 @@ public class GetRequestFromDatabaseByUser extends AsyncTask<String, Void, JSONOb
             String searchable = strings[0];     // Искомый столбец
             String type = strings[1];           // Тип данных
             String typeValue = strings[2];      // Данные
-            URL url = new URL("https://liaten.ru/db/search_from_user.php?type=" +
-                    type + "&typeValue=" + typeValue + "&searchable=" + searchable);
+            String table = strings[3];          // Таблица
+            URL url = new URL("https://liaten.ru/db/search_for_attribute.php" +
+                    "?type=" + type +
+                    "&typeValue=" + typeValue +
+                    "&searchable=" + searchable +
+                    "&table=" + table);
             return new JSONObject(getJSONFromURL(url));
         } catch(Exception e){
 //            e.printStackTrace();

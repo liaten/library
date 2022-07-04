@@ -46,9 +46,7 @@ public class BookHelperExtended extends AsyncTask<URL, Void, ArrayList<Book>> {
                                 book.getInt("id"),
                                 book.getString("title"),
                                 book.getString("author"),
-                                book.getInt("cover"),
-                                book.getString("theme"),
-                                book.getString("description")
+                                book.getInt("cover")
                         ));
                     }
                     break;

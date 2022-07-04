@@ -17,7 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.helper.GetRequestFromDatabaseByUser;
+import com.example.library.helper.SearchForAttribute;
+import com.example.library.helper.Tables;
 import com.example.library.helper.response.JSONResponse;
 
 import org.json.JSONException;
@@ -131,23 +132,38 @@ public class AuthorizationFragment extends Fragment implements JSONResponse {
     }
 
     private void GetUserFromDB(String user) {
-        new GetRequestFromDatabaseByUser(this).execute(USERID_PHP_DB,USERID_PHP_DB,user);
+        new SearchForAttribute(this).execute(USERID_PHP_DB,
+                USERID_PHP_DB,
+                user,
+                Tables.user.name());
     }
 
     private void GetPasswordByUserFromDB(String user){
-        new GetRequestFromDatabaseByUser(this).execute(PASSWORD_PHP_DB,USERID_PHP_DB, user);
+        new SearchForAttribute(this).execute(PASSWORD_PHP_DB,
+                USERID_PHP_DB,
+                user,
+                Tables.user.name());
     }
 
     private void GetEmailFromDB(String email) {
-        new GetRequestFromDatabaseByUser(this).execute(EMAIL_PHP_DB,EMAIL_PHP_DB,email);
+        new SearchForAttribute(this).execute(EMAIL_PHP_DB,
+                EMAIL_PHP_DB,
+                email,
+                Tables.user.name());
     }
 
     private void GetEmailFromDBByUserID(String userid) {
-        new GetRequestFromDatabaseByUser(this).execute(EMAIL_PHP_DB,USERID_PHP_DB,userid);
+        new SearchForAttribute(this).execute(EMAIL_PHP_DB,
+                USERID_PHP_DB,
+                userid,
+                Tables.user.name());
     }
 
     private void GetPasswordByEmailFromDB(String email){
-        new GetRequestFromDatabaseByUser(this).execute(PASSWORD_PHP_DB,EMAIL_PHP_DB, email);
+        new SearchForAttribute(this).execute(PASSWORD_PHP_DB,
+                EMAIL_PHP_DB,
+                email,
+                Tables.user.name());
     }
 
     @Override
@@ -244,23 +260,37 @@ public class AuthorizationFragment extends Fragment implements JSONResponse {
     }
 
     private void GetUserFromDBByEmail(String email) {
-        new GetRequestFromDatabaseByUser(this).execute(USERID_PHP_DB,EMAIL_PHP_DB,email);
+        new SearchForAttribute(this).execute(USERID_PHP_DB,
+                EMAIL_PHP_DB,
+                email,
+                Tables.user.name());
     }
 
     private void GetSurnameFromDB(String userid) {
-        new GetRequestFromDatabaseByUser(this).execute(SURNAME_PHP_DB, USERID_PHP_DB, userid);
+        new SearchForAttribute(this).execute(SURNAME_PHP_DB,
+                USERID_PHP_DB,
+                userid,
+                Tables.user.name());
     }
 
     private void GetSurnameFromDBByEmail(String email) {
-        new GetRequestFromDatabaseByUser(this).execute(SURNAME_PHP_DB, EMAIL_PHP_DB, email);
+        new SearchForAttribute(this).execute(SURNAME_PHP_DB,
+                EMAIL_PHP_DB,
+                email,
+                Tables.user.name());
     }
 
     private void GetNameFromDB(String userid) {
-        new GetRequestFromDatabaseByUser(this).execute(NAME_PHP_DB, USERID_PHP_DB, userid);
+        new SearchForAttribute(this).execute(NAME_PHP_DB,
+                USERID_PHP_DB,
+                userid,
+                Tables.user.name());
     }
 
     private void GetNameFromDBByEmail(String email) {
-        new GetRequestFromDatabaseByUser(this).execute(NAME_PHP_DB, EMAIL_PHP_DB, email);
+        new SearchForAttribute(this).execute(NAME_PHP_DB,
+                EMAIL_PHP_DB,
+                email,
+                Tables.user.name());
     }
-
 }

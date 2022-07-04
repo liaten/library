@@ -24,9 +24,10 @@ import androidx.fragment.app.Fragment;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.entity.Book;
-import com.example.library.helper.GetRequestFromDatabaseByUser;
+import com.example.library.helper.SearchForAttribute;
 import com.example.library.helper.ImageDownloader;
-import com.example.library.helper.PostRequestBookUser;
+import com.example.library.helper.BookStatusChangerByUser;
+import com.example.library.helper.Tables;
 import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 import com.example.library.helper.response.JSONResponse;
@@ -48,19 +49,24 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
     private TextView TitleView, AuthorView, DescriptionView;
     private Button WishlistButton, ToBookButton;
 
+    private LinearLayout LoadingL, LoadedL;
+    private boolean userid_checked = false;
+
     private boolean wishlist_books_checked = false;
     private boolean reserved_books_checked = false;
     private int bookID;
     private static final String TAG = "BookInfo";
     private boolean cover_downloaded = false;
 
-    public BookInfo(int bookID, String title, String author, String description, String coverID) {
+    public BookInfo(int bookID, String title, String author, String coverID) {
         this.bookID = bookID;
         this.title = title;
         this.author = author;
-        this.description = description;
         this.coverID = coverID;
+        description = "";
     }
+
+
 
     @Nullable
     @Override
@@ -91,38 +97,17 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
         AuthorView.setText(authorS);
         DescriptionView.setText(descriptionS);
     }
-    private boolean userid_checked = false;
+
+    private void getDescriptionFromDB() {
+
+    }
 
     private void setOnClickListeners() {
         WishlistButton.setOnClickListener(wishlistButtonListener);
         ToBookButton.setOnClickListener(bookButtonListener);
     }
-    private LinearLayout LoadingL, LoadedL;
 
-    View.OnClickListener wishlistButtonListener = view -> {
-        active_table = "wishlist_books";
-        if(WishlistButton.getText().equals(getResources().getString(R.string.add_to_wishlist))){
-            WishlistButton.setText(getResources().getString(R.string.remove_from_wishlist));
-            active_method = "insert";
-        }
-        else {
-            WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
-            active_method = "delete";
-        }
-        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
-    };
-    View.OnClickListener bookButtonListener = view -> {
-        active_table = "reserved_books";
-        if(ToBookButton.getText().equals(getResources().getString(R.string.to_book))){
-            ToBookButton.setText(getResources().getString(R.string.to_unbook));
-            active_method = "insert";
-        }
-        else {
-            ToBookButton.setText(getResources().getString(R.string.to_book));
-            active_method = "delete";
-        }
-        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
-    };
+
 
     private void setViews() {
         View view = requireView();
@@ -141,15 +126,12 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
     private void setBookStatus(){
         active_method = "select";
         getUserIDFromDB();
+        getDescriptionFromDB();
     }
 
     private void downloadBookCover(){
         new ImageDownloader(this).execute
                 ("https://liaten.ru/libpics_medium/" + coverID + ".jpg");
-    }
-
-    private void createPostRequestBookUser(String table, String method, String id_user, String id_book) {
-        new PostRequestBookUser(this).execute(table, method, id_user, id_book);
     }
 
     private void getUserIDFromDB() {
@@ -162,7 +144,7 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
                 showData();
             }
         } else {
-            new GetRequestFromDatabaseByUser(this).execute("id", "userid", userid);
+            new SearchForAttribute(this).execute("id", "userid", userid, Tables.user.name());
         }
     }
 
@@ -221,9 +203,9 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
                     case "id":
                         user_id = jsonObject.getString("id");
                         active_table = "wishlist_books";
-                        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
+                        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
                         active_table = "reserved_books";
-                        createPostRequestBookUser(active_table, active_method, user_id, String.valueOf(bookID));
+                        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
                         break;
                     case "insert":
                         alert = "Книга добавлена в ";
@@ -307,4 +289,28 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
         } catch (JSONException ignored) {
         }
     }
+    View.OnClickListener wishlistButtonListener = view -> {
+        active_table = "wishlist_books";
+        if(WishlistButton.getText().equals(getResources().getString(R.string.add_to_wishlist))){
+            WishlistButton.setText(getResources().getString(R.string.remove_from_wishlist));
+            active_method = "insert";
+        }
+        else {
+            WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
+            active_method = "delete";
+        }
+        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
+    };
+    View.OnClickListener bookButtonListener = view -> {
+        active_table = "reserved_books";
+        if(ToBookButton.getText().equals(getResources().getString(R.string.to_book))){
+            ToBookButton.setText(getResources().getString(R.string.to_unbook));
+            active_method = "insert";
+        }
+        else {
+            ToBookButton.setText(getResources().getString(R.string.to_book));
+            active_method = "delete";
+        }
+        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
+    };
 }

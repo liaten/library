@@ -32,7 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private final ArrayList<Drawable> covers;
 
-    private final ArrayList<String> descriptions, titles, authors, coversIDs;
+    private final ArrayList<String> titles, authors, coversIDs;
 
     private final ArrayList<Integer> ids;
 
@@ -42,15 +42,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private final String hyphen_regex = "[ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*[ЁУЕЫАОЭЯИЮ][ЙЦКНГШЩЗХЪФВПРЛДЖЧСМТЬБ]*?(?=[ЦКНГШЩЗХФВПРЛДЖЧСМТБ]?[ЁУЕЫАОЭЯИЮ]|Й[АИУЕО])";
     private final Pattern hyphenPattern = Pattern.compile(hyphen_regex, Pattern.CASE_INSENSITIVE);
 
-    public RecyclerViewAdapter(Context context, ArrayList<Integer> ids,
-                               ArrayList<Drawable> covers, ArrayList<String> descriptions,
-                               ArrayList<String> titles, ArrayList<String> authors,
-                               ArrayList<String> coversIDs, ScrollDirection scroll_direction
+    public RecyclerViewAdapter(Context context,
+                               ArrayList<Integer> ids,
+                               ArrayList<Drawable> covers,
+                               ArrayList<String> titles,
+                               ArrayList<String> authors,
+                               ArrayList<String> coversIDs,
+                               ScrollDirection scroll_direction
     ) {
         this.context = context;
         this.ids = ids;
         this.covers = covers;
-        this.descriptions = descriptions;
         this.titles = titles;
         this.authors = authors;
         this.coversIDs = coversIDs;
@@ -116,7 +118,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     ids.get(position),
                     titles.get(position),
                     authors.get(position),
-                    descriptions.get(position),
                     coversIDs.get(position)
             ));
         });

@@ -106,13 +106,12 @@ public class BooksExtendedList extends Fragment implements BookResponse, ImageRe
             String title = book.getTitle();
             int id = book.getID();
             ids.add(id);
-            descriptions.add(book.getDescription());
             titles.add(title);
             authors.add(author);
             coversIDs.add(coverID);
         }
         new ListWaiter(requireActivity(),output, ids, covers,
-                descriptions,titles,authors,coversIDs,
+                titles,authors,coversIDs,
                 LoadingL,booksList, ScrollDirection.vertical, link).start();
     }
 

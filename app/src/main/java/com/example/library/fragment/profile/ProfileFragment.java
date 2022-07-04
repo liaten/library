@@ -24,9 +24,10 @@ import com.example.library.entity.ScrollDirection;
 import com.example.library.fragment.other.BooksExtendedList;
 import com.example.library.helper.BookHelperExtended;
 import com.example.library.helper.FragmentHelper;
-import com.example.library.helper.GetRequestFromDatabaseByUser;
+import com.example.library.helper.SearchForAttribute;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
+import com.example.library.helper.Tables;
 import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 import com.example.library.helper.response.JSONResponse;
@@ -45,7 +46,6 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
     private static final Map<String,ArrayList<Integer>> id = new HashMap<>();
     private static final Map<String,ArrayList<Drawable>> cover = new HashMap<>();
     private static final Map<String,ArrayList<String>> coverID = new HashMap<>();
-    private static final Map<String,ArrayList<String>> description = new HashMap<>();
     private static final Map<String,ArrayList<String>> title = new HashMap<>();
     private static final Map<String,ArrayList<String>> author = new HashMap<>();
     private static final Map<String, ProgressBar> loading = new HashMap<>();
@@ -148,7 +148,6 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
                 id.put(table,new ArrayList<>());
                 cover.put(table,new ArrayList<>());
                 coverID.put(table,new ArrayList<>());
-                description.put(table,new ArrayList<>());
                 title.put(table,new ArrayList<>());
                 author.put(table,new ArrayList<>());
                 String link = "https://liaten.ru/db/books_from_booklists_by_user.php" +
@@ -164,7 +163,7 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
         if (userid.equals("")) {
             setAllListsEmpty(lists);
         } else {
-            new GetRequestFromDatabaseByUser(this).execute("id", "userid", userid);
+            new SearchForAttribute(this).execute("id", "userid", userid, Tables.user.name());
         }
     }
 
@@ -176,7 +175,6 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
     public void returnBooks(ArrayList<Book> output, String table) {
         id.get(table).clear();
         cover.get(table).clear();
-        description.get(table).clear();
         title.get(table).clear();
         author.get(table).clear();
         coverID.get(table).clear();
@@ -186,7 +184,6 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
             new ImageDownloader(this, table).execute
                     ("https://liaten.ru/libpics_small/" + coverID_s + ".jpg");
             id.get(table).add(book.getID());
-            description.get(table).add(book.getDescription());
             title.get(table).add(book.getTitle());
             author.get(table).add(book.getAuthor());
             coverID.get(table).add(coverID_s);
@@ -195,7 +192,6 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
                 output,
                 id.get(table),
                 cover.get(table),
-                description.get(table),
                 title.get(table),
                 author.get(table),
                 coverID.get(table),
