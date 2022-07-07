@@ -1,8 +1,8 @@
 package com.example.library.fragment.other;
 
 import static com.example.library.MainActivity.scale;
-import static com.example.library.helper.enums.BookListTypes.reserved;
-import static com.example.library.helper.enums.BookListTypes.wish;
+import static com.example.library.entity.BookListTypes.reserved;
+import static com.example.library.entity.BookListTypes.wish;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -29,13 +29,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
+import com.example.library.helper.JSONRetrieverFromDB;
 import com.example.library.helper.SearchForAttribute;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.BookStatusChangerByUser;
-import com.example.library.helper.enums.BookListTypes;
-import com.example.library.helper.enums.Tables;
-import com.example.library.helper.response.ImageResponse;
-import com.example.library.helper.response.JSONResponse;
+import com.example.library.entity.BookListTypes;
+import com.example.library.entity.Tables;
+import com.example.library.response.ImageResponse;
+import com.example.library.response.JSONResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +46,8 @@ import java.util.regex.Pattern;
 
 public class BookInfo extends Fragment implements JSONResponse, ImageResponse {
 
-    private final String title, author, description, coverID;
+    private final String title, author, coverID;
+    private String description;
     private String user_id = "";
     private BookListTypes active_table;
     private String active_method = "";
@@ -101,7 +103,10 @@ public class BookInfo extends Fragment implements JSONResponse, ImageResponse {
     }
 
     private void getDescriptionFromDB() {
-
+        new JSONRetrieverFromDB().execute(
+                new String[]{"https://liaten.ru/db/search_for_attribute.php"},
+                new String[]{"type","typeValue","searchable","table"},
+                new String[]{"id",String.valueOf(bookID),"description",Tables.book.name()});
     }
 
     private void setOnClickListeners() {
@@ -199,6 +204,10 @@ public class BookInfo extends Fragment implements JSONResponse, ImageResponse {
                         new BookStatusChangerByUser(this).execute(active_table.name(), active_method, user_id, String.valueOf(bookID));
                         active_table = BookListTypes.reserved;
                         new BookStatusChangerByUser(this).execute(active_table.name(), active_method, user_id, String.valueOf(bookID));
+                        break;
+                    case "description":
+                        description = jsonObject.getString("description");
+                        Log.d(TAG, "description: " + description);
                         break;
                     case "insert":
                         alert = "Книга добавлена в ";

@@ -5,7 +5,7 @@ import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 import android.os.AsyncTask;
 
 import com.example.library.entity.Event;
-import com.example.library.helper.response.AsyncResponse;
+import com.example.library.response.AsyncResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;

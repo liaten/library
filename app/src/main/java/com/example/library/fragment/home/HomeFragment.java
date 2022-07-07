@@ -24,8 +24,8 @@ import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
-import com.example.library.helper.response.ImageResponse;
-import com.example.library.helper.response.BookResponse;
+import com.example.library.response.ImageResponse;
+import com.example.library.response.BookResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;

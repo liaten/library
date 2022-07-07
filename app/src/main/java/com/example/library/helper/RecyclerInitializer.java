@@ -18,8 +18,8 @@ import com.example.library.R;
 import com.example.library.adapter.RecyclerViewAdapter;
 import com.example.library.entity.Book;
 import com.example.library.entity.ScrollDirection;
-import com.example.library.helper.response.ImageResponse;
-import com.example.library.helper.response.BookResponse;
+import com.example.library.response.ImageResponse;
+import com.example.library.response.BookResponse;
 
 import java.net.MalformedURLException;
 import java.net.URL;

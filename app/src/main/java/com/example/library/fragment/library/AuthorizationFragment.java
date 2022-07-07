@@ -18,8 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.example.library.MainActivity;
 import com.example.library.R;
 import com.example.library.helper.SearchForAttribute;
-import com.example.library.helper.enums.Tables;
-import com.example.library.helper.response.JSONResponse;
+import com.example.library.entity.Tables;
+import com.example.library.response.JSONResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;

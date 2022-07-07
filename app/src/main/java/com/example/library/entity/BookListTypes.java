@@ -1,4 +1,4 @@
-package com.example.library.helper.enums;
+package com.example.library.entity;
 
 public enum BookListTypes {
     wish,

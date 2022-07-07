@@ -37,7 +37,7 @@ import com.example.library.helper.CreateUser;
 import com.example.library.helper.DateHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.SearchEmailByEmailFromDB;
-import com.example.library.helper.response.JSONResponse;
+import com.example.library.response.JSONResponse;
 import com.example.library.mail.JavaMailAPI;
 
 import org.json.JSONException;

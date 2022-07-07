@@ -1,4 +1,4 @@
-package com.example.library.helper.response;
+package com.example.library.response;
 
 import android.graphics.Bitmap;
 

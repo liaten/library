@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.library.entity.Book;
-import com.example.library.helper.response.BookResponse;
+import com.example.library.response.BookResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;

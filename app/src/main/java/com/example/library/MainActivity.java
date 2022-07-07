@@ -19,7 +19,7 @@ import com.example.library.fragment.other.NoConnectionFragment;
 import com.example.library.fragment.search.SearchFragment;
 import com.example.library.helper.CheckNetwork;
 import com.example.library.helper.FragmentHelper;
-import com.example.library.helper.response.NetworkResponse;
+import com.example.library.response.NetworkResponse;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements NetworkResponse {

@@ -4,7 +4,7 @@ import static com.example.library.helper.NetworkHelper.getJSONFromURL;
 
 import android.os.AsyncTask;
 
-import com.example.library.helper.response.JSONResponse;
+import com.example.library.response.JSONResponse;
 
 import org.json.JSONObject;
 

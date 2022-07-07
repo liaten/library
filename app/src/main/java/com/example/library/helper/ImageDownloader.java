@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.library.helper.response.ImageResponse;
+import com.example.library.response.ImageResponse;
 
 import java.io.InputStream;
 
