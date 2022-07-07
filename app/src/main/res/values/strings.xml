@@ -84,4 +84,7 @@
     <string name="logout">Выйти из аккаунта</string>
     <string name="calendar_shown">Отображено V</string>
     <string name="calendar_hidden">Скрыто ^</string>
+    <string name="no_on_hands">В настоящее время нет ни одной книги на руках</string>
+    <string name="no_booked">В настоящее время ни одной книги не забронировано</string>
+    <string name="no_wishlist_books">В настоящее время нет ни одной книги в списке желаемого</string>
 </resources>
