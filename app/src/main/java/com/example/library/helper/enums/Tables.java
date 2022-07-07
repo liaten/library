@@ -1,4 +1,4 @@
-package com.example.library.helper;
+package com.example.library.helper.enums;
 
 public enum Tables {
     book,

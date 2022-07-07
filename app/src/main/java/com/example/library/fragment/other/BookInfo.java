@@ -1,15 +1,21 @@
 package com.example.library.fragment.other;
 
 import static com.example.library.MainActivity.scale;
+import static com.example.library.helper.enums.BookListTypes.reserved;
+import static com.example.library.helper.enums.BookListTypes.wish;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,27 +29,25 @@ import androidx.fragment.app.Fragment;
 
 import com.example.library.MainActivity;
 import com.example.library.R;
-import com.example.library.entity.Book;
 import com.example.library.helper.SearchForAttribute;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.BookStatusChangerByUser;
-import com.example.library.helper.Tables;
+import com.example.library.helper.enums.BookListTypes;
+import com.example.library.helper.enums.Tables;
 import com.example.library.helper.response.ImageResponse;
-import com.example.library.helper.response.BookResponse;
 import com.example.library.helper.response.JSONResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BookInfo extends Fragment implements BookResponse, JSONResponse, ImageResponse {
+public class BookInfo extends Fragment implements JSONResponse, ImageResponse {
 
     private final String title, author, description, coverID;
     private String user_id = "";
-    private String active_table = "";
+    private BookListTypes active_table;
     private String active_method = "";
     private ImageView CoverView;
     private TextView TitleView, AuthorView, DescriptionView;
@@ -65,8 +69,6 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
         this.coverID = coverID;
         description = "";
     }
-
-
 
     @Nullable
     @Override
@@ -106,8 +108,6 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
         WishlistButton.setOnClickListener(wishlistButtonListener);
         ToBookButton.setOnClickListener(bookButtonListener);
     }
-
-
 
     private void setViews() {
         View view = requireView();
@@ -154,23 +154,21 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
     }
 
     @Override
-    public void returnBooks(ArrayList<Book> output) {
-
-    }
-
-    @Override
-    public void returnBooks(ArrayList<Book> output, String table) {
-
-    }
-
-    @Override
     public void returnImage(Bitmap cover) {
-        Drawable image = new BitmapDrawable(cover);
+
+        WindowManager wm = (WindowManager) requireContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int screenHeight = size.y;
+
+        @SuppressWarnings("deprecation") Drawable image = new BitmapDrawable(cover);
         int coverWidth = image.getIntrinsicWidth();
         int coverHeight = image.getIntrinsicHeight();
         double pixelsWidth = coverWidth * scale + 0.5f;
         double pixelsHeight = coverHeight * scale + 0.5f;
-        double coefficient = pixelsHeight / 600;
+        double coefficient = screenHeight / pixelsHeight / 6;
+
         pixelsWidth /= coefficient;
         pixelsHeight /= coefficient;
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams((int) pixelsWidth, (int) pixelsHeight);
@@ -188,11 +186,6 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
     }
 
     @Override
-    public void returnTable(String active_table) {
-
-    }
-
-    @Override
     public void returnJSONObject(JSONObject jsonObject) {
         String alert;
         Log.d(TAG, "returnJSONObject: " + jsonObject);
@@ -202,18 +195,18 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
                 switch (type) {
                     case "id":
                         user_id = jsonObject.getString("id");
-                        active_table = "wishlist_books";
-                        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
-                        active_table = "reserved_books";
-                        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
+                        active_table = wish;
+                        new BookStatusChangerByUser(this).execute(active_table.name(), active_method, user_id, String.valueOf(bookID));
+                        active_table = BookListTypes.reserved;
+                        new BookStatusChangerByUser(this).execute(active_table.name(), active_method, user_id, String.valueOf(bookID));
                         break;
                     case "insert":
                         alert = "Книга добавлена в ";
                         switch (active_table) {
-                            case "wishlist_books":
+                            case wish:
                                 alert += "список желаемого";
                                 break;
-                            case "reserved_books":
+                            case reserved:
                                 alert += "\"забронированные\"";
                                 break;
                         }
@@ -224,10 +217,10 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
                     case "delete":
                         alert = "Книга удалена из ";
                         switch (active_table){
-                            case "wishlist_books":
+                            case wish:
                                 alert += "списка желаемого";
                                 break;
-                            case "reserved_books":
+                            case reserved:
                                 alert += "списка забронированных";
                                 break;
                         }
@@ -274,10 +267,10 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
                 if (type.equals("insert")) {
                     alert = "Книга уже в списке ";
                     switch (active_table) {
-                        case "wishlist_books":
+                        case wish:
                             alert += "желаемого";
                             break;
-                        case "reserved_books":
+                        case reserved:
                             alert += "забронированных";
                             break;
                     }
@@ -290,7 +283,7 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
         }
     }
     View.OnClickListener wishlistButtonListener = view -> {
-        active_table = "wishlist_books";
+        active_table = wish;
         if(WishlistButton.getText().equals(getResources().getString(R.string.add_to_wishlist))){
             WishlistButton.setText(getResources().getString(R.string.remove_from_wishlist));
             active_method = "insert";
@@ -299,10 +292,10 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
             WishlistButton.setText(getResources().getString(R.string.add_to_wishlist));
             active_method = "delete";
         }
-        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
+        new BookStatusChangerByUser(this).execute(active_table.name(), active_method, user_id, String.valueOf(bookID));
     };
     View.OnClickListener bookButtonListener = view -> {
-        active_table = "reserved_books";
+        active_table = reserved;
         if(ToBookButton.getText().equals(getResources().getString(R.string.to_book))){
             ToBookButton.setText(getResources().getString(R.string.to_unbook));
             active_method = "insert";
@@ -311,6 +304,6 @@ public class BookInfo extends Fragment implements BookResponse, JSONResponse, Im
             ToBookButton.setText(getResources().getString(R.string.to_book));
             active_method = "delete";
         }
-        new BookStatusChangerByUser(this).execute(active_table, active_method, user_id, String.valueOf(bookID));
+        new BookStatusChangerByUser(this).execute(active_table.name(), active_method, user_id, String.valueOf(bookID));
     };
 }

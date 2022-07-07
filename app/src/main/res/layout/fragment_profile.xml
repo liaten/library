@@ -65,7 +65,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pt_serif"
+                    android:fontFamily="@font/pt_serif_regular"
                     android:text="@string/guest"
                     android:textColor="@color/headers_primary"
                     android:textSize="30sp"
@@ -138,7 +138,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        />
+                        tools:ignore="RtlSymmetry" />
                     <ProgressBar
                         android:id="@+id/books_on_hands_loading"
                         android:layout_width="wrap_content"
@@ -154,7 +154,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
-                        android:text="В настоящее время нет ни одной книги на руках"
+                        android:text="@string/no_on_hands"
                         android:gravity="center_vertical"
                         android:textColor="@color/text_secondary"
                         android:visibility="gone"
@@ -238,7 +238,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        />
+                        tools:ignore="RtlSymmetry" />
                     <ProgressBar
                         android:id="@+id/reserved_books_loading"
                         android:layout_width="wrap_content"
@@ -253,7 +253,7 @@
                         android:id="@+id/reserved_books_alert"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="В настоящее время ни одной книги не забронировано"
+                        android:text="@string/no_booked"
                         android:gravity="center_vertical"
                         android:textColor="@color/text_secondary"
                         android:fontFamily="@font/roboto"
@@ -337,7 +337,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        />
+                        tools:ignore="RtlSymmetry" />
                     <ProgressBar
                         android:id="@+id/wishlist_loading"
                         android:layout_width="wrap_content"
@@ -352,7 +352,7 @@
                         android:id="@+id/wishlist_alert"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="В настоящее время нет ни одной книги в списке желаемого"
+                        android:text="@string/no_wishlist_books"
                         android:gravity="center_vertical"
                         android:textColor="@color/text_secondary"
                         android:fontFamily="@font/roboto"

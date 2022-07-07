@@ -22,12 +22,12 @@ import com.example.library.R;
 import com.example.library.entity.Book;
 import com.example.library.entity.ScrollDirection;
 import com.example.library.fragment.other.BooksExtendedList;
-import com.example.library.helper.BookHelperExtended;
+import com.example.library.helper.BookHelper;
 import com.example.library.helper.FragmentHelper;
 import com.example.library.helper.SearchForAttribute;
 import com.example.library.helper.ImageDownloader;
 import com.example.library.helper.ListWaiter;
-import com.example.library.helper.Tables;
+import com.example.library.helper.enums.Tables;
 import com.example.library.helper.response.ImageResponse;
 import com.example.library.helper.response.BookResponse;
 import com.example.library.helper.response.JSONResponse;
@@ -119,29 +119,23 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
         viewAll.get(lists[2]).setOnClickListener(watchAllOnHandsListener);
     }
 
-    View.OnClickListener watchAllReservedListener = view -> {
-        new FragmentHelper((MainActivity) requireActivity(),
-                false,true).execute(
-                new BooksExtendedList(
-                        header.get(lists[1]).getText().toString(), "reserved"
-                ));
-    };
+    View.OnClickListener watchAllReservedListener = view -> new FragmentHelper((MainActivity) requireActivity(),
+            false,true).execute(
+            new BooksExtendedList(
+                    header.get(lists[1]).getText().toString(), "reserved"
+            ));
 
-    View.OnClickListener watchAllWishlistListener = view -> {
-        new FragmentHelper((MainActivity) requireActivity(),
-                false,true).execute(
-                new BooksExtendedList(
-                        header.get(lists[0]).getText().toString(), "reserved"
-                ));
-    };
+    View.OnClickListener watchAllWishlistListener = view -> new FragmentHelper((MainActivity) requireActivity(),
+            false,true).execute(
+            new BooksExtendedList(
+                    header.get(lists[0]).getText().toString(), "reserved"
+            ));
 
-    View.OnClickListener watchAllOnHandsListener = view -> {
-        new FragmentHelper((MainActivity) requireActivity(),
-                false,true).execute(
-                new BooksExtendedList(
-                        header.get(lists[2]).getText().toString(), "reserved"
-                ));
-    };
+    View.OnClickListener watchAllOnHandsListener = view -> new FragmentHelper((MainActivity) requireActivity(),
+            false,true).execute(
+            new BooksExtendedList(
+                    header.get(lists[2]).getText().toString(), "reserved"
+            ));
 
     private void getBookListsByUser(String[] tables, String id_user) throws MalformedURLException {
         for (String table : tables) {
@@ -154,7 +148,7 @@ public class ProfileFragment extends Fragment implements BookResponse, JSONRespo
                         "?table=" + table +
                         "&id_user=" + id_user +
                         "&limited=y";
-                new BookHelperExtended(profileFragment, table).execute(new URL(link));
+                new BookHelper(profileFragment, table).execute(new URL(link));
         }
     }
 
